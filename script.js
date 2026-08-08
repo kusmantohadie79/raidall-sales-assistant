@@ -4,16 +4,14 @@
 
   const homePage = document.getElementById('homePage');
   const divisionPage = document.getElementById('divisionPage');
-  const divisionContent = document.getElementById('divisionContent');
-
   const livestockPage = document.getElementById('livestockPage');
 
-  const appFrame = document.getElementById('appFrame');
+  const divisionContent = document.getElementById('divisionContent');
 
 
-  /* =========================================================
+  /* =====================================================
      LOADING
-  ========================================================= */
+     ===================================================== */
 
   function hideLoading() {
 
@@ -22,80 +20,48 @@
     loading.style.opacity = '0';
 
     setTimeout(() => {
+
       loading.style.display = 'none';
+
     }, 300);
 
   }
 
 
-  /* =========================================================
-     SHOW / HIDE PAGE
-  ========================================================= */
+  /* =====================================================
+     SHOW HOME
+     ===================================================== */
 
   function showHome() {
 
-    if (homePage) {
-      homePage.classList.add('active');
-    }
+    homePage.classList.add('active');
 
-    if (divisionPage) {
-      divisionPage.classList.remove('active');
-    }
+    divisionPage.classList.remove('active');
 
-    if (livestockPage) {
-      livestockPage.classList.remove('active');
-    }
+    livestockPage.classList.remove('active');
 
   }
 
 
-  function showDivisionPage() {
-
-    if (homePage) {
-      homePage.classList.remove('active');
-    }
-
-    if (livestockPage) {
-      livestockPage.classList.remove('active');
-    }
-
-    if (divisionPage) {
-      divisionPage.classList.add('active');
-    }
-
-  }
-
-
-  function showLivestock() {
-
-    if (homePage) {
-      homePage.classList.remove('active');
-    }
-
-    if (divisionPage) {
-      divisionPage.classList.remove('active');
-    }
-
-    if (livestockPage) {
-      livestockPage.classList.add('active');
-    }
-
-  }
-
-
-  /* =========================================================
+  /* =====================================================
      OPEN DIVISION
-  ========================================================= */
+     ===================================================== */
 
-  window.openDivision = function(division) {
+  window.openDivision = function (division) {
 
-    /* -----------------------------------------
+
+    /* ================================================
        LIVESTOCK
-    ----------------------------------------- */
+       ================================================ */
 
     if (division === 'livestock') {
 
-      showLivestock();
+      homePage.classList.remove('active');
+
+      divisionPage.classList.remove('active');
+
+      livestockPage.classList.add('active');
+
 
       history.pushState(
         {
@@ -109,72 +75,93 @@
     }
 
 
-    /* -----------------------------------------
+    /* ================================================
        PETCARE / AQUA CULTURE
-    ----------------------------------------- */
+       ================================================ */
 
-    showDivisionPage();
+    homePage.classList.remove('active');
+
+    livestockPage.classList.remove('active');
+
+    divisionPage.classList.add('active');
+
 
     let title = '';
     let description = '';
+    let theme = '';
     let icon = '';
+
 
     if (division === 'petcare') {
 
-      title = 'PETCARE';
-      description = 'Pet Health & Care';
+      title = 'PET CARE';
+
+      description =
+        'Produk kesehatan dan perawatan hewan kesayangan';
+
+      theme = 'petcare';
+
       icon = '🐾';
 
     }
 
-    else if (division === 'aquaculture') {
+
+    if (division === 'aquaculture') {
 
       title = 'AQUA CULTURE';
-      description = 'Fish Medicine';
+
+      description =
+        'Produk kesehatan dan perawatan ikan';
+
+      theme = 'aquaculture';
+
       icon = '🐟';
 
     }
 
 
-    if (divisionContent) {
+    divisionContent.innerHTML = `
 
-      divisionContent.innerHTML = `
+      <header class="division-header ${theme}">
 
-        <div class="division-header ${division}">
+        <button
+          class="home-button"
+          onclick="goHome()">
 
-          <button
-            class="home-button"
-            onclick="goHome()">
-            ← Kembali
-          </button>
+          ← Home
 
-          <h1>${title}</h1>
+        </button>
 
-          <p>${description}</p>
 
+        <h1>${title}</h1>
+
+        <p>${description}</p>
+
+      </header>
+
+
+      <div class="division-placeholder ${theme}">
+
+        <div class="placeholder-icon">
+          ${icon}
         </div>
 
+        <h2>
+          ${title}
+        </h2>
 
-        <div class="coming-soon">
+        <p>
+          Database produk ${title}
+          sedang dipersiapkan.
+        </p>
 
-          <div class="placeholder-icon">
-            ${icon}
-          </div>
-
-          <div class="coming-title">
-            ${title}
-          </div>
-
-          <div class="coming-text">
-            Konten ${title} akan terhubung
-            ke database RAID ALL.
-          </div>
-
+        <div class="placeholder-note">
+          Struktur Sales Assistant sudah siap.
         </div>
 
-      `;
+      </div>
 
-    }
+    `;
 
 
     history.pushState(
@@ -189,13 +176,14 @@
   };
 
 
-  /* =========================================================
+  /* =====================================================
      GO HOME
-  ========================================================= */
+     ===================================================== */
 
-  window.goHome = function() {
+  window.goHome = function () {
 
     showHome();
+
 
     history.pushState(
       {
@@ -208,57 +196,20 @@
   };
 
 
-  /* =========================================================
-     BROWSER / ANDROID BACK BUTTON
-  ========================================================= */
+  /* =====================================================
+     ANDROID / BROWSER BACK
+     ===================================================== */
 
-  window.addEventListener('popstate', function(event) {
-
-    const state = event.state;
-
-
-    /* -----------------------------------------
-       Kalau sedang Livestock
-    ----------------------------------------- */
-
-    if (
-      livestockPage &&
-      livestockPage.classList.contains('active')
-    ) {
-
-      showHome();
-
-      return;
-    }
-
-
-    /* -----------------------------------------
-       Kalau sedang Petcare / Aqua
-    ----------------------------------------- */
-
-    if (
-      divisionPage &&
-      divisionPage.classList.contains('active')
-    ) {
-
-      showHome();
-
-      return;
-    }
-
-
-    /* -----------------------------------------
-       Default
-    ----------------------------------------- */
+  window.addEventListener('popstate', () => {
 
     showHome();
 
   });
 
 
-  /* =========================================================
+  /* =====================================================
      INITIAL STATE
-  ========================================================= */
+     ===================================================== */
 
   history.replaceState(
     {
@@ -269,35 +220,50 @@
   );
 
 
-  /* =========================================================
-     INITIAL PAGE
-  ========================================================= */
+  /* =====================================================
+     SERVICE WORKER
+     ===================================================== */
 
-  showHome();
+  if (
+    'serviceWorker' in navigator &&
+    location.protocol === 'https:'
+  ) {
 
+    window.addEventListener('load', () => {
 
-  /* =========================================================
-     GOOGLE APPS SCRIPT FRAME
-  ========================================================= */
+      navigator.serviceWorker
+        .register('./service-worker.js', {
+          scope: './'
+        })
 
-  if (appFrame) {
+        .then(reg => {
 
-    appFrame.addEventListener(
-      'load',
-      hideLoading
-    );
+          console.log(
+            '[RAIDALL] Service worker registered:',
+            reg.scope
+          );
+
+        })
+
+        .catch(err => {
+
+          console.error(
+            '[RAIDALL] Service worker registration failed:',
+            err
+          );
+
+        });
+
+    });
 
   }
 
 
-  /* =========================================================
-     FALLBACK LOADING
-  ========================================================= */
+  /* =====================================================
+     HIDE LOADING
+     ===================================================== */
 
-  setTimeout(
-    hideLoading,
-    3000
-  );
+  hideLoading();
 
 
 })();
