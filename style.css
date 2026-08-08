@@ -617,3 +617,230 @@ body {
     font-size: 11px;
   }
 }
+
+/* =========================
+   RAID ALL FRONTEND
+   ========================= */
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+  background: #F5F7FA;
+}
+
+.app-header {
+  text-align: center;
+  padding: 28px 20px 20px;
+}
+
+.brand-logo {
+  width: 150px;
+  max-width: 55vw;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 6px;
+}
+
+.brand-subtitle {
+  font-size: 17px;
+  color: #667085;
+  font-weight: 500;
+}
+
+
+/* =========================
+   PAGE
+   ========================= */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+
+/* =========================
+   DIVISION CARDS
+   ========================= */
+
+.division-list {
+  width: min(680px, calc(100% - 32px));
+  margin: 10px auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.division-card {
+  position: relative;
+  width: 100%;
+  min-height: 125px;
+
+  border: 0;
+  border-radius: 20px;
+
+  padding: 24px 28px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  background: white;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.08);
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+}
+
+.division-card:active {
+  transform: scale(.98);
+}
+
+
+/* PETCARE */
+
+.division-card.petcare {
+  border-left: 8px solid #F28C28;
+}
+
+.division-card.petcare .division-title {
+  color: #F28C28;
+}
+
+
+/* LIVESTOCK */
+
+.division-card.livestock {
+  border-left: 8px solid #0B7A3E;
+}
+
+.division-card.livestock .division-title {
+  color: #0B7A3E;
+}
+
+
+/* AQUA */
+
+.division-card.aquaculture {
+  border-left: 8px solid #087EA4;
+}
+
+.division-card.aquaculture .division-title {
+  color: #087EA4;
+}
+
+
+.division-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.division-subtitle {
+  margin-top: 7px;
+  font-size: 15px;
+  color: #667085;
+}
+
+.division-arrow {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   DIVISION PAGE
+   ========================= */
+
+.back-button {
+  margin: 5px 16px 20px;
+
+  border: 0;
+  border-radius: 12px;
+
+  padding: 12px 20px;
+
+  background: #0B7A3E;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.division-header {
+  width: min(680px, calc(100% - 32px));
+  margin: 0 auto 20px;
+
+  background: white;
+  border-radius: 20px;
+
+  padding: 24px;
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.07);
+}
+
+.division-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.division-header p {
+  margin: 7px 0 0;
+  color: #667085;
+}
+
+
+/* Division colors */
+
+.division-header.petcare h1 {
+  color: #F28C28;
+}
+
+.division-header.livestock h1 {
+  color: #0B7A3E;
+}
+
+.division-header.aquaculture h1 {
+  color: #087EA4;
+}
+
+
+.coming-soon {
+  width: min(680px, calc(100% - 32px));
+  margin: auto;
+
+  background: white;
+  border-radius: 20px;
+
+  padding: 30px;
+
+  text-align: center;
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.07);
+}
+
+.coming-title {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.coming-text {
+  margin-top: 10px;
+  color: #667085;
+}
