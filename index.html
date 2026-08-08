@@ -909,58 +909,69 @@ function renderProducts(products) {
 
     </div>`;
 
+products.forEach(product => {
 
-  products.forEach(product => {
+  html +=
+    `<div class="product-card">
 
-    html +=
+      <div class="product-name">
+        ${escapeHtml(
+          product.ProductName || "-"
+        )}
+      </div>
 
-      `<div class="product-card">
+      <div class="product-meta">
 
-        <div class="product-name">
+        ${escapeHtml(
+          product.Category || "-"
+        )}
 
-          ${escapeHtml(
-            product.ProductName || "-"
-          )}
+        •&#x20;
 
-        </div>
-
-
-        <div class="product-meta">
-
-          ${escapeHtml(
-            product.Category || "-"
-          )}
-
-          • 
-
-          ${escapeHtml(
-            product.Species || "-"
-          )}
-
-        </div>
-
-
-        <div class="product-variant">
-
-          ${escapeHtml(
-            product.Variant || "-"
-          )}
-
-        </div>
-
-
-        <div class="product-price">
-
-          ${escapeHtml(
-            product.Price || "-"
-          )}
-
-        </div>
+        ${escapeHtml(
+          product.Species || "-"
+        )}
 
       </div>`;
 
-  });
+  /*
+   * VARIANTS
+   */
 
+  if (
+    Array.isArray(product.Variants) &&
+    product.Variants.length
+  ) {
+
+    product.Variants.forEach(variant => {
+
+      html +=
+        `<div class="product-variant">
+
+          ${escapeHtml(
+            variant.Variant || "-"
+          )}
+
+          <span
+            style="
+              margin-left:8px;
+              color:#333;
+              font-weight:800;
+            "
+          >
+            ${formatPrice(variant.Price)}
+          </span>
+
+        </div>`;
+
+    });
+
+  }
+
+  html +=
+    `</div>`;
+
+});
 
   container.innerHTML = html;
 
@@ -1028,6 +1039,31 @@ function goHome() {
    HTML ESCAPE
    =================================================== */
 
+function formatPrice(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return "-";
+  }
+
+  const number =
+    Number(
+      String(value)
+        .replace(/[^\d.-]/g, "")
+    );
+
+  if (isNaN(number)) {
+    return String(value);
+  }
+
+  return "Rp" +
+    number.toLocaleString("id-ID");
+
+}
+  
 function escapeHtml(value) {
 
   return String(value)
