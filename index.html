@@ -1,271 +1,1059 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
-  <meta charset="utf-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="UTF-8">
 
-  <meta
-    name="theme-color"
-    content="#0B7A3E">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="description"
-    content="RAID ALL Sales Assistant">
+<title>RAIDALL Sales Assistant</title>
 
-  <link
-    rel="manifest"
-    href="./manifest.json">
+<style>
 
-  <link
-    rel="icon"
-    type="image/png"
-    sizes="192x192"
-    href="./IMAGE/icon-192.png">
+* {
+  box-sizing: border-box;
+}
 
-  <link
-    rel="apple-touch-icon"
-    href="./IMAGE/icon-192.png">
+body {
 
-  <link
-    rel="stylesheet"
-    href="./style.css">
+  margin: 0;
 
-  <title>RAID ALL Sales Assistant</title>
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #F5F7FA;
+
+  color: #333;
+
+}
+
+
+/* ===================================================
+   APP CONTAINER
+   =================================================== */
+
+.app {
+
+  max-width: 760px;
+
+  margin: auto;
+
+  min-height: 100vh;
+
+}
+
+
+/* ===================================================
+   HEADER
+   =================================================== */
+
+.app-header {
+
+  padding: 28px 20px 20px;
+
+  text-align: center;
+
+}
+
+.app-logo {
+
+  width: 150px;
+
+  max-width: 60%;
+
+}
+
+.app-title {
+
+  margin-top: 10px;
+
+  font-size: 20px;
+
+  color: #567;
+
+}
+
+
+/* ===================================================
+   SECTION
+   =================================================== */
+
+.division-section {
+
+  padding: 0 20px 40px;
+
+}
+
+.section-title {
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  margin-bottom: 18px;
+
+}
+
+
+/* ===================================================
+   DIVISION CARD
+   =================================================== */
+
+.division-card {
+
+  width: 100%;
+
+  border: none;
+
+  background: white;
+
+  border-radius: 22px;
+
+  margin-bottom: 18px;
+
+  padding: 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.08);
+
+  transition: .2s;
+
+}
+
+.division-card:hover {
+
+  transform: translateY(-2px);
+
+}
+
+.division-icon {
+
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 34px;
+
+  flex-shrink: 0;
+
+}
+
+.division-content {
+
+  flex: 1;
+
+  padding-left: 20px;
+
+}
+
+.division-name {
+
+  font-size: 23px;
+
+  font-weight: 800;
+
+}
+
+.division-description {
+
+  margin-top: 5px;
+
+  font-size: 15px;
+
+  color: #667;
+
+  line-height: 1.4;
+
+}
+
+.division-arrow {
+
+  font-size: 34px;
+
+  color: #999;
+
+}
+
+
+/* PET CARE */
+
+.petcare {
+
+  border-left: 9px solid #F28C28;
+
+}
+
+.petcare .division-icon {
+
+  background: #FFF1E5;
+
+}
+
+.petcare .division-name {
+
+  color: #F28C28;
+
+}
+
+
+/* LIVESTOCK */
+
+.livestock {
+
+  border-left: 9px solid #0B7A3E;
+
+}
+
+.livestock .division-icon {
+
+  background: #E8F6EE;
+
+}
+
+.livestock .division-name {
+
+  color: #0B7A3E;
+
+}
+
+
+/* AQUA */
+
+.aquaculture {
+
+  border-left: 9px solid #087EA4;
+
+}
+
+.aquaculture .division-icon {
+
+  background: #E7F4FC;
+
+}
+
+.aquaculture .division-name {
+
+  color: #087EA4;
+
+}
+
+
+/* ===================================================
+   DIVISION PAGE
+   =================================================== */
+
+.page {
+
+  display: none;
+
+}
+
+.page.active {
+
+  display: block;
+
+}
+
+
+/* ===================================================
+   DIVISION HEADER
+   =================================================== */
+
+.division-header {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 10;
+
+  background: white;
+
+  padding: 15px 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #eee;
+
+}
+
+.back-button {
+
+  border: none;
+
+  background: #F5F5F5;
+
+  border-radius: 12px;
+
+  padding: 10px 15px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+}
+
+.division-header-title {
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+}
+
+
+/* ===================================================
+   SEARCH
+   =================================================== */
+
+.search-container {
+
+  padding: 18px 20px;
+
+}
+
+.search-input {
+
+  width: 100%;
+
+  padding: 16px 18px;
+
+  border-radius: 15px;
+
+  border: 1px solid #ddd;
+
+  font-size: 16px;
+
+  outline: none;
+
+}
+
+.search-input:focus {
+
+  border-color: #0B7A3E;
+
+}
+
+
+/* ===================================================
+   PRODUCT AREA
+   =================================================== */
+
+.product-container {
+
+  padding: 0 20px 40px;
+
+}
+
+.product-count {
+
+  margin-bottom: 15px;
+
+  color: #667;
+
+  font-size: 15px;
+
+}
+
+
+/* ===================================================
+   PRODUCT CARD
+   =================================================== */
+
+.product-card {
+
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 18px;
+
+  margin-bottom: 14px;
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.07);
+
+}
+
+.product-name {
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  color: #0B7A3E;
+
+}
+
+.product-meta {
+
+  margin-top: 7px;
+
+  color: #667;
+
+  font-size: 14px;
+
+}
+
+.product-variant {
+
+  display: inline-block;
+
+  margin-top: 12px;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  background: #E8F6EE;
+
+  color: #0B7A3E;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+.product-price {
+
+  margin-top: 12px;
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+}
+
+
+/* ===================================================
+   LOADING
+   =================================================== */
+
+.loading {
+
+  text-align: center;
+
+  padding: 50px 20px;
+
+  color: #667;
+
+}
+
+
+/* ===================================================
+   ERROR
+   =================================================== */
+
+.error {
+
+  margin: 20px;
+
+  padding: 20px;
+
+  border-radius: 15px;
+
+  background: #fff0f0;
+
+  color: #b00020;
+
+}
+
+
+/* ===================================================
+   EMPTY
+   =================================================== */
+
+.empty {
+
+  text-align: center;
+
+  padding: 50px 20px;
+
+  color: #777;
+
+}
+
+
+/* ===================================================
+   MOBILE
+   =================================================== */
+
+@media (max-width: 600px) {
+
+  .division-name {
+
+    font-size: 20px;
+
+  }
+
+  .division-description {
+
+    font-size: 14px;
+
+  }
+
+  .division-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    font-size: 28px;
+
+  }
+
+}
+
+</style>
+
 </head>
 
 
 <body>
 
-  <!-- =====================================================
-       LOADING
-       ===================================================== -->
 
-  <div id="loading">
+<div class="app">
 
-    <div class="loading-card">
 
-      <img
-        src="./IMAGE/logo.png"
-        alt="RAID ALL"
-        class="loading-logo">
+<!-- ===================================================
+     HOME
+     =================================================== -->
 
-      <div class="loading-subtitle">
-        Sales Assistant
+<section
+  id="homePage"
+  class="page active">
+
+  <header class="app-header">
+
+    <img
+      src="IMAGE/logo.png"
+      alt="RAID ALL"
+      class="app-logo">
+
+    <div class="app-title">
+      Sales Assistant
+    </div>
+
+  </header>
+
+
+  <section class="division-section">
+
+    <div class="section-title">
+      Pilih Divisi
+    </div>
+
+
+    <button
+      class="division-card petcare"
+      onclick="openDivision('PETCARE')">
+
+      <div class="division-icon">
+        🐾
       </div>
 
-      <div class="spinner"></div>
+      <div class="division-content">
 
-      <div class="loading-text">
-        Memuat Sales Assistant...
+        <div class="division-name">
+          PET CARE
+        </div>
+
+        <div class="division-description">
+          Produk kesehatan dan perawatan hewan kesayangan
+        </div>
+
       </div>
+
+      <div class="division-arrow">
+        ›
+      </div>
+
+    </button>
+
+
+    <button
+      class="division-card livestock"
+      onclick="openDivision('LIVESTOCK')">
+
+      <div class="division-icon">
+        🐔
+      </div>
+
+      <div class="division-content">
+
+        <div class="division-name">
+          LIVESTOCK
+        </div>
+
+        <div class="division-description">
+          Produk kesehatan dan nutrisi hewan ternak
+        </div>
+
+      </div>
+
+      <div class="division-arrow">
+        ›
+      </div>
+
+    </button>
+
+
+    <button
+      class="division-card aquaculture"
+      onclick="openDivision('AQUACULTURE')">
+
+      <div class="division-icon">
+        🐟
+      </div>
+
+      <div class="division-content">
+
+        <div class="division-name">
+          AQUA CULTURE
+        </div>
+
+        <div class="division-description">
+          Produk kesehatan dan perawatan ikan
+        </div>
+
+      </div>
+
+      <div class="division-arrow">
+        ›
+      </div>
+
+    </button>
+
+  </section>
+
+</section>
+
+
+<!-- ===================================================
+     PRODUCT PAGE
+     =================================================== -->
+
+<section
+  id="divisionPage"
+  class="page">
+
+  <header
+    id="divisionHeader"
+    class="division-header">
+
+    <button
+      class="back-button"
+      onclick="goHome()">
+
+      ← Home
+
+    </button>
+
+    <div
+      id="divisionTitle"
+      class="division-header-title">
+
+      LIVESTOCK
 
     </div>
+
+  </header>
+
+
+  <div class="search-container">
+
+    <input
+      id="searchInput"
+      class="search-input"
+      type="search"
+      placeholder="Cari produk...">
 
   </div>
 
 
-  <!-- =====================================================
-       APP
-       ===================================================== -->
-
-  <main id="app">
-
-
-    <!-- ===================================================
-         HOME
-         =================================================== -->
-
-    <section
-      id="homePage"
-      class="page active">
-
-      <header class="app-header">
-
-        <img
-          src="./IMAGE/logo.png"
-          alt="RAID ALL"
-          class="app-logo">
-
-        <div class="app-title">
-          Sales Assistant
-        </div>
-
-      </header>
-
-
-      <section class="division-section">
-
-        <div class="section-title">
-          Pilih Divisi
-        </div>
-
-
-        <!-- PET CARE -->
-
-        <button
-          class="division-card petcare"
-          onclick="openDivision('petcare')">
-
-          <div class="division-icon">
-            🐾
-          </div>
-
-          <div class="division-content">
-
-            <div class="division-name">
-              PET CARE
-            </div>
-
-            <div class="division-description">
-              Produk kesehatan dan perawatan hewan kesayangan
-            </div>
-
-          </div>
-
-          <div class="division-arrow">
-            ›
-          </div>
-
-        </button>
-
-
-        <!-- LIVESTOCK -->
-
-        <button
-          class="division-card livestock"
-          onclick="openDivision('livestock')">
-
-          <div class="division-icon">
-            🐔
-          </div>
-
-          <div class="division-content">
-
-            <div class="division-name">
-              LIVESTOCK
-            </div>
-
-            <div class="division-description">
-              Produk kesehatan dan nutrisi hewan ternak
-            </div>
-
-          </div>
-
-          <div class="division-arrow">
-            ›
-          </div>
-
-        </button>
-
-
-        <!-- AQUA CULTURE -->
-
-        <button
-          class="division-card aquaculture"
-          onclick="openDivision('aquaculture')">
-
-          <div class="division-icon">
-            🐟
-          </div>
-
-          <div class="division-content">
-
-            <div class="division-name">
-              AQUA CULTURE
-            </div>
-
-            <div class="division-description">
-              Produk kesehatan dan perawatan ikan
-            </div>
-
-          </div>
-
-          <div class="division-arrow">
-            ›
-          </div>
-
-        </button>
-
-
-      </section>
-
-    </section>
-
-
-    <!-- ===================================================
-         DIVISION PAGE
-         =================================================== -->
-
-    <section
-      id="divisionPage"
-      class="page division-page">
-
-      <div id="divisionContent"></div>
-
-    </section>
-
-
-    <!-- ===================================================
-         LIVESTOCK APP
-         =================================================== -->
-
-    <section
-      id="livestockPage"
-      class="livestock-page">
-
-      <header class="embedded-app-header">
-
-        <button
-          class="home-button"
-          onclick="goHome()">
-
-          ← Home
-
-        </button>
-
-
-        <div class="embedded-title livestock-title">
-          LIVESTOCK
-        </div>
-
-      </header>
-
-
-      <iframe
-        id="appFrame"
-        title="RAID ALL Livestock Sales Assistant"
-        src="https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec"
-        allow="clipboard-read; clipboard-write; geolocation"
-        referrerpolicy="strict-origin-when-cross-origin">
-      </iframe>
-
-    </section>
-
-
-  </main>
-
-
-  <!-- =====================================================
-       NOSCRIPT
-       ===================================================== -->
-
-  <noscript>
-
-    <div class="noscript">
-
-      JavaScript harus diaktifkan untuk menjalankan
-      RAID ALL Sales Assistant.
-
+  <div
+    id="productContainer"
+    class="product-container">
+
+    <div class="loading">
+      Memuat produk...
     </div>
 
-  </noscript>
+  </div>
+
+</section>
 
 
-  <script src="./script.js"></script>
+</div>
+
+
+<script>
+
+/* ===================================================
+   API CONFIG
+   =================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec";
+
+
+/* ===================================================
+   STATE
+   =================================================== */
+
+let currentDivision = "";
+
+let allProducts = [];
+
+
+/* ===================================================
+   OPEN DIVISION
+   =================================================== */
+
+async function openDivision(division) {
+
+  currentDivision = division;
+
+  document
+    .getElementById("homePage")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("divisionPage")
+    .classList.add("active");
+
+
+  document
+    .getElementById("divisionTitle")
+    .textContent =
+      getDivisionName(division);
+
+
+  document
+    .getElementById("productContainer")
+    .innerHTML =
+      `<div class="loading">
+        Memuat produk...
+       </div>`;
+
+
+  document
+    .getElementById("searchInput")
+    .value = "";
+
+
+  await loadProducts();
+
+}
+
+
+/* ===================================================
+   DIVISION NAME
+   =================================================== */
+
+function getDivisionName(division) {
+
+  const names = {
+
+    LIVESTOCK:
+      "LIVESTOCK",
+
+    PETCARE:
+      "PET CARE",
+
+    AQUACULTURE:
+      "AQUA CULTURE"
+
+  };
+
+  return names[division] || division;
+
+}
+
+
+/* ===================================================
+   LOAD PRODUCTS
+   =================================================== */
+
+async function loadProducts(search = "") {
+
+  try {
+
+    let url =
+      API_URL +
+      "?api=1&action=products" +
+      "&division=" +
+      encodeURIComponent(currentDivision);
+
+
+    if (search) {
+
+      url +=
+        "&search=" +
+        encodeURIComponent(search);
+
+    }
+
+
+    const response =
+      await fetch(url);
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        "API Error"
+      );
+
+    }
+
+
+    allProducts =
+      result.data || [];
+
+
+    renderProducts(allProducts);
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    document
+      .getElementById("productContainer")
+      .innerHTML =
+
+      `<div class="error">
+
+        Gagal memuat data produk.
+
+        <br><br>
+
+        ${error.message}
+
+      </div>`;
+
+  }
+
+}
+
+
+/* ===================================================
+   RENDER PRODUCTS
+   =================================================== */
+
+function renderProducts(products) {
+
+  const container =
+    document.getElementById(
+      "productContainer"
+    );
+
+
+  if (!products.length) {
+
+    container.innerHTML =
+
+      `<div class="empty">
+
+        Produk tidak ditemukan.
+
+       </div>`;
+
+    return;
+
+  }
+
+
+  let html = "";
+
+
+  html +=
+
+    `<div class="product-count">
+
+      Total Product :
+      <strong>${products.length}</strong>
+
+    </div>`;
+
+
+  products.forEach(product => {
+
+    html +=
+
+      `<div class="product-card">
+
+        <div class="product-name">
+
+          ${escapeHtml(
+            product.ProductName || "-"
+          )}
+
+        </div>
+
+
+        <div class="product-meta">
+
+          ${escapeHtml(
+            product.Category || "-"
+          )}
+
+          • 
+
+          ${escapeHtml(
+            product.Species || "-"
+          )}
+
+        </div>
+
+
+        <div class="product-variant">
+
+          ${escapeHtml(
+            product.Variant || "-"
+          )}
+
+        </div>
+
+
+        <div class="product-price">
+
+          ${escapeHtml(
+            product.Price || "-"
+          )}
+
+        </div>
+
+      </div>`;
+
+  });
+
+
+  container.innerHTML = html;
+
+}
+
+
+/* ===================================================
+   SEARCH
+   =================================================== */
+
+let searchTimer;
+
+
+document
+  .getElementById("searchInput")
+  .addEventListener(
+    "input",
+    function() {
+
+      clearTimeout(searchTimer);
+
+
+      const search =
+        this.value.trim();
+
+
+      searchTimer =
+        setTimeout(
+          function() {
+
+            loadProducts(search);
+
+          },
+          300
+        );
+
+    }
+  );
+
+
+/* ===================================================
+   HOME
+   =================================================== */
+
+function goHome() {
+
+  document
+    .getElementById("divisionPage")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("homePage")
+    .classList.add("active");
+
+
+  currentDivision = "";
+
+  allProducts = [];
+
+}
+
+
+/* ===================================================
+   HTML ESCAPE
+   =================================================== */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+
+<noscript>
+
+  JavaScript harus diaktifkan untuk menjalankan
+  RAID ALL Sales Assistant.
+
+</noscript>
+
 
 </body>
 
