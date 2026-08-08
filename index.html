@@ -2,38 +2,329 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0B7A3E">
-  <meta name="description" content="RAIDALL Sales Assistant">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+  <meta
+    name="theme-color"
+    content="#0B7A3E">
+
+  <meta
+    name="description"
+    content="RAID ALL Sales Assistant">
+
   <link rel="manifest" href="./manifest.json">
-  <link rel="icon" type="image/png" sizes="192x192" href="./IMAGE/icon-192.png">
-  <link rel="apple-touch-icon" href="./IMAGE/icon-192.png">
+
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="./IMAGE/icon-192.png">
+
+  <link
+    rel="apple-touch-icon"
+    href="./IMAGE/icon-192.png">
+
   <link rel="stylesheet" href="./style.css">
+
   <title>RAID ALL Sales Assistant</title>
 </head>
+
 <body>
+
+  <!-- =========================
+       LOADING
+  ========================== -->
   <div id="loading">
     <div class="loading-card">
-      <img src="./IMAGE/icon-192.png" alt="RAID ALL" class="loading-logo">
-      <div class="loading-title">RAID ALL</div>
-      <div class="loading-subtitle">Sales Assistant</div>
+
+      <img
+        src="./IMAGE/logo.png"
+        alt="RAID ALL"
+        class="loading-logo">
+
+      <div class="loading-subtitle">
+        Sales Assistant
+      </div>
+
       <div class="spinner"></div>
-      <div class="loading-text">Memuat Sales Assistant...</div>
+
+      <div class="loading-text">
+        Memuat Sales Assistant...
+      </div>
+
     </div>
   </div>
 
-  <iframe
-    id="appFrame"
-    title="RAID ALL Sales Assistant"
-    src="https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec"
-    allow="clipboard-read; clipboard-write; geolocation"
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
+
+  <!-- =========================
+       HOME
+  ========================== -->
+  <main id="homePage" class="page active">
+
+    <header class="app-header">
+
+      <img
+        src="./IMAGE/logo.png"
+        alt="RAID ALL"
+        class="app-logo">
+
+      <div class="app-title">
+        Sales Assistant
+      </div>
+
+    </header>
+
+
+    <section class="division-section">
+
+      <div class="section-title">
+        Pilih Divisi
+      </div>
+
+
+      <!-- PET CARE -->
+      <button
+        class="division-card petcare"
+        type="button"
+        onclick="openDivision('petcare')">
+
+        <div class="division-icon">
+          🐾
+        </div>
+
+        <div class="division-content">
+
+          <div class="division-name">
+            PET CARE
+          </div>
+
+          <div class="division-description">
+            Produk kesehatan dan perawatan hewan kesayangan
+          </div>
+
+        </div>
+
+        <div class="division-arrow">
+          ›
+        </div>
+
+      </button>
+
+
+      <!-- LIVESTOCK -->
+      <button
+        class="division-card livestock"
+        type="button"
+        onclick="openDivision('livestock')">
+
+        <div class="division-icon">
+          🐔
+        </div>
+
+        <div class="division-content">
+
+          <div class="division-name">
+            LIVESTOCK
+          </div>
+
+          <div class="division-description">
+            Produk kesehatan dan nutrisi hewan ternak
+          </div>
+
+        </div>
+
+        <div class="division-arrow">
+          ›
+        </div>
+
+      </button>
+
+
+      <!-- AQUA CULTURE -->
+      <button
+        class="division-card aquaculture"
+        type="button"
+        onclick="openDivision('aquaculture')">
+
+        <div class="division-icon">
+          🐟
+        </div>
+
+        <div class="division-content">
+
+          <div class="division-name">
+            AQUA CULTURE
+          </div>
+
+          <div class="division-description">
+            Produk kesehatan dan perawatan ikan
+          </div>
+
+        </div>
+
+        <div class="division-arrow">
+          ›
+        </div>
+
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       PET CARE
+  ========================== -->
+  <main
+    id="petcarePage"
+    class="page division-page petcare-page">
+
+    <div class="division-header petcare-theme">
+
+      <button
+        class="home-button"
+        type="button"
+        onclick="goHome()">
+
+        ← Home
+
+      </button>
+
+      <div class="division-header-title">
+        PET CARE
+      </div>
+
+      <div class="division-header-subtitle">
+        Sales Assistant
+      </div>
+
+    </div>
+
+
+    <section class="division-placeholder">
+
+      <div class="placeholder-icon">
+        🐾
+      </div>
+
+      <h2>
+        PET CARE
+      </h2>
+
+      <p>
+        Struktur katalog Pet Care sudah disiapkan.
+      </p>
+
+      <p class="placeholder-note">
+        Konten produk akan dihubungkan dari Spreadsheet.
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       LIVESTOCK
+  ========================== -->
+  <main
+    id="livestockPage"
+    class="page livestock-page">
+
+    <div class="embedded-app-header livestock-theme">
+
+      <button
+        class="home-button"
+        type="button"
+        onclick="goHome()">
+
+        ← Home
+
+      </button>
+
+      <div class="embedded-title">
+        LIVESTOCK
+      </div>
+
+    </div>
+
+
+    <iframe
+      id="appFrame"
+      title="RAID ALL Livestock Sales Assistant"
+      src="https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec"
+      allow="clipboard-read; clipboard-write; geolocation"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+
+  </main>
+
+
+  <!-- =========================
+       AQUA CULTURE
+  ========================== -->
+  <main
+    id="aquaculturePage"
+    class="page division-page aquaculture-page">
+
+    <div class="division-header aquaculture-theme">
+
+      <button
+        class="home-button"
+        type="button"
+        onclick="goHome()">
+
+        ← Home
+
+      </button>
+
+      <div class="division-header-title">
+        AQUA CULTURE
+      </div>
+
+      <div class="division-header-subtitle">
+        Sales Assistant
+      </div>
+
+    </div>
+
+
+    <section class="division-placeholder">
+
+      <div class="placeholder-icon">
+        🐟
+      </div>
+
+      <h2>
+        AQUA CULTURE
+      </h2>
+
+      <p>
+        Struktur katalog Aqua Culture sudah disiapkan.
+      </p>
+
+      <p class="placeholder-note">
+        Konten produk akan dihubungkan dari Spreadsheet.
+      </p>
+
+    </section>
+
+  </main>
+
 
   <noscript>
-    <div class="noscript">JavaScript harus diaktifkan untuk menjalankan RAID ALL Sales Assistant.</div>
+    <div class="noscript">
+      JavaScript harus diaktifkan untuk menjalankan
+      RAID ALL Sales Assistant.
+    </div>
   </noscript>
 
+
   <script src="./script.js"></script>
+
 </body>
 </html>
