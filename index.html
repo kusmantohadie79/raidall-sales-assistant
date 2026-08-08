@@ -13,6 +13,10 @@
 
 <style>
 
+/* ===================================================
+   GLOBAL
+   =================================================== */
+
 * {
   box-sizing: border-box;
 }
@@ -32,11 +36,6 @@ body {
 
 }
 
-
-/* ===================================================
-   APP CONTAINER
-   =================================================== */
-
 .app {
 
   max-width: 760px;
@@ -49,7 +48,7 @@ body {
 
 
 /* ===================================================
-   HEADER
+   HOME HEADER
    =================================================== */
 
 .app-header {
@@ -196,7 +195,9 @@ body {
 }
 
 
-/* PET CARE */
+/* ===================================================
+   PET CARE
+   =================================================== */
 
 .petcare {
 
@@ -217,7 +218,9 @@ body {
 }
 
 
-/* LIVESTOCK */
+/* ===================================================
+   LIVESTOCK
+   =================================================== */
 
 .livestock {
 
@@ -238,7 +241,9 @@ body {
 }
 
 
-/* AQUA */
+/* ===================================================
+   AQUA
+   =================================================== */
 
 .aquaculture {
 
@@ -260,7 +265,7 @@ body {
 
 
 /* ===================================================
-   DIVISION PAGE
+   PAGE
    =================================================== */
 
 .page {
@@ -398,6 +403,19 @@ body {
   box-shadow:
     0 5px 18px rgba(0,0,0,.07);
 
+  cursor: pointer;
+
+  transition: .2s;
+
+}
+
+.product-card:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.10);
+
 }
 
 .product-name {
@@ -418,13 +436,23 @@ body {
 
   font-size: 14px;
 
+  line-height: 1.5;
+
+}
+
+.product-variants {
+
+  margin-top: 12px;
+
 }
 
 .product-variant {
 
   display: inline-block;
 
-  margin-top: 12px;
+  margin-right: 5px;
+
+  margin-bottom: 5px;
 
   padding: 6px 10px;
 
@@ -440,38 +468,80 @@ body {
 
 }
 
-.product-price {
+.product-detail-hint {
 
-  margin-top: 12px;
+  margin-top: 14px;
 
-  font-size: 18px;
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: #999;
+
+  text-align: right;
+
+}
+
+
+/* ===================================================
+   DETAIL
+   =================================================== */
+
+.detail-card {
+
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 22px;
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.07);
+
+}
+
+.detail-section {
+
+  margin-top: 20px;
+
+}
+
+.detail-label {
+
+  font-size: 14px;
 
   font-weight: 800;
 
+  color: #555;
+
+  margin-bottom: 6px;
+
 }
 
-  .product-card {
-  cursor: pointer;
-  transition: .2s;
+.detail-value {
+
+  font-size: 15px;
+
+  line-height: 1.6;
+
+  color: #444;
+
 }
 
-.product-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 8px 24px rgba(0,0,0,.10);
+.detail-image {
+
+  width: 100%;
+
+  max-width: 320px;
+
+  display: block;
+
+  margin: 0 auto 20px;
+
+  border-radius: 14px;
+
 }
 
-.product-variants {
-  margin-top: 12px;
-}
-
-.product-detail-hint {
-  margin-top: 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #999;
-  text-align: right;
-}
 
 /* ===================================================
    LOADING
@@ -515,9 +585,36 @@ body {
 
   text-align: center;
 
-  padding: 50px 20px;
+  padding: 60px 20px;
 
   color: #777;
+
+  background: white;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 5px 18px rgba(0,0,0,.05);
+
+}
+
+.empty-title {
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  margin-bottom: 8px;
+
+  color: #555;
+
+}
+
+.empty-text {
+
+  font-size: 14px;
+
+  line-height: 1.5;
 
 }
 
@@ -564,7 +661,7 @@ body {
 
 
 <!-- ===================================================
-     HOME
+     HOME PAGE
      =================================================== -->
 
 <section
@@ -591,6 +688,8 @@ body {
       Pilih Divisi
     </div>
 
+
+    <!-- PET CARE -->
 
     <button
       class="division-card petcare"
@@ -619,6 +718,8 @@ body {
     </button>
 
 
+    <!-- LIVESTOCK -->
+
     <button
       class="division-card livestock"
       onclick="openDivision('LIVESTOCK')">
@@ -645,6 +746,8 @@ body {
 
     </button>
 
+
+    <!-- AQUACULTURE -->
 
     <button
       class="division-card aquaculture"
@@ -677,8 +780,9 @@ body {
 </section>
 
 
+
 <!-- ===================================================
-     PRODUCT PAGE
+     DIVISION PRODUCT PAGE
      =================================================== -->
 
 <section
@@ -691,6 +795,7 @@ body {
 
     <button
       class="back-button"
+      type="button"
       onclick="goHome()">
 
       ← Home
@@ -702,43 +807,6 @@ body {
       class="division-header-title">
 
       LIVESTOCK
-
-      <section
-  id="productDetailPage"
-  class="page">
-
-  <header class="division-header">
-
-    <button
-      class="back-button"
-      onclick="closeProductDetail()">
-
-      ← Kembali
-
-    </button>
-
-    <div
-      id="productDetailTitle"
-      class="division-header-title">
-
-      Detail Produk
-
-    </div>
-
-  </header>
-
-
-  <div
-    id="productDetailContainer"
-    class="product-container">
-
-    <div class="loading">
-      Memuat detail produk...
-    </div>
-
-  </div>
-
-</section>
 
     </div>
 
@@ -769,7 +837,53 @@ body {
 </section>
 
 
+
+<!-- ===================================================
+     PRODUCT DETAIL PAGE
+     =================================================== -->
+
+<section
+  id="productDetailPage"
+  class="page">
+
+  <header
+    class="division-header">
+
+    <button
+      class="back-button"
+      type="button"
+      onclick="closeProductDetail()">
+
+      ← Kembali
+
+    </button>
+
+    <div
+      id="productDetailTitle"
+      class="division-header-title">
+
+      Detail Produk
+
+    </div>
+
+  </header>
+
+
+  <div
+    id="productDetailContainer"
+    class="product-container">
+
+    <div class="loading">
+      Memuat detail produk...
+    </div>
+
+  </div>
+
+</section>
+
+
 </div>
+
 
 
 <script>
@@ -790,47 +904,7 @@ let currentDivision = "";
 
 let allProducts = [];
 
-
-/* ===================================================
-   OPEN DIVISION
-   =================================================== */
-
-async function openDivision(division) {
-
-  currentDivision = division;
-
-  document
-    .getElementById("homePage")
-    .classList.remove("active");
-
-
-  document
-    .getElementById("divisionPage")
-    .classList.add("active");
-
-
-  document
-    .getElementById("divisionTitle")
-    .textContent =
-      getDivisionName(division);
-
-
-  document
-    .getElementById("productContainer")
-    .innerHTML =
-      `<div class="loading">
-        Memuat produk...
-       </div>`;
-
-
-  document
-    .getElementById("searchInput")
-    .value = "";
-
-
-  await loadProducts();
-
-}
+let searchTimer = null;
 
 
 /* ===================================================
@@ -853,6 +927,83 @@ function getDivisionName(division) {
   };
 
   return names[division] || division;
+
+}
+
+
+/* ===================================================
+   OPEN DIVISION
+   =================================================== */
+
+async function openDivision(division) {
+
+  currentDivision =
+    String(division || "")
+      .trim()
+      .toUpperCase();
+
+
+  /*
+   * Pastikan hanya division page yang aktif
+   */
+
+  document
+    .getElementById("homePage")
+    .classList.remove("active");
+
+  document
+    .getElementById("productDetailPage")
+    .classList.remove("active");
+
+  document
+    .getElementById("divisionPage")
+    .classList.add("active");
+
+
+  /*
+   * Header
+   */
+
+  document
+    .getElementById("divisionTitle")
+    .textContent =
+      getDivisionName(currentDivision);
+
+
+  /*
+   * Reset search
+   */
+
+  document
+    .getElementById("searchInput")
+    .value = "";
+
+
+  /*
+   * Loading
+   */
+
+  document
+    .getElementById("productContainer")
+    .innerHTML =
+
+      `<div class="loading">
+        Memuat produk...
+       </div>`;
+
+
+  /*
+   * Reset data lama
+   */
+
+  allProducts = [];
+
+
+  /*
+   * Load data baru
+   */
+
+  await loadProducts();
 
 }
 
@@ -882,7 +1033,19 @@ async function loadProducts(search = "") {
 
 
     const response =
-      await fetch(url);
+      await fetch(url, {
+        cache: "no-store"
+      });
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP Error " +
+        response.status
+      );
+
+    }
 
 
     const result =
@@ -899,16 +1062,53 @@ async function loadProducts(search = "") {
     }
 
 
-    allProducts =
-      result.data || [];
+    let products =
+      Array.isArray(result.data)
+        ? result.data
+        : [];
 
 
-    renderProducts(allProducts);
+    /*
+     * =================================================
+     * DOUBLE PROTECTION DIVISION
+     *
+     * Jangan pernah biarkan data Livestock
+     * masuk ke Pet Care / Aqua.
+     * =================================================
+     */
+
+    products =
+      products.filter(product => {
+
+        const productDivision =
+          String(
+            product.Division || ""
+          )
+          .trim()
+          .toUpperCase();
+
+
+        return (
+          productDivision ===
+          currentDivision
+        );
+
+      });
+
+
+    allProducts = products;
+
+
+    renderProducts(products);
 
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "loadProducts:",
+      error
+    );
+
 
     document
       .getElementById("productContainer")
@@ -920,7 +1120,9 @@ async function loadProducts(search = "") {
 
         <br><br>
 
-        ${error.message}
+        ${escapeHtml(
+          error.message
+        )}
 
       </div>`;
 
@@ -936,59 +1138,129 @@ async function loadProducts(search = "") {
 function renderProducts(products) {
 
   const container =
-    document.getElementById("productContainer");
+    document.getElementById(
+      "productContainer"
+    );
 
-  if (!products || !products.length) {
 
-    container.innerHTML = `
-      <div class="empty">
-        Database produk untuk divisi ini belum tersedia.
-      </div>
-    `;
+  /*
+   * EMPTY DATABASE
+   */
+
+  if (
+    !products ||
+    !products.length
+  ) {
+
+    container.innerHTML =
+
+      `<div class="empty">
+
+        <div class="empty-title">
+          Database Belum Tersedia
+        </div>
+
+        <div class="empty-text">
+          Data produk untuk divisi
+          <strong>
+            ${escapeHtml(
+              getDivisionName(
+                currentDivision
+              )
+            )}
+          </strong>
+          belum tersedia.
+        </div>
+
+      </div>`;
 
     return;
+
   }
 
 
   /*
-   * GROUP PRODUCT BERDASARKAN ProductCode
+   * =================================================
+   * GROUP BY PRODUCT CODE
+   * =================================================
    */
 
   const grouped = {};
 
+
   products.forEach(product => {
 
     const code =
-      String(product.ProductCode || "").trim();
+      String(
+        product.ProductCode || ""
+      ).trim();
 
-    if (!code) return;
+
+    if (!code) {
+
+      return;
+
+    }
+
 
     if (!grouped[code]) {
 
       grouped[code] = {
-        ProductCode: code,
-        ProductName: product.ProductName || "",
-        Category: product.Category || "",
-        Species: product.Species || "",
-        Composition: product.Composition || "",
-        Description: product.Description || "",
-        Function: product.Function || "",
-        Problem_Symptom: product.Problem_Symptom || "",
-        Usage: product.Usage || "",
-        Image: product.Image || "",
+
+        ProductCode:
+          code,
+
+        ProductName:
+          product.ProductName || "",
+
+        Division:
+          product.Division || "",
+
+        Category:
+          product.Category || "",
+
+        Species:
+          product.Species || "",
+
+        Composition:
+          product.Composition || "",
+
+        Description:
+          product.Description || "",
+
+        Function:
+          product.Function || "",
+
+        Problem_Symptom:
+          product.Problem_Symptom || "",
+
+        Usage:
+          product.Usage || "",
+
+        SearchKeyword:
+          product.SearchKeyword || "",
+
+        Image:
+          product.Image || "",
+
         Variants: []
+
       };
 
     }
 
 
-    grouped[code].Variants.push({
+    grouped[code]
+      .Variants
+      .push({
 
-      Variant: product.Variant || "-",
+        Variant:
+          product.Variant || "-",
 
-      Price: product.Price || "-"
+        Price:
+          product.Price || "-"
 
-    });
+      });
 
   });
 
@@ -997,52 +1269,66 @@ function renderProducts(products) {
     Object.values(grouped);
 
 
-  let html = "";
+  /*
+   * PRODUCT COUNT
+   */
 
+  let html =
 
-  html += `
-    <div class="product-count">
+    `<div class="product-count">
+
       Total Product :
-      <strong>${productList.length}</strong>
-    </div>
-  `;
+      <strong>
+        ${productList.length}
+      </strong>
 
+    </div>`;
+
+
+  /*
+   * PRODUCT CARD
+   */
 
   productList.forEach(product => {
 
     let variantsHtml = "";
 
 
-    product.Variants.forEach(variant => {
+    product.Variants.forEach(
+      variant => {
 
-      variantsHtml += `
-        <span class="product-variant">
+        variantsHtml +=
 
-          ${escapeHtml(
-            variant.Variant
-          )}
+          `<span
+            class="product-variant">
 
-          &nbsp;
-
-          <strong>
             ${escapeHtml(
-              variant.Price
+              variant.Variant
             )}
-          </strong>
 
-        </span>
-      `;
+            &nbsp;
 
-    });
+            <strong>
+              ${escapeHtml(
+                formatPrice(
+                  variant.Price
+                )
+              )}
+            </strong>
+
+          </span>`;
+
+      }
+    );
 
 
-    html += `
+    html +=
 
-      <div
+      `<div
         class="product-card"
-        onclick="openProductDetail('${escapeHtml(
+        data-product-code="${escapeHtml(
           product.ProductCode
-        )}')">
+        )}">
 
         <div class="product-name">
 
@@ -1059,8 +1345,8 @@ function renderProducts(products) {
             product.Category || "-"
           )}
 
-          •&#x20;
-
+          •
+          
           ${escapeHtml(
             product.Species || "-"
           )}
@@ -1081,56 +1367,214 @@ function renderProducts(products) {
 
         </div>
 
-      </div>
-
-    `;
+      </div>`;
 
   });
 
 
   container.innerHTML = html;
 
-}
 
-  function openProductDetail(productCode) {
+  /*
+   * =================================================
+   * CLICK EVENT PRODUCT CARD
+   * =================================================
+   */
 
-  const product =
-    allProducts.find(
-      item =>
-        String(item.ProductCode || "").trim() ===
-        String(productCode || "").trim()
+  const cards =
+    container.querySelectorAll(
+      ".product-card"
     );
 
 
-  if (!product) {
+  cards.forEach(card => {
 
-    alert("Detail produk tidak ditemukan.");
+    card.addEventListener(
+      "click",
+      function() {
+
+        const code =
+          this.dataset.productCode;
+
+        openProductDetail(code);
+
+      }
+    );
+
+  });
+
+}
+
+
+/* ===================================================
+   OPEN PRODUCT DETAIL
+   =================================================== */
+
+function openProductDetail(
+  productCode
+) {
+
+  const code =
+    String(
+      productCode || ""
+    ).trim();
+
+
+  /*
+   * Cari semua row dengan ProductCode sama
+   */
+
+  const matchingProducts =
+    allProducts.filter(product => {
+
+      return (
+        String(
+          product.ProductCode || ""
+        ).trim() === code
+      );
+
+    });
+
+
+  if (
+    !matchingProducts.length
+  ) {
+
+    alert(
+      "Detail produk tidak ditemukan."
+    );
 
     return;
 
   }
 
 
-  document
-    .getElementById("divisionPage")
-    .classList.remove("active");
+  /*
+   * Ambil row pertama sebagai master
+   */
 
+  const product =
+    matchingProducts[0];
+
+
+  /*
+   * Gabungkan variants
+   */
+
+  const variants =
+    matchingProducts.map(
+      item => ({
+
+        Variant:
+          item.Variant || "-",
+
+        Price:
+          item.Price || "-"
+
+      })
+    );
+
+
+  /*
+   * Hide semua page
+   */
 
   document
     .getElementById("homePage")
     .classList.remove("active");
 
+  document
+    .getElementById("divisionPage")
+    .classList.remove("active");
+
+
+  /*
+   * Show detail page
+   */
 
   document
     .getElementById("productDetailPage")
     .classList.add("active");
 
 
+  /*
+   * Title
+   */
+
   document
     .getElementById("productDetailTitle")
     .textContent =
-      product.ProductName || "Detail Produk";
+      product.ProductName ||
+      "Detail Produk";
 
+
+  /*
+   * Render variants
+   */
+
+  let variantsHtml = "";
+
+
+  variants.forEach(
+    variant => {
+
+      variantsHtml +=
+
+        `<span
+          class="product-variant">
+
+          ${escapeHtml(
+            variant.Variant
+          )}
+
+          &nbsp;
+
+          <strong>
+            ${escapeHtml(
+              formatPrice(
+                variant.Price
+              )
+            )}
+          </strong>
+
+        </span>`;
+
+    }
+  );
+
+
+  /*
+   * Image
+   */
+
+  let imageHtml = "";
+
+
+  if (
+    product.Image &&
+    String(
+      product.Image
+    ).trim()
+  ) {
+
+    imageHtml =
+
+      `<img
+        class="detail-image"
+        src="${escapeHtml(
+          product.Image
+        )}"
+        alt="${escapeHtml(
+          product.ProductName || ""
+        )}"
+        onerror="this.style.display='none';">`;
+
+  }
+
+
+  /*
+   * DETAIL HTML
+   */
 
   const container =
     document.getElementById(
@@ -1138,9 +1582,12 @@ function renderProducts(products) {
     );
 
 
-  container.innerHTML = `
+  container.innerHTML =
 
-    <div class="product-card">
+    `<div class="detail-card">
+
+      ${imageHtml}
+
 
       <div class="product-name">
 
@@ -1151,137 +1598,230 @@ function renderProducts(products) {
       </div>
 
 
-      <div class="product-meta">
+      <div class="detail-section">
 
-        Product Code :
-        <strong>
+        <div class="detail-label">
+          Product Code
+        </div>
+
+        <div class="detail-value">
+
           ${escapeHtml(
             product.ProductCode || "-"
           )}
-        </strong>
+
+        </div>
 
       </div>
 
 
-      <div class="product-meta">
+      <div class="detail-section">
 
-        Category :
-        ${escapeHtml(
-          product.Category || "-"
-        )}
+        <div class="detail-label">
+          Division
+        </div>
 
-      </div>
+        <div class="detail-value">
 
+          ${escapeHtml(
+            getDivisionName(
+              product.Division ||
+              currentDivision
+            )
+          )}
 
-      <div class="product-meta">
-
-        Species :
-        ${escapeHtml(
-          product.Species || "-"
-        )}
-
-      </div>
-
-
-      <hr>
-
-
-      <div class="product-meta">
-
-        <strong>Composition</strong>
-
-        <br>
-
-        ${escapeHtml(
-          product.Composition || "-"
-        )}
+        </div>
 
       </div>
 
 
-      <br>
+      <div class="detail-section">
 
+        <div class="detail-label">
+          Category
+        </div>
 
-      <div class="product-meta">
+        <div class="detail-value">
 
-        <strong>Function</strong>
+          ${escapeHtml(
+            product.Category || "-"
+          )}
 
-        <br>
-
-        ${escapeHtml(
-          product.Function || "-"
-        )}
-
-      </div>
-
-
-      <br>
-
-
-      <div class="product-meta">
-
-        <strong>Description</strong>
-
-        <br>
-
-        ${escapeHtml(
-          product.Description || "-"
-        )}
+        </div>
 
       </div>
 
 
-      <br>
+      <div class="detail-section">
+
+        <div class="detail-label">
+          Species
+        </div>
+
+        <div class="detail-value">
+
+          ${escapeHtml(
+            product.Species || "-"
+          )}
+
+        </div>
+
+      </div>
 
 
-      <div class="product-meta">
+      <div class="detail-section">
 
-        <strong>Problem / Symptom</strong>
+        <div class="detail-label">
+          Variant & Price
+        </div>
 
-        <br>
+        <div class="product-variants">
 
-        ${escapeHtml(
-          product.Problem_Symptom || "-"
-        )}
+          ${variantsHtml}
+
+        </div>
 
       </div>
 
 
-      <br>
+      <div class="detail-section">
 
+        <div class="detail-label">
+          Composition
+        </div>
 
-      <div class="product-meta">
+        <div class="detail-value">
 
-        <strong>Usage</strong>
+          ${escapeHtml(
+            product.Composition || "-"
+          )}
 
-        <br>
-
-        ${escapeHtml(
-          product.Usage || "-"
-        )}
+        </div>
 
       </div>
 
-    </div>
 
-  `;
+      <div class="detail-section">
+
+        <div class="detail-label">
+          Function
+        </div>
+
+        <div class="detail-value">
+
+          ${escapeHtml(
+            product.Function || "-"
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <div class="detail-label">
+          Description
+        </div>
+
+        <div class="detail-value">
+
+          ${escapeHtml(
+            product.Description || "-"
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <div class="detail-label">
+          Problem / Symptom
+        </div>
+
+        <div class="detail-value">
+
+          ${escapeHtml(
+            product.Problem_Symptom || "-"
+          )}
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-section">
+
+        <div class="detail-label">
+          Usage
+        </div>
+
+        <div class="detail-value">
+
+          ${escapeHtml(
+            product.Usage || "-"
+          )}
+
+        </div>
+
+      </div>
+
+    </div>`;
 
 }
+
+
+/* ===================================================
+   CLOSE PRODUCT DETAIL
+   =================================================== */
+
+function closeProductDetail() {
+
+  /*
+   * Kembali ke division page,
+   * bukan Home.
+   */
+
+  document
+    .getElementById(
+      "productDetailPage"
+    )
+    .classList.remove("active");
+
+
+  document
+    .getElementById(
+      "homePage"
+    )
+    .classList.remove("active");
+
+
+  document
+    .getElementById(
+      "divisionPage"
+    )
+    .classList.add("active");
+
+}
+
 
 /* ===================================================
    SEARCH
    =================================================== */
 
-let searchTimer;
-
-
 document
-  .getElementById("searchInput")
+  .getElementById(
+    "searchInput"
+  )
   .addEventListener(
     "input",
     function() {
 
-      clearTimeout(searchTimer);
+      clearTimeout(
+        searchTimer
+      );
 
 
       const search =
@@ -1292,7 +1832,9 @@ document
         setTimeout(
           function() {
 
-            loadProducts(search);
+            loadProducts(
+              search
+            );
 
           },
           300
@@ -1308,30 +1850,69 @@ document
 
 function goHome() {
 
+  /*
+   * Hide semua page
+   */
+
   document
-    .getElementById("divisionPage")
+    .getElementById(
+      "divisionPage"
+    )
     .classList.remove("active");
 
 
   document
-    .getElementById("productDetailPage")
+    .getElementById(
+      "productDetailPage"
+    )
     .classList.remove("active");
 
 
+  /*
+   * Show Home
+   */
+
   document
-    .getElementById("homePage")
+    .getElementById(
+      "homePage"
+    )
     .classList.add("active");
 
+
+  /*
+   * Reset state
+   */
 
   currentDivision = "";
 
   allProducts = [];
 
+
+  /*
+   * Reset search
+   */
+
+  document
+    .getElementById(
+      "searchInput"
+    )
+    .value = "";
+
+
+  /*
+   * Scroll ke paling atas
+   */
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
 }
 
 
 /* ===================================================
-   HTML ESCAPE
+   FORMAT PRICE
    =================================================== */
 
 function formatPrice(value) {
@@ -1341,37 +1922,81 @@ function formatPrice(value) {
     value === undefined ||
     value === ""
   ) {
+
     return "-";
+
   }
+
+
+  const text =
+    String(value).trim();
+
+
+  /*
+   * Jika sudah bukan angka murni,
+   * tetap tampilkan nilai asli.
+   */
 
   const number =
     Number(
-      String(value)
-        .replace(/[^\d.-]/g, "")
+      text.replace(
+        /[^\d.-]/g,
+        ""
+      )
     );
 
-  if (isNaN(number)) {
-    return String(value);
+
+  if (
+    isNaN(number)
+  ) {
+
+    return text;
+
   }
 
-  return "Rp" +
-    number.toLocaleString("id-ID");
+
+  return (
+    "Rp" +
+    number.toLocaleString(
+      "id-ID"
+    )
+  );
 
 }
-  
+
+
+/* ===================================================
+   HTML ESCAPE
+   =================================================== */
+
 function escapeHtml(value) {
 
   return String(value)
 
-    .replace(/&/g, "&amp;")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-    .replace(/</g, "&lt;")
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-    .replace(/>/g, "&gt;")
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-    .replace(/"/g, "&quot;")
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-    .replace(/'/g, "&#039;");
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
