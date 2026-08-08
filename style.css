@@ -1,185 +1,274 @@
-/* =========================================
+/* =========================================================
    RAID ALL SALES ASSISTANT
    FRONTEND ARCHITECTURE
-========================================= */
+   ========================================================= */
 
 * {
   box-sizing: border-box;
 }
 
+
 html,
 body {
+
   margin: 0;
+
   width: 100%;
   height: 100%;
+
   background: #F5F7FA;
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
 }
+
 
 body {
+
   overflow: hidden;
+
 }
 
 
-/* =========================================
+/* =========================================================
+   APP
+   ========================================================= */
+
+#app {
+
+  width: 100%;
+  height: 100%;
+
+  background: #F5F7FA;
+
+}
+
+
+/* =========================================================
    LOADING
-========================================= */
+   ========================================================= */
 
 #loading {
+
   position: fixed;
+
   inset: 0;
+
   z-index: 1000;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   background: #F5F7FA;
 
   transition: opacity .25s ease;
+
 }
+
 
 .loading-card {
+
   text-align: center;
+
   padding: 32px 24px;
+
 }
+
 
 .loading-logo {
+
   width: 110px;
+
   max-width: 60vw;
+
   height: auto;
+
   object-fit: contain;
+
   margin-bottom: 8px;
+
 }
+
 
 .loading-subtitle {
+
   font-size: 17px;
+
   color: #667085;
+
   margin-top: 4px;
+
 }
 
+
 .spinner {
+
   width: 30px;
   height: 30px;
 
   margin: 24px auto 12px;
 
-  border: 3px solid #d9e8df;
-  border-top-color: #0B7A3E;
+  border:
+    3px solid #d9e8df;
+
+  border-top-color:
+    #0B7A3E;
 
   border-radius: 50%;
 
-  animation: spin .8s linear infinite;
+  animation:
+    spin .8s linear infinite;
+
 }
+
 
 .loading-text {
+
   font-size: 13px;
+
   color: #667085;
+
 }
 
+
 @keyframes spin {
+
   to {
     transform: rotate(360deg);
   }
+
 }
 
 
-/* =========================================
+/* =========================================================
    PAGE SYSTEM
-========================================= */
+   ========================================================= */
 
 .page {
+
   display: none;
 
   width: 100%;
   height: 100%;
 
   overflow-y: auto;
+
 }
+
 
 .page.active {
+
   display: block;
+
 }
 
 
-/* =========================================
-   APP HEADER
-========================================= */
+/* =========================================================
+   HOME HEADER
+   ========================================================= */
 
 .app-header {
+
   text-align: center;
 
   padding:
-    calc(28px + env(safe-area-inset-top))
-    24px
+    calc(30px + env(safe-area-inset-top))
+    20px
     18px;
+
 }
 
+
 .app-logo {
+
   display: block;
 
-  width: 150px;
+  width: 180px;
+
   max-width: 65vw;
 
   height: auto;
 
-  margin: 0 auto 8px;
+  margin: 0 auto 10px;
 
   object-fit: contain;
+
 }
+
 
 .app-title {
-  font-size: 17px;
-  font-weight: 500;
+
+  font-size: 18px;
+
   color: #667085;
+
+  font-weight: 500;
+
 }
 
 
-/* =========================================
+/* =========================================================
    HOME
-========================================= */
+   ========================================================= */
 
 .division-section {
+
   width: 100%;
-  max-width: 620px;
+
+  max-width: 760px;
 
   margin: 0 auto;
 
   padding:
-    12px 20px
+    10px 20px
     calc(30px + env(safe-area-inset-bottom));
+
 }
 
+
 .section-title {
-  font-size: 16px;
+
+  font-size: 18px;
+
   font-weight: 700;
 
   color: #344054;
 
-  margin-bottom: 14px;
+  margin:
+    0 0 16px 0;
+
 }
 
 
-/* =========================================
+/* =========================================================
    DIVISION CARD
-========================================= */
+   ========================================================= */
 
 .division-card {
+
   position: relative;
 
   display: flex;
+
   align-items: center;
 
   width: 100%;
 
-  min-height: 105px;
+  min-height: 125px;
 
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 
-  padding: 18px 20px;
+  padding:
+    22px 28px;
 
   border: 0;
-  border-radius: 20px;
+
+  border-radius: 22px;
 
   background: #FFFFFF;
 
@@ -188,148 +277,221 @@ body {
   cursor: pointer;
 
   box-shadow:
-    0 5px 18px rgba(16, 24, 40, .08);
+    0 6px 20px
+    rgba(16, 24, 40, .08);
 
   transition:
     transform .15s ease,
     box-shadow .15s ease;
+
 }
 
-.division-card:active {
-  transform: scale(.98);
-}
 
 .division-card:hover {
+
   box-shadow:
-    0 8px 24px rgba(16, 24, 40, .12);
+    0 9px 28px
+    rgba(16, 24, 40, .12);
+
 }
 
 
-/* =========================================
-   DIVISION ICON
-========================================= */
+.division-card:active {
+
+  transform:
+    scale(.98);
+
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
 
 .division-icon {
-  flex: 0 0 58px;
 
-  width: 58px;
-  height: 58px;
+  flex:
+    0 0 72px;
+
+  width: 72px;
+  height: 72px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  margin-right: 16px;
+  margin-right: 20px;
 
-  border-radius: 16px;
+  border-radius: 18px;
 
-  font-size: 30px;
+  font-size: 34px;
+
 }
 
 
-/* =========================================
-   DIVISION CONTENT
-========================================= */
+/* =========================================================
+   CONTENT
+   ========================================================= */
 
 .division-content {
+
   flex: 1;
+
   min-width: 0;
+
 }
 
+
 .division-name {
-  font-size: 20px;
+
+  font-size: 25px;
+
   font-weight: 800;
 
   letter-spacing: .3px;
 
-  margin-bottom: 5px;
 }
 
+
 .division-description {
-  font-size: 13px;
+
+  margin-top: 7px;
+
+  font-size: 15px;
+
   line-height: 1.45;
 
   color: #667085;
+
 }
 
 
-/* =========================================
+/* =========================================================
    ARROW
-========================================= */
+   ========================================================= */
 
 .division-arrow {
-  flex: 0 0 auto;
 
-  margin-left: 12px;
+  flex:
+    0 0 auto;
 
-  font-size: 32px;
-  font-weight: 300;
+  margin-left: 15px;
+
+  font-size: 34px;
 
   color: #98A2B3;
+
 }
 
 
-/* =========================================
-   LIVESTOCK
-========================================= */
-
-.division-card.livestock {
-  border-left: 6px solid #0B7A3E;
-}
-
-.division-card.livestock .division-icon {
-  background: #E8F6EE;
-}
-
-.division-card.livestock .division-name {
-  color: #0B7A3E;
-}
-
-
-/* =========================================
+/* =========================================================
    PET CARE
-========================================= */
+   ========================================================= */
 
 .division-card.petcare {
-  border-left: 6px solid #F28C28;
+
+  border-left:
+    8px solid #F28C28;
+
 }
+
 
 .division-card.petcare .division-icon {
-  background: #FFF1E5;
+
+  background:
+    #FFF1E5;
+
 }
+
 
 .division-card.petcare .division-name {
-  color: #E8750C;
+
+  color:
+    #E8750C;
+
 }
 
 
-/* =========================================
+/* =========================================================
+   LIVESTOCK
+   ========================================================= */
+
+.division-card.livestock {
+
+  border-left:
+    8px solid #0B7A3E;
+
+}
+
+
+.division-card.livestock .division-icon {
+
+  background:
+    #E8F6EE;
+
+}
+
+
+.division-card.livestock .division-name {
+
+  color:
+    #0B7A3E;
+
+}
+
+
+/* =========================================================
    AQUA CULTURE
-========================================= */
+   ========================================================= */
 
 .division-card.aquaculture {
-  border-left: 6px solid #1689D7;
+
+  border-left:
+    8px solid #1689D7;
+
 }
+
 
 .division-card.aquaculture .division-icon {
-  background: #E7F4FC;
+
+  background:
+    #E7F4FC;
+
 }
+
 
 .division-card.aquaculture .division-name {
-  color: #0877B8;
+
+  color:
+    #0877B8;
+
 }
 
 
-/* =========================================
-   DIVISION PAGE
-========================================= */
+/* =========================================================
+   GENERIC DIVISION PAGE
+   ========================================================= */
 
 .division-page {
-  background: #F5F7FA;
+
+  background:
+    #F5F7FA;
+
+  overflow-y: auto;
+
 }
 
+
+/* =========================================================
+   DIVISION HEADER
+   ========================================================= */
+
 .division-header {
+
   position: relative;
+
+  width: 100%;
 
   text-align: center;
 
@@ -337,510 +499,539 @@ body {
     calc(18px + env(safe-area-inset-top))
     20px
     20px;
-}
 
-.division-header-title {
-  font-size: 26px;
-  font-weight: 800;
-}
+  background:
+    #F5F7FA;
 
-.division-header-subtitle {
-  font-size: 14px;
-  margin-top: 4px;
-  color: #667085;
 }
 
 
-/* =========================================
+.division-header h1 {
+
+  margin:
+    0;
+
+  font-size:
+    28px;
+
+  font-weight:
+    800;
+
+}
+
+
+.division-header p {
+
+  margin:
+    6px 0 0;
+
+  font-size:
+    14px;
+
+  color:
+    #667085;
+
+}
+
+
+/* =========================================================
    HOME BUTTON
-========================================= */
+   ========================================================= */
 
 .home-button {
+
   position: absolute;
 
   left: 16px;
+
   top:
     calc(18px + env(safe-area-inset-top));
 
   border: 0;
 
-  padding: 9px 14px;
+  padding:
+    10px 16px;
 
-  border-radius: 10px;
+  border-radius:
+    11px;
 
-  background: #FFFFFF;
+  background:
+    #FFFFFF;
 
-  font-size: 13px;
-  font-weight: 600;
+  color:
+    #344054;
 
-  cursor: pointer;
+  font-size:
+    14px;
+
+  font-weight:
+    600;
+
+  cursor:
+    pointer;
 
   box-shadow:
-    0 2px 8px rgba(16, 24, 40, .08);
+    0 2px 8px
+    rgba(16, 24, 40, .10);
+
 }
 
 
-/* =========================================
-   PETCARE THEME
-========================================= */
+.home-button:active {
 
-.petcare-theme {
-  color: #E8750C;
-  border-bottom: 3px solid #F28C28;
+  transform:
+    scale(.97);
+
 }
 
 
-/* =========================================
-   LIVESTOCK THEME
-========================================= */
+/* =========================================================
+   PETCARE HEADER
+   ========================================================= */
 
-.livestock-theme {
-  color: #0B7A3E;
-  border-bottom: 3px solid #0B7A3E;
+.division-header.petcare h1 {
+
+  color:
+    #E8750C;
+
 }
 
 
-/* =========================================
-   AQUA THEME
-========================================= */
+/* =========================================================
+   LIVESTOCK HEADER
+   ========================================================= */
 
-.aquaculture-theme {
-  color: #0877B8;
-  border-bottom: 3px solid #1689D7;
+.division-header.livestock h1 {
+
+  color:
+    #0B7A3E;
+
 }
 
 
-/* =========================================
+/* =========================================================
+   AQUA HEADER
+   ========================================================= */
+
+.division-header.aquaculture h1 {
+
+  color:
+    #0877B8;
+
+}
+
+
+/* =========================================================
    PLACEHOLDER
-========================================= */
+   ========================================================= */
 
 .division-placeholder {
-  width: calc(100% - 40px);
-  max-width: 620px;
 
-  margin: 40px auto;
+  width:
+    min(680px, calc(100% - 32px));
 
-  padding: 50px 25px;
+  margin:
+    20px auto 40px;
 
-  text-align: center;
+  padding:
+    50px 25px;
 
-  background: #FFFFFF;
+  text-align:
+    center;
 
-  border-radius: 22px;
+  background:
+    #FFFFFF;
+
+  border-radius:
+    22px;
 
   box-shadow:
-    0 5px 18px rgba(16, 24, 40, .08);
+    0 5px 18px
+    rgba(16, 24, 40, .08);
+
 }
+
 
 .placeholder-icon {
-  font-size: 50px;
 
-  margin-bottom: 10px;
+  font-size:
+    54px;
+
+  margin-bottom:
+    12px;
+
 }
+
 
 .division-placeholder h2 {
-  margin: 5px 0 10px;
 
-  font-size: 25px;
+  margin:
+    5px 0 10px;
+
+  font-size:
+    25px;
+
 }
+
 
 .division-placeholder p {
-  margin: 6px 0;
 
-  color: #667085;
+  margin:
+    6px 0;
+
+  color:
+    #667085;
+
 }
+
 
 .placeholder-note {
-  font-size: 13px;
+
+  margin-top:
+    12px;
+
+  font-size:
+    13px;
+
+  color:
+    #98A2B3;
+
 }
 
 
-/* =========================================
+/* =========================================================
    LIVESTOCK EMBEDDED APP
-========================================= */
+   ========================================================= */
 
 .livestock-page {
-  display: none;
 
-  flex-direction: column;
+  display:
+    none;
 
-  height: 100%;
-  overflow: hidden;
+  flex-direction:
+    column;
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  width:
+    100vw;
+
+  height:
+    100dvh;
+
+  overflow:
+    hidden;
+
+  background:
+    #F5F7FA;
+
 }
+
 
 .livestock-page.active {
-  display: flex;
+
+  display:
+    flex;
+
 }
 
+
+/* =========================================================
+   LIVESTOCK HEADER
+   ========================================================= */
+
 .embedded-app-header {
-  position: relative;
 
-  flex: 0 0 auto;
+  position:
+    relative;
 
-  min-height: 55px;
+  flex:
+    0 0 auto;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width:
+    100%;
+
+  min-height:
+    58px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
 
   padding:
     calc(8px + env(safe-area-inset-top))
     20px
     10px;
+
+  background:
+    #F5F7FA;
+
+  border-bottom:
+    3px solid #0B7A3E;
+
 }
+
 
 .embedded-title {
-  font-size: 18px;
-  font-weight: 800;
+
+  font-size:
+    22px;
+
+  font-weight:
+    800;
+
+  color:
+    #0B7A3E;
+
 }
+
 
 .embedded-app-header .home-button {
+
   top:
     calc(8px + env(safe-area-inset-top));
+
 }
 
 
-/* =========================================
+/* =========================================================
    GOOGLE APPS SCRIPT FRAME
-========================================= */
+   ========================================================= */
 
 #appFrame {
-  display: block;
 
-  width: 100%;
-  height: 100%;
+  display:
+    block;
 
-  flex: 1 1 auto;
+  position:
+    relative;
 
-  border: 0;
+  flex:
+    1 1 auto;
 
-  background: #FFFFFF;
+  width:
+    100% !important;
+
+  min-width:
+    100% !important;
+
+  max-width:
+    none;
+
+  height:
+    calc(
+      100dvh -
+      58px -
+      env(safe-area-inset-top)
+    );
+
+  min-height:
+    0;
+
+  border:
+    0;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  background:
+    #FFFFFF;
+
 }
 
 
-/* =========================================
+/* =========================================================
    NOSCRIPT
-========================================= */
+   ========================================================= */
 
 .noscript {
-  padding: 24px;
 
-  font-family: Arial, sans-serif;
+  padding:
+    24px;
 
-  color: #333;
+  font-family:
+    Arial,
+    sans-serif;
+
+  color:
+    #333;
+
 }
 
 
-/* =========================================
+/* =========================================================
    MOBILE
-========================================= */
+   ========================================================= */
 
 @media (max-width: 600px) {
 
+
   .app-header {
+
     padding-top:
       calc(24px + env(safe-area-inset-top));
+
   }
+
 
   .app-logo {
-    width: 135px;
+
+    width:
+      155px;
+
   }
+
 
   .division-section {
-    padding-left: 16px;
-    padding-right: 16px;
+
+    padding-left:
+      16px;
+
+    padding-right:
+      16px;
+
   }
+
 
   .division-card {
-    min-height: 96px;
 
-    padding: 16px;
+    min-height:
+      105px;
 
-    border-radius: 18px;
+    padding:
+      17px 18px;
+
+    border-radius:
+      18px;
+
   }
+
 
   .division-icon {
-    width: 52px;
-    height: 52px;
 
-    flex-basis: 52px;
+    width:
+      55px;
 
-    font-size: 27px;
+    height:
+      55px;
 
-    margin-right: 13px;
+    flex-basis:
+      55px;
+
+    font-size:
+      27px;
+
+    margin-right:
+      14px;
+
   }
+
 
   .division-name {
-    font-size: 18px;
+
+    font-size:
+      19px;
+
   }
+
 
   .division-description {
-    font-size: 12px;
+
+    font-size:
+      12px;
+
   }
+
 
   .division-arrow {
-    font-size: 28px;
+
+    font-size:
+      29px;
+
+    margin-left:
+      8px;
+
   }
 
-  .home-button {
-    left: 12px;
+
+  .division-placeholder {
+
+    margin-top:
+      15px;
+
   }
+
 }
 
 
-/* =========================================
-   SMALL ANDROID SCREEN
-========================================= */
+/* =========================================================
+   SMALL ANDROID
+   ========================================================= */
 
 @media (max-width: 380px) {
 
-  .division-card {
-    min-height: 90px;
 
-    padding: 14px;
+  .division-card {
+
+    min-height:
+      94px;
+
+    padding:
+      14px;
+
   }
+
 
   .division-icon {
-    width: 46px;
-    height: 46px;
 
-    flex-basis: 46px;
+    width:
+      48px;
 
-    font-size: 24px;
+    height:
+      48px;
+
+    flex-basis:
+      48px;
+
+    font-size:
+      23px;
+
   }
+
 
   .division-name {
-    font-size: 16px;
+
+    font-size:
+      17px;
+
   }
+
 
   .division-description {
-    font-size: 11px;
+
+    font-size:
+      11px;
+
   }
-}
 
-/* =========================
-   RAID ALL FRONTEND
-   ========================= */
 
-#app {
-  width: 100%;
-  min-height: 100vh;
-  background: #F5F7FA;
-}
+  .embedded-title {
 
-.app-header {
-  text-align: center;
-  padding: 28px 20px 20px;
-}
+    font-size:
+      19px;
 
-.brand-logo {
-  width: 150px;
-  max-width: 55vw;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto 6px;
-}
+  }
 
-.brand-subtitle {
-  font-size: 17px;
-  color: #667085;
-  font-weight: 500;
-}
-
-
-/* =========================
-   PAGE
-   ========================= */
-
-.page {
-  display: none;
-}
-
-.page.active {
-  display: block;
-}
-
-
-/* =========================
-   DIVISION CARDS
-   ========================= */
-
-.division-list {
-  width: min(680px, calc(100% - 32px));
-  margin: 10px auto 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.division-card {
-  position: relative;
-  width: 100%;
-  min-height: 125px;
-
-  border: 0;
-  border-radius: 20px;
-
-  padding: 24px 28px;
-
-  text-align: left;
-
-  cursor: pointer;
-
-  background: white;
-
-  box-shadow:
-    0 6px 20px rgba(0,0,0,.08);
-
-  transition:
-    transform .15s ease,
-    box-shadow .15s ease;
-}
-
-.division-card:active {
-  transform: scale(.98);
-}
-
-
-/* PETCARE */
-
-.division-card.petcare {
-  border-left: 8px solid #F28C28;
-}
-
-.division-card.petcare .division-title {
-  color: #F28C28;
-}
-
-
-/* LIVESTOCK */
-
-.division-card.livestock {
-  border-left: 8px solid #0B7A3E;
-}
-
-.division-card.livestock .division-title {
-  color: #0B7A3E;
-}
-
-
-/* AQUA */
-
-.division-card.aquaculture {
-  border-left: 8px solid #087EA4;
-}
-
-.division-card.aquaculture .division-title {
-  color: #087EA4;
-}
-
-
-.division-title {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: .3px;
-}
-
-.division-subtitle {
-  margin-top: 7px;
-  font-size: 15px;
-  color: #667085;
-}
-
-.division-arrow {
-  position: absolute;
-  right: 25px;
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  font-size: 28px;
-  font-weight: 700;
-}
-
-
-/* =========================
-   DIVISION PAGE
-   ========================= */
-
-.back-button {
-  margin: 5px 16px 20px;
-
-  border: 0;
-  border-radius: 12px;
-
-  padding: 12px 20px;
-
-  background: #0B7A3E;
-  color: white;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  cursor: pointer;
-}
-
-.division-header {
-  width: min(680px, calc(100% - 32px));
-  margin: 0 auto 20px;
-
-  background: white;
-  border-radius: 20px;
-
-  padding: 24px;
-
-  box-shadow:
-    0 5px 18px rgba(0,0,0,.07);
-}
-
-.division-header h1 {
-  margin: 0;
-  font-size: 28px;
-}
-
-.division-header p {
-  margin: 7px 0 0;
-  color: #667085;
-}
-
-
-/* Division colors */
-
-.division-header.petcare h1 {
-  color: #F28C28;
-}
-
-.division-header.livestock h1 {
-  color: #0B7A3E;
-}
-
-.division-header.aquaculture h1 {
-  color: #087EA4;
-}
-
-
-.coming-soon {
-  width: min(680px, calc(100% - 32px));
-  margin: auto;
-
-  background: white;
-  border-radius: 20px;
-
-  padding: 30px;
-
-  text-align: center;
-
-  box-shadow:
-    0 5px 18px rgba(0,0,0,.07);
-}
-
-.coming-title {
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.coming-text {
-  margin-top: 10px;
-  color: #667085;
 }
