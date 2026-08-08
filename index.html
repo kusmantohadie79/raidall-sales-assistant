@@ -450,6 +450,28 @@ body {
 
 }
 
+  .product-card {
+  cursor: pointer;
+  transition: .2s;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.10);
+}
+
+.product-variants {
+  margin-top: 12px;
+}
+
+.product-detail-hint {
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #999;
+  text-align: right;
+}
 
 /* ===================================================
    LOADING
@@ -681,6 +703,43 @@ body {
 
       LIVESTOCK
 
+      <section
+  id="productDetailPage"
+  class="page">
+
+  <header class="division-header">
+
+    <button
+      class="back-button"
+      onclick="closeProductDetail()">
+
+      ← Kembali
+
+    </button>
+
+    <div
+      id="productDetailTitle"
+      class="division-header-title">
+
+      Detail Produk
+
+    </div>
+
+  </header>
+
+
+  <div
+    id="productDetailContainer"
+    class="product-container">
+
+    <div class="loading">
+      Memuat detail produk...
+    </div>
+
+  </div>
+
+</section>
+
     </div>
 
   </header>
@@ -877,106 +936,337 @@ async function loadProducts(search = "") {
 function renderProducts(products) {
 
   const container =
-    document.getElementById(
-      "productContainer"
+    document.getElementById("productContainer");
+
+  if (!products || !products.length) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Database produk untuk divisi ini belum tersedia.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /*
+   * GROUP PRODUCT BERDASARKAN ProductCode
+   */
+
+  const grouped = {};
+
+  products.forEach(product => {
+
+    const code =
+      String(product.ProductCode || "").trim();
+
+    if (!code) return;
+
+    if (!grouped[code]) {
+
+      grouped[code] = {
+        ProductCode: code,
+        ProductName: product.ProductName || "",
+        Category: product.Category || "",
+        Species: product.Species || "",
+        Composition: product.Composition || "",
+        Description: product.Description || "",
+        Function: product.Function || "",
+        Problem_Symptom: product.Problem_Symptom || "",
+        Usage: product.Usage || "",
+        Image: product.Image || "",
+        Variants: []
+      };
+
+    }
+
+
+    grouped[code].Variants.push({
+
+      Variant: product.Variant || "-",
+
+      Price: product.Price || "-"
+
+    });
+
+  });
+
+
+  const productList =
+    Object.values(grouped);
+
+
+  let html = "";
+
+
+  html += `
+    <div class="product-count">
+      Total Product :
+      <strong>${productList.length}</strong>
+    </div>
+  `;
+
+
+  productList.forEach(product => {
+
+    let variantsHtml = "";
+
+
+    product.Variants.forEach(variant => {
+
+      variantsHtml += `
+        <span class="product-variant">
+
+          ${escapeHtml(
+            variant.Variant
+          )}
+
+          &nbsp;
+
+          <strong>
+            ${escapeHtml(
+              variant.Price
+            )}
+          </strong>
+
+        </span>
+      `;
+
+    });
+
+
+    html += `
+
+      <div
+        class="product-card"
+        onclick="openProductDetail('${escapeHtml(
+          product.ProductCode
+        )}')">
+
+        <div class="product-name">
+
+          ${escapeHtml(
+            product.ProductName || "-"
+          )}
+
+        </div>
+
+
+        <div class="product-meta">
+
+          ${escapeHtml(
+            product.Category || "-"
+          )}
+
+          •&#x20;
+
+          ${escapeHtml(
+            product.Species || "-"
+          )}
+
+        </div>
+
+
+        <div class="product-variants">
+
+          ${variantsHtml}
+
+        </div>
+
+
+        <div class="product-detail-hint">
+
+          Lihat Detail ›
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  container.innerHTML = html;
+
+}
+
+  function openProductDetail(productCode) {
+
+  const product =
+    allProducts.find(
+      item =>
+        String(item.ProductCode || "").trim() ===
+        String(productCode || "").trim()
     );
 
 
-  if (!products.length) {
+  if (!product) {
 
-    container.innerHTML =
-
-      `<div class="empty">
-
-        Produk tidak ditemukan.
-
-       </div>`;
+    alert("Detail produk tidak ditemukan.");
 
     return;
 
   }
 
 
-  let html = "";
+  document
+    .getElementById("divisionPage")
+    .classList.remove("active");
 
 
-  html +=
+  document
+    .getElementById("homePage")
+    .classList.remove("active");
 
-    `<div class="product-count">
 
-      Total Product :
-      <strong>${products.length}</strong>
+  document
+    .getElementById("productDetailPage")
+    .classList.add("active");
 
-    </div>`;
 
-products.forEach(product => {
+  document
+    .getElementById("productDetailTitle")
+    .textContent =
+      product.ProductName || "Detail Produk";
 
-  html +=
-    `<div class="product-card">
+
+  const container =
+    document.getElementById(
+      "productDetailContainer"
+    );
+
+
+  container.innerHTML = `
+
+    <div class="product-card">
 
       <div class="product-name">
+
         ${escapeHtml(
           product.ProductName || "-"
         )}
+
       </div>
+
 
       <div class="product-meta">
 
+        Product Code :
+        <strong>
+          ${escapeHtml(
+            product.ProductCode || "-"
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="product-meta">
+
+        Category :
         ${escapeHtml(
           product.Category || "-"
         )}
 
-        •&#x20;
+      </div>
 
+
+      <div class="product-meta">
+
+        Species :
         ${escapeHtml(
           product.Species || "-"
         )}
 
-      </div>`;
+      </div>
 
-  /*
-   * VARIANTS
-   */
 
-  if (
-    Array.isArray(product.Variants) &&
-    product.Variants.length
-  ) {
+      <hr>
 
-    product.Variants.forEach(variant => {
 
-      html +=
-        `<div class="product-variant">
+      <div class="product-meta">
 
-          ${escapeHtml(
-            variant.Variant || "-"
-          )}
+        <strong>Composition</strong>
 
-          <span
-            style="
-              margin-left:8px;
-              color:#333;
-              font-weight:800;
-            "
-          >
-            ${formatPrice(variant.Price)}
-          </span>
+        <br>
 
-        </div>`;
+        ${escapeHtml(
+          product.Composition || "-"
+        )}
 
-    });
+      </div>
 
-  }
 
-  html +=
-    `</div>`;
+      <br>
 
-});
 
-  container.innerHTML = html;
+      <div class="product-meta">
+
+        <strong>Function</strong>
+
+        <br>
+
+        ${escapeHtml(
+          product.Function || "-"
+        )}
+
+      </div>
+
+
+      <br>
+
+
+      <div class="product-meta">
+
+        <strong>Description</strong>
+
+        <br>
+
+        ${escapeHtml(
+          product.Description || "-"
+        )}
+
+      </div>
+
+
+      <br>
+
+
+      <div class="product-meta">
+
+        <strong>Problem / Symptom</strong>
+
+        <br>
+
+        ${escapeHtml(
+          product.Problem_Symptom || "-"
+        )}
+
+      </div>
+
+
+      <br>
+
+
+      <div class="product-meta">
+
+        <strong>Usage</strong>
+
+        <br>
+
+        ${escapeHtml(
+          product.Usage || "-"
+        )}
+
+      </div>
+
+    </div>
+
+  `;
 
 }
-
 
 /* ===================================================
    SEARCH
@@ -1020,6 +1310,11 @@ function goHome() {
 
   document
     .getElementById("divisionPage")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("productDetailPage")
     .classList.remove("active");
 
 
