@@ -1,125 +1,80 @@
 (() => {
 
   const loading = document.getElementById('loading');
-  const frame = document.getElementById('appFrame');
-
-  const pages = {
-    home: document.getElementById('homePage'),
-    petcare: document.getElementById('petcarePage'),
-    livestock: document.getElementById('livestockPage'),
-    aquaculture: document.getElementById('aquaculturePage')
-  };
-
-
-  /* =========================================
-     LOADING
-  ========================================= */
 
   function hideLoading() {
-
     if (!loading) return;
 
     loading.style.opacity = '0';
 
-    window.setTimeout(() => {
-
+    setTimeout(() => {
       loading.style.display = 'none';
-
     }, 300);
   }
 
 
-  /*
-   * Home tidak membutuhkan Apps Script.
-   * Loading cukup ditampilkan singkat.
-   */
+  window.openDivision = function(division) {
 
-  window.setTimeout(hideLoading, 700);
+    const homePage = document.getElementById('homePage');
+    const divisionPage = document.getElementById('divisionPage');
+    const divisionContent = document.getElementById('divisionContent');
 
+    homePage.classList.remove('active');
+    divisionPage.classList.add('active');
 
-  /* =========================================
-     PAGE CONTROL
-  ========================================= */
-
-  function hideAllPages() {
-
-    Object.values(pages).forEach(page => {
-
-      if (page) {
-        page.classList.remove('active');
-      }
-
-    });
-  }
-
-
-  function showPage(name) {
-
-    hideAllPages();
-
-    if (pages[name]) {
-      pages[name].classList.add('active');
-    }
-  }
-
-
-  /* =========================================
-     OPEN DIVISION
-  ========================================= */
-
-  window.openDivision = function (division) {
+    let title = '';
+    let description = '';
 
     if (division === 'petcare') {
 
-      showPage('petcare');
+      title = 'PETCARE';
+      description = 'Pet Health & Care';
 
-      history.pushState(
-        { page: 'petcare' },
-        '',
-        '#petcare'
-      );
+    } else if (division === 'livestock') {
 
-      return;
+      title = 'LIVESTOCK';
+      description = 'Animal Health';
+
+    } else if (division === 'aquaculture') {
+
+      title = 'AQUA CULTURE';
+      description = 'Fish Medicine';
+
     }
 
+    divisionContent.innerHTML = `
+      <div class="division-header ${division}">
+        <h1>${title}</h1>
+        <p>${description}</p>
+      </div>
 
-    if (division === 'livestock') {
+      <div class="coming-soon">
+        <div class="coming-title">
+          ${title}
+        </div>
 
-      showPage('livestock');
+        <div class="coming-text">
+          Konten ${title} akan terhubung ke database RAID ALL.
+        </div>
+      </div>
+    `;
 
-      history.pushState(
-        { page: 'livestock' },
-        '',
-        '#livestock'
-      );
-
-      return;
-    }
-
-
-    if (division === 'aquaculture') {
-
-      showPage('aquaculture');
-
-      history.pushState(
-        { page: 'aquaculture' },
-        '',
-        '#aquaculture'
-      );
-
-      return;
-    }
+    window.history.pushState(
+      { page: 'division', division: division },
+      '',
+      '#' + division
+    );
 
   };
 
 
-  /* =========================================
-     GO HOME
-  ========================================= */
+  window.goHome = function() {
 
-  window.goHome = function () {
+    const homePage = document.getElementById('homePage');
+    const divisionPage = document.getElementById('divisionPage');
 
-    showPage('home');
+    divisionPage.classList.remove('active');
+    homePage.classList.add('active');
 
     history.pushState(
       { page: 'home' },
@@ -130,102 +85,26 @@
   };
 
 
-  /* =========================================
-     BROWSER BACK
-  ========================================= */
-
+  // Android / browser BACK BUTTON
   window.addEventListener('popstate', () => {
 
-    const hash = window.location.hash;
+    const divisionPage = document.getElementById('divisionPage');
 
-    if (hash === '#petcare') {
-
-      showPage('petcare');
-      return;
-
+    if (divisionPage.classList.contains('active')) {
+      goHome();
     }
-
-    if (hash === '#livestock') {
-
-      showPage('livestock');
-      return;
-
-    }
-
-    if (hash === '#aquaculture') {
-
-      showPage('aquaculture');
-      return;
-
-    }
-
-    showPage('home');
 
   });
 
 
-  /* =========================================
-     SERVICE WORKER
-  ========================================= */
-
-  if (
-    'serviceWorker' in navigator &&
-    location.protocol === 'https:'
-  ) {
-
-    window.addEventListener('load', () => {
-
-      navigator.serviceWorker
-        .register('./service-worker.js', {
-          scope: './'
-        })
-
-        .then(reg => {
-
-          console.log(
-            '[RAIDALL] Service worker registered:',
-            reg.scope
-          );
-
-        })
-
-        .catch(err => {
-
-          console.error(
-            '[RAIDALL] Service worker registration failed:',
-            err
-          );
-
-        });
-
-    });
-
-  }
+  // Initial state
+  history.replaceState(
+    { page: 'home' },
+    '',
+    window.location.pathname
+  );
 
 
-  /* =========================================
-     INITIAL PAGE
-  ========================================= */
-
-  const initialHash = window.location.hash;
-
-  if (initialHash === '#petcare') {
-
-    showPage('petcare');
-
-  } else if (initialHash === '#livestock') {
-
-    showPage('livestock');
-
-  } else if (initialHash === '#aquaculture') {
-
-    showPage('aquaculture');
-
-  } else {
-
-    showPage('home');
-
-  }
-
+  hideLoading();
 
 })();
