@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="id">
+
 <head>
+
   <meta charset="utf-8">
 
   <meta
@@ -15,7 +17,9 @@
     name="description"
     content="RAID ALL Sales Assistant">
 
-  <link rel="manifest" href="./manifest.json">
+  <link
+    rel="manifest"
+    href="./manifest.json">
 
   <link
     rel="icon"
@@ -27,17 +31,24 @@
     rel="apple-touch-icon"
     href="./IMAGE/icon-192.png">
 
-  <link rel="stylesheet" href="./style.css">
+  <link
+    rel="stylesheet"
+    href="./style.css">
 
   <title>RAID ALL Sales Assistant</title>
+
 </head>
+
 
 <body>
 
-  <!-- =========================
+
+  <!-- ==================================================
        LOADING
-  ========================== -->
+  =================================================== -->
+
   <div id="loading">
+
     <div class="loading-card">
 
       <img
@@ -56,13 +67,18 @@
       </div>
 
     </div>
+
   </div>
 
 
-  <!-- =========================
+
+  <!-- ==================================================
        HOME
-  ========================== -->
-  <main id="homePage" class="page active">
+  =================================================== -->
+
+  <main
+    id="homePage"
+    class="page active">
 
     <header class="app-header">
 
@@ -85,7 +101,11 @@
       </div>
 
 
-      <!-- PET CARE -->
+
+      <!-- ==================================================
+           PET CARE
+      =================================================== -->
+
       <button
         class="division-card petcare"
         type="button"
@@ -114,7 +134,11 @@
       </button>
 
 
-      <!-- LIVESTOCK -->
+
+      <!-- ==================================================
+           LIVESTOCK
+      =================================================== -->
+
       <button
         class="division-card livestock"
         type="button"
@@ -143,7 +167,11 @@
       </button>
 
 
-      <!-- AQUA CULTURE -->
+
+      <!-- ==================================================
+           AQUA CULTURE
+      =================================================== -->
+
       <button
         class="division-card aquaculture"
         type="button"
@@ -176,9 +204,11 @@
   </main>
 
 
-  <!-- =========================
+
+  <!-- ==================================================
        PET CARE
-  ========================== -->
+  =================================================== -->
+
   <main
     id="petcarePage"
     class="page division-page petcare-page">
@@ -194,9 +224,11 @@
 
       </button>
 
+
       <div class="division-header-title">
         PET CARE
       </div>
+
 
       <div class="division-header-subtitle">
         Sales Assistant
@@ -211,13 +243,16 @@
         🐾
       </div>
 
+
       <h2>
         PET CARE
       </h2>
 
+
       <p>
         Struktur katalog Pet Care sudah disiapkan.
       </p>
+
 
       <p class="placeholder-note">
         Konten produk akan dihubungkan dari Spreadsheet.
@@ -228,14 +263,17 @@
   </main>
 
 
-  <!-- =========================
+
+  <!-- ==================================================
        LIVESTOCK
-  ========================== -->
+  =================================================== -->
+
   <main
     id="livestockPage"
     class="page livestock-page">
 
     <div class="embedded-app-header livestock-theme">
+
 
       <button
         class="home-button"
@@ -245,6 +283,7 @@
         ← Home
 
       </button>
+
 
       <div class="embedded-title">
         LIVESTOCK
@@ -253,25 +292,37 @@
     </div>
 
 
+
+    <!-- ==================================================
+         LIVESTOCK GOOGLE APPS SCRIPT
+    =================================================== -->
+
     <iframe
-      id="appFrame"
+      id="livestockFrame"
       title="RAID ALL Livestock Sales Assistant"
+
       src="https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec"
+
       allow="clipboard-read; clipboard-write; geolocation"
+
       referrerpolicy="strict-origin-when-cross-origin">
     </iframe>
+
 
   </main>
 
 
-  <!-- =========================
+
+  <!-- ==================================================
        AQUA CULTURE
-  ========================== -->
+  =================================================== -->
+
   <main
     id="aquaculturePage"
     class="page division-page aquaculture-page">
 
     <div class="division-header aquaculture-theme">
+
 
       <button
         class="home-button"
@@ -282,9 +333,11 @@
 
       </button>
 
+
       <div class="division-header-title">
         AQUA CULTURE
       </div>
+
 
       <div class="division-header-subtitle">
         Sales Assistant
@@ -293,19 +346,23 @@
     </div>
 
 
+
     <section class="division-placeholder">
 
       <div class="placeholder-icon">
         🐟
       </div>
 
+
       <h2>
         AQUA CULTURE
       </h2>
 
+
       <p>
         Struktur katalog Aqua Culture sudah disiapkan.
       </p>
+
 
       <p class="placeholder-note">
         Konten produk akan dihubungkan dari Spreadsheet.
@@ -316,15 +373,31 @@
   </main>
 
 
+
+  <!-- ==================================================
+       NOSCRIPT
+  =================================================== -->
+
   <noscript>
+
     <div class="noscript">
+
       JavaScript harus diaktifkan untuk menjalankan
       RAID ALL Sales Assistant.
+
     </div>
+
   </noscript>
 
 
+
+  <!-- ==================================================
+       JAVASCRIPT
+  =================================================== -->
+
   <script src="./script.js"></script>
 
+
 </body>
+
 </html>
