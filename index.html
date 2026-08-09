@@ -9,9 +9,13 @@
   name="viewport"
   content="width=device-width, initial-scale=1.0">
 
-<link 
-  rel="icon" 
-  type="image/png" 
+<meta
+  name="theme-color"
+  content="#0B7A3E">
+
+<link
+  rel="icon"
+  type="image/png"
   href="IMAGE/RPS.png">
 
 <title>RAIDALL Sales Assistant</title>
@@ -26,9 +30,13 @@
   box-sizing: border-box;
 }
 
+html,
 body {
-
   margin: 0;
+  padding: 0;
+}
+
+body {
 
   font-family:
     Arial,
@@ -39,6 +47,11 @@ body {
 
   color: #333;
 
+}
+
+button,
+input {
+  font-family: inherit;
 }
 
 .app {
@@ -64,6 +77,22 @@ body {
 
 }
 
+.rps-logo {
+
+  width: 260px;
+
+  max-width: 82%;
+
+  max-height: 90px;
+
+  object-fit: contain;
+
+  display: block;
+
+  margin: 0 auto;
+
+}
+
 .app-logo {
 
   width: 150px;
@@ -72,47 +101,69 @@ body {
 
 }
 
-.home-brand {
-
-  margin-top: 10px;
-
-  font-size: 28px;
-
-  font-weight: 900;
-
-  letter-spacing: 1px;
-
-  color: #0B7A3E;
-
-}
-
 .app-title {
 
-  margin-top: 4px;
+  margin-top: 8px;
 
-  font-size: 18px;
+  font-size: 20px;
 
   color: #567;
 
 }
 
-.division-logo {
 
-  background: transparent !important;
+/* ===================================================
+   REFRESH BUTTON
+   =================================================== */
 
-  border-radius: 14px;
+.refresh-button {
+
+  position: fixed;
+
+  right: 18px;
+
+  bottom: 18px;
+
+  z-index: 100;
+
+  width: 52px;
+
+  height: 52px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #0B7A3E;
+
+  color: white;
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.20);
 
 }
 
-.division-logo img {
+.refresh-button:active {
 
-  width: 100%;
+  transform: scale(.94);
 
-  height: 100%;
+}
 
-  object-fit: contain;
+.refresh-button.loading {
 
-  display: block;
+  animation: spin .8s linear infinite;
+
+}
+
+@keyframes spin {
+
+  from { transform: rotate(0deg); }
+
+  to   { transform: rotate(360deg); }
 
 }
 
@@ -123,7 +174,7 @@ body {
 
 .division-section {
 
-  padding: 0 20px 40px;
+  padding: 0 20px 80px;
 
 }
 
@@ -179,11 +230,9 @@ body {
 
 .division-icon {
 
-  width: 70px;
+  width: 100px;
 
-  height: 70px;
-
-  border-radius: 18px;
+  height: 78px;
 
   display: flex;
 
@@ -191,9 +240,19 @@ body {
 
   justify-content: center;
 
-  font-size: 34px;
-
   flex-shrink: 0;
+
+}
+
+.division-logo {
+
+  width: 88px;
+
+  max-height: 72px;
+
+  object-fit: contain;
+
+  display: block;
 
 }
 
@@ -244,12 +303,6 @@ body {
 
 }
 
-.petcare .division-icon {
-
-  background: #FFF1E5;
-
-}
-
 .petcare .division-name {
 
   color: #F28C28;
@@ -267,12 +320,6 @@ body {
 
 }
 
-.livestock .division-icon {
-
-  background: #E8F6EE;
-
-}
-
 .livestock .division-name {
 
   color: #0B7A3E;
@@ -287,12 +334,6 @@ body {
 .aquaculture {
 
   border-left: 9px solid #087EA4;
-
-}
-
-.aquaculture .division-icon {
-
-  background: #E7F4FC;
 
 }
 
@@ -334,13 +375,13 @@ body {
 
   background: white;
 
-  padding: 15px 20px;
+  padding: 12px 20px;
 
   display: flex;
 
   align-items: center;
 
-  gap: 15px;
+  gap: 14px;
 
   border-bottom: 1px solid #eee;
 
@@ -360,6 +401,20 @@ body {
 
   font-size: 15px;
 
+  flex-shrink: 0;
+
+}
+
+.division-header-logo {
+
+  width: 58px;
+
+  height: 46px;
+
+  object-fit: contain;
+
+  flex-shrink: 0;
+
 }
 
 .division-header-title {
@@ -367,6 +422,8 @@ body {
   font-size: 22px;
 
   font-weight: 800;
+
+  line-height: 1.15;
 
 }
 
@@ -395,6 +452,8 @@ body {
 
   outline: none;
 
+  background: white;
+
 }
 
 .search-input:focus {
@@ -410,7 +469,7 @@ body {
 
 .product-container {
 
-  padding: 0 20px 40px;
+  padding: 0 20px 80px;
 
 }
 
@@ -539,6 +598,20 @@ body {
 
 }
 
+.detail-division-logo {
+
+  width: 110px;
+
+  max-height: 80px;
+
+  object-fit: contain;
+
+  display: block;
+
+  margin: 0 auto 18px;
+
+}
+
 .detail-section {
 
   margin-top: 20px;
@@ -664,6 +737,34 @@ body {
 
 @media (max-width: 600px) {
 
+  .rps-logo {
+
+    width: 230px;
+
+    max-width: 88%;
+
+  }
+
+  .division-icon {
+
+    width: 78px;
+
+  }
+
+  .division-logo {
+
+    width: 70px;
+
+    max-height: 62px;
+
+  }
+
+  .division-content {
+
+    padding-left: 14px;
+
+  }
+
   .division-name {
 
     font-size: 20px;
@@ -676,19 +777,62 @@ body {
 
   }
 
-  .home-brand {
+  .division-header-title {
 
-    font-size: 24px;
+    font-size: 19px;
+
+  }
+
+  .division-header-logo {
+
+    width: 48px;
+
+    height: 40px;
+
+  }
+
+}
+
+
+/* ===================================================
+   SMALL MOBILE
+   =================================================== */
+
+@media (max-width: 380px) {
+
+  .division-card {
+
+    padding: 18px 14px;
 
   }
 
   .division-icon {
 
-    width: 60px;
+    width: 65px;
 
-    height: 60px;
+  }
 
-    font-size: 28px;
+  .division-logo {
+
+    width: 62px;
+
+  }
+
+  .division-content {
+
+    padding-left: 10px;
+
+  }
+
+  .division-name {
+
+    font-size: 18px;
+
+  }
+
+  .division-description {
+
+    font-size: 13px;
 
   }
 
@@ -700,7 +844,6 @@ body {
 
 
 <body>
-
 
 <div class="app">
 
@@ -715,17 +858,16 @@ body {
 
   <header class="app-header">
 
+    <!-- RPS LOGO -->
     <img
+      id="homeRpsLogo"
       src="IMAGE/RPS.png"
       alt="PT Rizki Piara Sejahtera"
-      class="app-logo">
-
-    <div class="home-brand">
-      RAIDALL
-    </div>
+      class="rps-logo">
 
     <div class="app-title">
-      Sales Assistant
+      RAIDALL<br>
+      <span>Sales Assistant</span>
     </div>
 
   </header>
@@ -742,13 +884,17 @@ body {
 
     <button
       class="division-card petcare"
+      type="button"
       onclick="openDivision('PETCARE')">
 
-      <div class="division-icon division-logo">
+      <div class="division-icon">
+
         <img
-          src="IMAGE/RAIDALL_PETCARE.png"
-          alt="RAIDALL Pet Care"
-          onerror="this.style.display='none';this.parentElement.textContent='RA';">
+          id="homePetcareLogo"
+          src="IMAGE/RAIDALL PETCARE.png"
+          alt="RAID ALL Pet Care"
+          class="division-logo">
+
       </div>
 
       <div class="division-content">
@@ -774,13 +920,17 @@ body {
 
     <button
       class="division-card livestock"
+      type="button"
       onclick="openDivision('LIVESTOCK')">
 
-      <div class="division-icon division-logo">
+      <div class="division-icon">
+
         <img
-          src="IMAGE/RAIDALL_LIVESTOCK.png"
-          alt="RAIDALL Livestock"
-          onerror="this.style.display='none';this.parentElement.textContent='RA';">
+          id="homeLivestockLogo"
+          src="IMAGE/RAIDALL LIVESTOCK.png"
+          alt="RAID ALL Livestock"
+          class="division-logo">
+
       </div>
 
       <div class="division-content">
@@ -806,13 +956,17 @@ body {
 
     <button
       class="division-card aquaculture"
+      type="button"
       onclick="openDivision('AQUACULTURE')">
 
-      <div class="division-icon division-logo">
+      <div class="division-icon">
+
         <img
-          src="IMAGE/RAIDALL_AQUACULTURE.png"
-          alt="RAIDALL Aquaculture"
-          onerror="this.style.display='none';this.parentElement.textContent='RA';">
+          id="homeAquacultureLogo"
+          src="IMAGE/RAIDALL AQUACULTURE.png"
+          alt="RAID ALL Aquaculture"
+          class="division-logo">
+
       </div>
 
       <div class="division-content">
@@ -838,7 +992,6 @@ body {
 </section>
 
 
-
 <!-- ===================================================
      DIVISION PRODUCT PAGE
      =================================================== -->
@@ -859,6 +1012,12 @@ body {
       ← Home
 
     </button>
+
+    <img
+      id="divisionHeaderLogo"
+      class="division-header-logo"
+      src=""
+      alt="RAID ALL">
 
     <div
       id="divisionTitle"
@@ -895,7 +1054,6 @@ body {
 </section>
 
 
-
 <!-- ===================================================
      PRODUCT DETAIL PAGE
      =================================================== -->
@@ -915,6 +1073,12 @@ body {
       ← Kembali
 
     </button>
+
+    <img
+      id="productDetailDivisionLogo"
+      class="division-header-logo"
+      src=""
+      alt="RAID ALL">
 
     <div
       id="productDetailTitle"
@@ -943,6 +1107,22 @@ body {
 </div>
 
 
+<!-- ===================================================
+     FLOATING REFRESH BUTTON
+     =================================================== -->
+
+<button
+  id="refreshButton"
+  class="refresh-button"
+  type="button"
+  onclick="refreshApp()"
+  aria-label="Refresh aplikasi"
+  title="Refresh aplikasi">
+
+  ↻
+
+</button>
+
 
 <script>
 
@@ -952,6 +1132,34 @@ body {
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec";
+
+
+/* ===================================================
+   LOGO CONFIG
+   =================================================== */
+
+/*
+ * Nama file PNG di folder IMAGE GitHub.
+ *
+ * Jika nama file Anda berbeda, cukup ubah
+ * empat nama di bawah ini.
+ */
+
+const LOGOS = {
+
+  RPS:
+    "IMAGE/RPS.png",
+
+  PETCARE:
+    "IMAGE/RAIDALL PETCARE.png",
+
+  LIVESTOCK:
+    "IMAGE/RAIDALL LIVESTOCK.png",
+
+  AQUACULTURE:
+    "IMAGE/RAIDALL AQUACULTURE.png"
+
+};
 
 
 /* ===================================================
@@ -966,10 +1174,100 @@ let searchTimer = null;
 
 
 /* ===================================================
+   IMAGE CACHE BUSTER
+   =================================================== */
+
+function assetUrl(path) {
+
+  return (
+    path +
+    "?v=" +
+    encodeURIComponent(
+      window.__APP_VERSION__ ||
+      "20260809"
+    )
+  );
+
+}
+
+
+/* ===================================================
+   SAFE IMAGE LOADER
+   =================================================== */
+
+function setImage(
+  element,
+  path
+) {
+
+  if (!element || !path) {
+    return;
+  }
+
+  element.src = assetUrl(path);
+
+}
+
+
+/* ===================================================
+   INITIALIZE LOGOS
+   =================================================== */
+
+function initLogos() {
+
+  setImage(
+    document.getElementById("homeRpsLogo"),
+    LOGOS.RPS
+  );
+
+  setImage(
+    document.getElementById("homePetcareLogo"),
+    LOGOS.PETCARE
+  );
+
+  setImage(
+    document.getElementById("homeLivestockLogo"),
+    LOGOS.LIVESTOCK
+  );
+
+  setImage(
+    document.getElementById("homeAquacultureLogo"),
+    LOGOS.AQUACULTURE
+  );
+
+}
+
+
+/* ===================================================
+   DIVISION LOGO
+   =================================================== */
+
+function getDivisionLogo(
+  division
+) {
+
+  const key =
+    String(
+      division || ""
+    )
+    .trim()
+    .toUpperCase();
+
+  return (
+    LOGOS[key] ||
+    LOGOS.RPS
+  );
+
+}
+
+
+/* ===================================================
    DIVISION NAME
    =================================================== */
 
-function getDivisionName(division) {
+function getDivisionName(
+  division
+) {
 
   const names = {
 
@@ -984,7 +1282,64 @@ function getDivisionName(division) {
 
   };
 
-  return names[division] || division;
+  return (
+    names[
+      String(
+        division || ""
+      )
+      .trim()
+      .toUpperCase()
+    ] ||
+    division
+  );
+
+}
+
+
+/* ===================================================
+   APPLY DIVISION HEADER
+   =================================================== */
+
+function applyDivisionHeader(
+  division
+) {
+
+  const logo =
+    document.getElementById(
+      "divisionHeaderLogo"
+    );
+
+  if (logo) {
+
+    setImage(
+      logo,
+      getDivisionLogo(division)
+    );
+
+    logo.alt =
+      "RAID ALL " +
+      getDivisionName(division);
+
+  }
+
+
+  const detailLogo =
+    document.getElementById(
+      "productDetailDivisionLogo"
+    );
+
+  if (detailLogo) {
+
+    setImage(
+      detailLogo,
+      getDivisionLogo(division)
+    );
+
+    detailLogo.alt =
+      "RAID ALL " +
+      getDivisionName(division);
+
+  }
 
 }
 
@@ -993,12 +1348,16 @@ function getDivisionName(division) {
    OPEN DIVISION
    =================================================== */
 
-async function openDivision(division) {
+async function openDivision(
+  division
+) {
 
   currentDivision =
-    String(division || "")
-      .trim()
-      .toUpperCase();
+    String(
+      division || ""
+    )
+    .trim()
+    .toUpperCase();
 
 
   /*
@@ -1025,7 +1384,18 @@ async function openDivision(division) {
   document
     .getElementById("divisionTitle")
     .textContent =
-      getDivisionName(currentDivision);
+      getDivisionName(
+        currentDivision
+      );
+
+
+  /*
+   * Division logo
+   */
+
+  applyDivisionHeader(
+    currentDivision
+  );
 
 
   /*
@@ -1070,7 +1440,9 @@ async function openDivision(division) {
    LOAD PRODUCTS
    =================================================== */
 
-async function loadProducts(search = "") {
+async function loadProducts(
+  search = ""
+) {
 
   try {
 
@@ -1078,22 +1450,31 @@ async function loadProducts(search = "") {
       API_URL +
       "?api=1&action=products" +
       "&division=" +
-      encodeURIComponent(currentDivision);
+      encodeURIComponent(
+        currentDivision
+      ) +
+      "&_=" +
+      Date.now();
 
 
     if (search) {
 
       url +=
         "&search=" +
-        encodeURIComponent(search);
+        encodeURIComponent(
+          search
+        );
 
     }
 
 
     const response =
-      await fetch(url, {
-        cache: "no-store"
-      });
+      await fetch(
+        url,
+        {
+          cache: "no-store"
+        }
+      );
 
 
     if (!response.ok) {
@@ -1121,47 +1502,57 @@ async function loadProducts(search = "") {
 
 
     let products =
-      Array.isArray(result.data)
+      Array.isArray(
+        result.data
+      )
         ? result.data
         : [];
 
 
     /*
-     * =================================================
      * DOUBLE PROTECTION DIVISION
      *
-     * Jangan pernah biarkan data Livestock
-     * masuk ke Pet Care / Aqua.
-     * =================================================
+     * Jangan pernah biarkan data
+     * divisi lain masuk.
      */
 
     products =
-      products.filter(product => {
+      products.filter(
+        product => {
 
-        const productDivision =
-          String(
-            product.Division || ""
-          )
-          .trim()
-          .toUpperCase();
-
-
-        return (
-          productDivision ===
-          currentDivision
-        );
-
-      });
+          const productDivision =
+            String(
+              product.Division ||
+              ""
+            )
+            .trim()
+            .toUpperCase();
 
 
-    allProducts = products;
+          return (
+            productDivision ===
+            currentDivision
+          );
+
+        }
+      );
+
+
+    allProducts =
+      products;
+
 
     console.log(
       "FRONTEND PRODUCT RESULT:",
-      JSON.stringify(allProducts)
+      JSON.stringify(
+        allProducts
+      )
     );
 
-    renderProducts(products);
+
+    renderProducts(
+      products
+    );
 
 
   } catch (error) {
@@ -1173,7 +1564,9 @@ async function loadProducts(search = "") {
 
 
     document
-      .getElementById("productContainer")
+      .getElementById(
+        "productContainer"
+      )
       .innerHTML =
 
       `<div class="error">
@@ -1197,15 +1590,19 @@ async function loadProducts(search = "") {
    RENDER PRODUCTS
    =================================================== */
 
-function renderProducts(products) {
+function renderProducts(
+  products
+) {
 
   const container =
-    document.getElementById("productContainer");
+    document.getElementById(
+      "productContainer"
+    );
 
 
-  // =================================================
-  // EMPTY DATABASE
-  // =================================================
+  /*
+   * EMPTY DATABASE
+   */
 
   if (
     !products ||
@@ -1243,27 +1640,32 @@ function renderProducts(products) {
   }
 
 
-  // =================================================
-  // API SEKARANG SUDAH MENGIRIM
-  // 1 PRODUCT + ARRAY VARIANTS
-  // =================================================
+  /*
+   * API SEKARANG SUDAH MENGIRIM
+   * 1 PRODUCT + ARRAY VARIANTS
+   */
 
   const productList =
-    products.filter(product => {
+    products.filter(
+      product => {
 
-      const code =
-        String(
-          product.ProductCode || ""
-        ).trim();
+        const code =
+          String(
+            product.ProductCode ||
+            ""
+          ).trim();
 
-      return code !== "";
+        return (
+          code !== ""
+        );
 
-    });
+      }
+    );
 
 
-  // =================================================
-  // PRODUCT COUNT
-  // =================================================
+  /*
+   * PRODUCT COUNT
+   */
 
   let html =
 
@@ -1277,129 +1679,140 @@ function renderProducts(products) {
     </div>`;
 
 
-  // =================================================
-  // PRODUCT CARD
-  // =================================================
+  /*
+   * PRODUCT CARD
+   */
 
-  productList.forEach(product => {
+  productList.forEach(
+    product => {
 
-    let variantsHtml = "";
-
-
-    const variants =
-      Array.isArray(product.Variants)
-        ? product.Variants
-        : [];
+      let variantsHtml = "";
 
 
-    variants.forEach(
-      variant => {
-
-        const variantName =
-          variant.Variant || "-";
-
-        const variantPrice =
-          variant.Price || "-";
+      const variants =
+        Array.isArray(
+          product.Variants
+        )
+          ? product.Variants
+          : [];
 
 
-        variantsHtml +=
+      variants.forEach(
+        variant => {
+
+          const variantName =
+            variant.Variant ||
+            "-";
+
+
+          const variantPrice =
+            variant.Price ||
+            "-";
+
+
+          variantsHtml +=
+
+            `<span
+              class="product-variant">
+
+              ${escapeHtml(
+                variantName
+              )}
+
+              &nbsp;
+
+              <strong>
+
+                ${escapeHtml(
+                  formatPrice(
+                    variantPrice
+                  )
+                )}
+
+              </strong>
+
+            </span>`;
+
+        }
+      );
+
+
+      if (!variants.length) {
+
+        variantsHtml =
 
           `<span
             class="product-variant">
 
-            ${escapeHtml(
-              variantName
-            )}
-
-            &nbsp;
-
-            <strong>
-              ${escapeHtml(
-                formatPrice(
-                  variantPrice
-                )
-              )}
-            </strong>
+            -
 
           </span>`;
 
       }
-    );
 
 
-    // Jika tidak ada variant
-    if (!variants.length) {
+      html +=
 
-      variantsHtml =
-
-        `<span
-          class="product-variant">
-
-          -
-
-        </span>`;
-
-    }
+        `<div
+          class="product-card"
+          data-product-code="${escapeHtml(
+            product.ProductCode
+          )}">
 
 
-    html +=
+          <div class="product-name">
 
-      `<div
-        class="product-card"
-        data-product-code="${escapeHtml(
-          product.ProductCode
-        )}">
+            ${escapeHtml(
+              product.ProductName ||
+              "-"
+            )}
 
-
-        <div class="product-name">
-
-          ${escapeHtml(
-            product.ProductName || "-"
-          )}
-
-        </div>
+          </div>
 
 
-        <div class="product-meta">
+          <div class="product-meta">
 
-          ${escapeHtml(
-            product.Category || "-"
-          )}
+            ${escapeHtml(
+              product.Category ||
+              "-"
+            )}
 
-          •
+            •
 
-          ${escapeHtml(
-            product.Species || "-"
-          )}
+            ${escapeHtml(
+              product.Species ||
+              "-"
+            )}
 
-        </div>
-
-
-        <div class="product-variants">
-
-          ${variantsHtml}
-
-        </div>
+          </div>
 
 
-        <div class="product-detail-hint">
+          <div class="product-variants">
 
-          Lihat Detail ›
+            ${variantsHtml}
 
-        </div>
-
-
-      </div>`;
-
-  });
+          </div>
 
 
-  container.innerHTML = html;
+          <div class="product-detail-hint">
+
+            Lihat Detail ›
+
+          </div>
 
 
-  // =================================================
-  // CLICK PRODUCT CARD
-  // =================================================
+        </div>`;
+
+    });
+
+
+  container.innerHTML =
+    html;
+
+
+  /*
+   * CLICK PRODUCT CARD
+   */
 
   const cards =
     container.querySelectorAll(
@@ -1407,21 +1820,26 @@ function renderProducts(products) {
     );
 
 
-  cards.forEach(card => {
+  cards.forEach(
+    card => {
 
-    card.addEventListener(
-      "click",
-      function() {
+      card.addEventListener(
+        "click",
+        function() {
 
-        const code =
-          this.dataset.productCode;
+          const code =
+            this.dataset
+              .productCode;
 
-        openProductDetail(code);
+          openProductDetail(
+            code
+          );
 
-      }
-    );
+        }
+      );
 
-  });
+    }
+  );
 
 }
 
@@ -1440,9 +1858,9 @@ function openProductDetail(
     ).trim();
 
 
-  // =================================================
-  // CARI PRODUCT DARI API RESULT
-  // =================================================
+  /*
+   * Cari product dari API result
+   */
 
   const product =
     allProducts.find(
@@ -1450,8 +1868,10 @@ function openProductDetail(
 
         return (
           String(
-            item.ProductCode || ""
-          ).trim() === code
+            item.ProductCode ||
+            ""
+          ).trim() ===
+          code
         );
 
       }
@@ -1469,9 +1889,9 @@ function openProductDetail(
   }
 
 
-  // =================================================
-  // VARIANTS
-  // =================================================
+  /*
+   * Variants
+   */
 
   const variants =
     Array.isArray(
@@ -1493,7 +1913,8 @@ function openProductDetail(
           class="product-variant">
 
           ${escapeHtml(
-            variant.Variant || "-"
+            variant.Variant ||
+            "-"
           )}
 
           &nbsp;
@@ -1528,43 +1949,66 @@ function openProductDetail(
   }
 
 
-  // =================================================
-  // HIDE ALL PAGE
-  // =================================================
+  /*
+   * Hide all page
+   */
 
   document
-    .getElementById("homePage")
-    .classList.remove("active");
-
-
-  document
-    .getElementById("divisionPage")
-    .classList.remove("active");
-
-
-  // =================================================
-  // SHOW DETAIL
-  // =================================================
+    .getElementById(
+      "homePage"
+    )
+    .classList.remove(
+      "active"
+    );
 
   document
-    .getElementById("productDetailPage")
-    .classList.add("active");
+    .getElementById(
+      "divisionPage"
+    )
+    .classList.remove(
+      "active"
+    );
 
 
-  // =================================================
-  // TITLE
-  // =================================================
+  /*
+   * Show detail
+   */
 
   document
-    .getElementById("productDetailTitle")
+    .getElementById(
+      "productDetailPage"
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  /*
+   * Header logo
+   */
+
+  applyDivisionHeader(
+    product.Division ||
+    currentDivision
+  );
+
+
+  /*
+   * Title
+   */
+
+  document
+    .getElementById(
+      "productDetailTitle"
+    )
     .textContent =
       product.ProductName ||
       "Detail Produk";
 
 
-  // =================================================
-  // IMAGE
-  // =================================================
+  /*
+   * Image
+   */
 
   let imageHtml = "";
 
@@ -1584,16 +2028,19 @@ function openProductDetail(
           product.Image
         )}"
         alt="${escapeHtml(
-          product.ProductName || ""
+          product.ProductName ||
+          ""
         )}"
-        onerror="this.style.display='none';">`;
+        onerror="
+          this.style.display='none';
+        ">`;
 
   }
 
 
-  // =================================================
-  // DETAIL HTML
-  // =================================================
+  /*
+   * DETAIL HTML
+   */
 
   const container =
     document.getElementById(
@@ -1605,14 +2052,30 @@ function openProductDetail(
 
     `<div class="detail-card">
 
-
       ${imageHtml}
+
+
+      <img
+        class="detail-division-logo"
+        src="${assetUrl(
+          getDivisionLogo(
+            product.Division ||
+            currentDivision
+          )
+        )}"
+        alt="${escapeHtml(
+          getDivisionName(
+            product.Division ||
+            currentDivision
+          )
+        )}">
 
 
       <div class="product-name">
 
         ${escapeHtml(
-          product.ProductName || "-"
+          product.ProductName ||
+          "-"
         )}
 
       </div>
@@ -1627,7 +2090,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.ProductCode || "-"
+            product.ProductCode ||
+            "-"
           )}
 
         </div>
@@ -1664,7 +2128,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Category || "-"
+            product.Category ||
+            "-"
           )}
 
         </div>
@@ -1681,7 +2146,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Species || "-"
+            product.Species ||
+            "-"
           )}
 
         </div>
@@ -1713,7 +2179,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Composition || "-"
+            product.Composition ||
+            "-"
           )}
 
         </div>
@@ -1730,7 +2197,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Function || "-"
+            product.Function ||
+            "-"
           )}
 
         </div>
@@ -1747,7 +2215,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Description || "-"
+            product.Description ||
+            "-"
           )}
 
         </div>
@@ -1764,7 +2233,8 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Problem_Symptom || "-"
+            product.Problem_Symptom ||
+            "-"
           )}
 
         </div>
@@ -1781,17 +2251,18 @@ function openProductDetail(
         <div class="detail-value">
 
           ${escapeHtml(
-            product.Usage || "-"
+            product.Usage ||
+            "-"
           )}
 
         </div>
 
       </div>
 
-
     </div>`;
 
 }
+
 
 /* ===================================================
    CLOSE PRODUCT DETAIL
@@ -1799,30 +2270,42 @@ function openProductDetail(
 
 function closeProductDetail() {
 
-  /*
-   * Kembali ke division page,
-   * bukan Home.
-   */
-
   document
     .getElementById(
       "productDetailPage"
     )
-    .classList.remove("active");
+    .classList.remove(
+      "active"
+    );
 
 
   document
     .getElementById(
       "homePage"
     )
-    .classList.remove("active");
+    .classList.remove(
+      "active"
+    );
 
 
   document
     .getElementById(
       "divisionPage"
     )
-    .classList.add("active");
+    .classList.add(
+      "active"
+    );
+
+
+  applyDivisionHeader(
+    currentDivision
+  );
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
 
 }
 
@@ -1870,58 +2353,47 @@ document
 
 function goHome() {
 
-  /*
-   * Hide semua page
-   */
-
   document
     .getElementById(
       "divisionPage"
     )
-    .classList.remove("active");
+    .classList.remove(
+      "active"
+    );
 
 
   document
     .getElementById(
       "productDetailPage"
     )
-    .classList.remove("active");
+    .classList.remove(
+      "active"
+    );
 
-
-  /*
-   * Show Home
-   */
 
   document
     .getElementById(
       "homePage"
     )
-    .classList.add("active");
+    .classList.add(
+      "active"
+    );
 
 
-  /*
-   * Reset state
-   */
+  currentDivision =
+    "";
 
-  currentDivision = "";
+  allProducts =
+    [];
 
-  allProducts = [];
-
-
-  /*
-   * Reset search
-   */
 
   document
     .getElementById(
       "searchInput"
     )
-    .value = "";
+    .value =
+      "";
 
-
-  /*
-   * Scroll ke paling atas
-   */
 
   window.scrollTo({
     top: 0,
@@ -1935,7 +2407,9 @@ function goHome() {
    FORMAT PRICE
    =================================================== */
 
-function formatPrice(value) {
+function formatPrice(
+  value
+) {
 
   if (
     value === null ||
@@ -1951,11 +2425,6 @@ function formatPrice(value) {
   const text =
     String(value).trim();
 
-
-  /*
-   * Jika sudah bukan angka murni,
-   * tetap tampilkan nilai asli.
-   */
 
   const number =
     Number(
@@ -1989,7 +2458,9 @@ function formatPrice(value) {
    HTML ESCAPE
    =================================================== */
 
-function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
   return String(value)
 
@@ -2019,6 +2490,79 @@ function escapeHtml(value) {
     );
 
 }
+
+
+/* ===================================================
+   REFRESH APP
+   =================================================== */
+
+/*
+ * Ini tombol refresh untuk Android / browser.
+ *
+ * Yang dilakukan:
+ * 1. Meminta browser mengambil HTML terbaru.
+ * 2. Memberikan timestamp agar URL tidak dianggap
+ *    sebagai halaman lama.
+ * 3. API juga memakai timestamp sehingga data
+ *    Spreadsheet terbaru langsung diambil.
+ */
+
+function refreshApp() {
+
+  const button =
+    document.getElementById(
+      "refreshButton"
+    );
+
+
+  if (button) {
+
+    button.classList.add(
+      "loading"
+    );
+
+  }
+
+
+  const separator =
+    window.location.href
+      .includes("?")
+      ? "&"
+      : "?";
+
+
+  window.location.href =
+    window.location.pathname +
+    separator +
+    "refresh=" +
+    Date.now();
+
+}
+
+
+/* ===================================================
+   START
+   =================================================== */
+
+window.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    /*
+     * Set logo home.
+     */
+
+    initLogos();
+
+    /*
+     * Default version.
+     */
+
+    window.__APP_VERSION__ =
+      String(Date.now());
+
+  }
+);
 
 </script>
 
