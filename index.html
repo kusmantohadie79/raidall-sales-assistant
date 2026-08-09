@@ -1098,6 +1098,10 @@ async function loadProducts(search = "") {
 
     allProducts = products;
 
+    console.log(
+      "FRONTEND PRODUCT RESULT:",
+      JSON.stringify(allProducts)
+    );
 
     renderProducts(products);
 
@@ -1138,14 +1142,12 @@ async function loadProducts(search = "") {
 function renderProducts(products) {
 
   const container =
-    document.getElementById(
-      "productContainer"
-    );
+    document.getElementById("productContainer");
 
 
-  /*
-   * EMPTY DATABASE
-   */
+  // =================================================
+  // EMPTY DATABASE
+  // =================================================
 
   if (
     !products ||
@@ -1161,7 +1163,9 @@ function renderProducts(products) {
         </div>
 
         <div class="empty-text">
+
           Data produk untuk divisi
+
           <strong>
             ${escapeHtml(
               getDivisionName(
@@ -1169,7 +1173,9 @@ function renderProducts(products) {
               )
             )}
           </strong>
+
           belum tersedia.
+
         </div>
 
       </div>`;
@@ -1179,99 +1185,27 @@ function renderProducts(products) {
   }
 
 
-  /*
-   * =================================================
-   * GROUP BY PRODUCT CODE
-   * =================================================
-   */
-
-  const grouped = {};
-
-
-  products.forEach(product => {
-
-    const code =
-      String(
-        product.ProductCode || ""
-      ).trim();
-
-
-    if (!code) {
-
-      return;
-
-    }
-
-
-    if (!grouped[code]) {
-
-      grouped[code] = {
-
-        ProductCode:
-          code,
-
-        ProductName:
-          product.ProductName || "",
-
-        Division:
-          product.Division || "",
-
-        Category:
-          product.Category || "",
-
-        Species:
-          product.Species || "",
-
-        Composition:
-          product.Composition || "",
-
-        Description:
-          product.Description || "",
-
-        Function:
-          product.Function || "",
-
-        Problem_Symptom:
-          product.Problem_Symptom || "",
-
-        Usage:
-          product.Usage || "",
-
-        SearchKeyword:
-          product.SearchKeyword || "",
-
-        Image:
-          product.Image || "",
-
-        Variants: []
-
-      };
-
-    }
-
-
-    grouped[code]
-      .Variants
-      .push({
-
-        Variant:
-          product.Variant || "-",
-
-        Price:
-          product.Price || "-"
-
-      });
-
-  });
-
+  // =================================================
+  // API SEKARANG SUDAH MENGIRIM
+  // 1 PRODUCT + ARRAY VARIANTS
+  // =================================================
 
   const productList =
-    Object.values(grouped);
+    products.filter(product => {
+
+      const code =
+        String(
+          product.ProductCode || ""
+        ).trim();
+
+      return code !== "";
+
+    });
 
 
-  /*
-   * PRODUCT COUNT
-   */
+  // =================================================
+  // PRODUCT COUNT
+  // =================================================
 
   let html =
 
@@ -1285,17 +1219,30 @@ function renderProducts(products) {
     </div>`;
 
 
-  /*
-   * PRODUCT CARD
-   */
+  // =================================================
+  // PRODUCT CARD
+  // =================================================
 
   productList.forEach(product => {
 
     let variantsHtml = "";
 
 
-    product.Variants.forEach(
+    const variants =
+      Array.isArray(product.Variants)
+        ? product.Variants
+        : [];
+
+
+    variants.forEach(
       variant => {
+
+        const variantName =
+          variant.Variant || "-";
+
+        const variantPrice =
+          variant.Price || "-";
+
 
         variantsHtml +=
 
@@ -1303,7 +1250,7 @@ function renderProducts(products) {
             class="product-variant">
 
             ${escapeHtml(
-              variant.Variant
+              variantName
             )}
 
             &nbsp;
@@ -1311,7 +1258,7 @@ function renderProducts(products) {
             <strong>
               ${escapeHtml(
                 formatPrice(
-                  variant.Price
+                  variantPrice
                 )
               )}
             </strong>
@@ -1322,6 +1269,21 @@ function renderProducts(products) {
     );
 
 
+    // Jika tidak ada variant
+    if (!variants.length) {
+
+      variantsHtml =
+
+        `<span
+          class="product-variant">
+
+          -
+
+        </span>`;
+
+    }
+
+
     html +=
 
       `<div
@@ -1329,6 +1291,7 @@ function renderProducts(products) {
         data-product-code="${escapeHtml(
           product.ProductCode
         )}">
+
 
         <div class="product-name">
 
@@ -1346,7 +1309,7 @@ function renderProducts(products) {
           )}
 
           •
-          
+
           ${escapeHtml(
             product.Species || "-"
           )}
@@ -1367,6 +1330,7 @@ function renderProducts(products) {
 
         </div>
 
+
       </div>`;
 
   });
@@ -1375,11 +1339,9 @@ function renderProducts(products) {
   container.innerHTML = html;
 
 
-  /*
-   * =================================================
-   * CLICK EVENT PRODUCT CARD
-   * =================================================
-   */
+  // =================================================
+  // CLICK PRODUCT CARD
+  // =================================================
 
   const cards =
     container.querySelectorAll(
@@ -1420,25 +1382,25 @@ function openProductDetail(
     ).trim();
 
 
-  /*
-   * Cari semua row dengan ProductCode sama
-   */
+  // =================================================
+  // CARI PRODUCT DARI API RESULT
+  // =================================================
 
-  const matchingProducts =
-    allProducts.filter(product => {
+  const product =
+    allProducts.find(
+      item => {
 
-      return (
-        String(
-          product.ProductCode || ""
-        ).trim() === code
-      );
+        return (
+          String(
+            item.ProductCode || ""
+          ).trim() === code
+        );
 
-    });
+      }
+    );
 
 
-  if (
-    !matchingProducts.length
-  ) {
+  if (!product) {
 
     alert(
       "Detail produk tidak ditemukan."
@@ -1449,68 +1411,17 @@ function openProductDetail(
   }
 
 
-  /*
-   * Ambil row pertama sebagai master
-   */
-
-  const product =
-    matchingProducts[0];
-
-
-  /*
-   * Gabungkan variants
-   */
+  // =================================================
+  // VARIANTS
+  // =================================================
 
   const variants =
-    matchingProducts.map(
-      item => ({
+    Array.isArray(
+      product.Variants
+    )
+      ? product.Variants
+      : [];
 
-        Variant:
-          item.Variant || "-",
-
-        Price:
-          item.Price || "-"
-
-      })
-    );
-
-
-  /*
-   * Hide semua page
-   */
-
-  document
-    .getElementById("homePage")
-    .classList.remove("active");
-
-  document
-    .getElementById("divisionPage")
-    .classList.remove("active");
-
-
-  /*
-   * Show detail page
-   */
-
-  document
-    .getElementById("productDetailPage")
-    .classList.add("active");
-
-
-  /*
-   * Title
-   */
-
-  document
-    .getElementById("productDetailTitle")
-    .textContent =
-      product.ProductName ||
-      "Detail Produk";
-
-
-  /*
-   * Render variants
-   */
 
   let variantsHtml = "";
 
@@ -1524,17 +1435,19 @@ function openProductDetail(
           class="product-variant">
 
           ${escapeHtml(
-            variant.Variant
+            variant.Variant || "-"
           )}
 
           &nbsp;
 
           <strong>
+
             ${escapeHtml(
               formatPrice(
                 variant.Price
               )
             )}
+
           </strong>
 
         </span>`;
@@ -1543,9 +1456,57 @@ function openProductDetail(
   );
 
 
-  /*
-   * Image
-   */
+  if (!variants.length) {
+
+    variantsHtml =
+
+      `<span
+        class="product-variant">
+
+        -
+
+      </span>`;
+
+  }
+
+
+  // =================================================
+  // HIDE ALL PAGE
+  // =================================================
+
+  document
+    .getElementById("homePage")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("divisionPage")
+    .classList.remove("active");
+
+
+  // =================================================
+  // SHOW DETAIL
+  // =================================================
+
+  document
+    .getElementById("productDetailPage")
+    .classList.add("active");
+
+
+  // =================================================
+  // TITLE
+  // =================================================
+
+  document
+    .getElementById("productDetailTitle")
+    .textContent =
+      product.ProductName ||
+      "Detail Produk";
+
+
+  // =================================================
+  // IMAGE
+  // =================================================
 
   let imageHtml = "";
 
@@ -1572,9 +1533,9 @@ function openProductDetail(
   }
 
 
-  /*
-   * DETAIL HTML
-   */
+  // =================================================
+  // DETAIL HTML
+  // =================================================
 
   const container =
     document.getElementById(
@@ -1585,6 +1546,7 @@ function openProductDetail(
   container.innerHTML =
 
     `<div class="detail-card">
+
 
       ${imageHtml}
 
@@ -1768,10 +1730,10 @@ function openProductDetail(
 
       </div>
 
+
     </div>`;
 
 }
-
 
 /* ===================================================
    CLOSE PRODUCT DETAIL
