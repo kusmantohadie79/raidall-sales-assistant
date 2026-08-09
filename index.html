@@ -12,7 +12,7 @@
 <link 
   rel="icon" 
   type="image/png" 
-  href="IMAGE/logo.png">
+  href="IMAGE/RPS.png">
 
 <title>RAIDALL Sales Assistant</title>
 
@@ -72,13 +72,47 @@ body {
 
 }
 
-.app-title {
+.home-brand {
 
   margin-top: 10px;
 
-  font-size: 20px;
+  font-size: 28px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  color: #0B7A3E;
+
+}
+
+.app-title {
+
+  margin-top: 4px;
+
+  font-size: 18px;
 
   color: #567;
+
+}
+
+.division-logo {
+
+  background: transparent !important;
+
+  border-radius: 14px;
+
+}
+
+.division-logo img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+
+  display: block;
 
 }
 
@@ -642,6 +676,12 @@ body {
 
   }
 
+  .home-brand {
+
+    font-size: 24px;
+
+  }
+
   .division-icon {
 
     width: 60px;
@@ -676,9 +716,13 @@ body {
   <header class="app-header">
 
     <img
-      src="IMAGE/logo.png"
-      alt="RAID ALL"
+      src="IMAGE/RPS.png"
+      alt="PT Rizki Piara Sejahtera"
       class="app-logo">
+
+    <div class="home-brand">
+      RAIDALL
+    </div>
 
     <div class="app-title">
       Sales Assistant
@@ -700,8 +744,11 @@ body {
       class="division-card petcare"
       onclick="openDivision('PETCARE')">
 
-      <div class="division-icon">
-        🐾
+      <div class="division-icon division-logo">
+        <img
+          src="IMAGE/RAIDALL_PETCARE.png"
+          alt="RAIDALL Pet Care"
+          onerror="this.style.display='none';this.parentElement.textContent='RA';">
       </div>
 
       <div class="division-content">
@@ -729,8 +776,11 @@ body {
       class="division-card livestock"
       onclick="openDivision('LIVESTOCK')">
 
-      <div class="division-icon">
-        🐔
+      <div class="division-icon division-logo">
+        <img
+          src="IMAGE/RAIDALL_LIVESTOCK.png"
+          alt="RAIDALL Livestock"
+          onerror="this.style.display='none';this.parentElement.textContent='RA';">
       </div>
 
       <div class="division-content">
@@ -758,8 +808,11 @@ body {
       class="division-card aquaculture"
       onclick="openDivision('AQUACULTURE')">
 
-      <div class="division-icon">
-        🐟
+      <div class="division-icon division-logo">
+        <img
+          src="IMAGE/RAIDALL_AQUACULTURE.png"
+          alt="RAIDALL Aquaculture"
+          onerror="this.style.display='none';this.parentElement.textContent='RA';">
       </div>
 
       <div class="division-content">
