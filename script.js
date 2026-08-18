@@ -1033,290 +1033,319 @@ IMAGE ATTACHMENT =====================================================
 
 async function copyWA(product) {
 
-    if (!product) {
+  if (!product) {
+    alert('Produk tidak ditemukan.');
+    return;
+  }
 
-      alert(
-        'Produk tidak ditemukan.'
-      );
+  console.log(
+    '[RAIDALL] Copy WhatsApp + Download Image:',
+    product.ProductCode
+  );
 
-      return;
+  const text =
+`${product.ProductName || ''}
 
-    }
+📦 Variant
+${product.Variant || '-'}
 
-    console.log(
-      '[RAIDALL] Copy WhatsApp:',
-      product.ProductCode
-    );
+💰 Harga
+${product.Price || '-'}
 
+🐔 Species
+${product.Species || '-'}
 
-    /* ===================================================
-       BUILD WHATSAPP TEXT
-       =================================================== */
+🧪 Composition
+${product.Composition || '-'}
 
-    const text = `*${product.ProductName || ''}*
+⚙ Function
+${product.Function || '-'}
 
-📦 Variant ${product.Variant || ‘-’}
+📝 Description
+${product.Description || '-'}
 
-💰 Harga ${product.Price || ‘-’}
-
-🐔 Species ${product.Species || ‘-’}
-
-🧪 Composition ${product.Composition || ‘-’}
-
-⚙ Function ${product.Function || ‘-’}
-
-📝 Description ${product.Description || ‘-’}
-
-📖 Cara Penggunaan ${product.Usage || ‘-’}
+📖 Cara Penggunaan
+${product.Usage || '-'}
 
 PT. Rizki Piara Sejahtera`;
 
-    /* ===================================================
-       GET IMAGE BASE64 FROM APPS SCRIPT
-       =================================================== */
+  /* ===================================================
+     1. COPY TEXT
+     =================================================== */
 
-    let imageFile = null;
+  let textCopied = false;
 
-    try {
+  try {
 
-      const url =
-        API_URL +
-        '?api=1' +
-        '&action=imageBase64' +
-        '&code=' +
-        encodeURIComponent(
-          product.ProductCode
-        );
+    await navigator.clipboard.writeText(text);
 
-      console.log(
-        '[RAIDALL] Image Base64 URL:',
-        url
-      );
+    textCopied = true;
 
-      const response =
-        await fetch(
-          url,
-          {
-            method: 'GET',
-            cache: 'no-store'
-          }
-        );
+  } catch (error) {
 
-      if (!response.ok) {
-
-        throw new Error(
-          'HTTP ' +
-          response.status
-        );
-
-      }
-
-      const result =
-        await response.json();
-
-      console.log(
-        '[RAIDALL] Image Base64 Result:',
-        {
-          success: result.success,
-          productCode: result.productCode,
-          fileName: result.fileName,
-          mimeType: result.mimeType,
-          base64Length:
-            result.base64
-              ? result.base64.length
-              : 0
-        }
-      );
-
-      if (
-        !result.success ||
-        !result.base64
-      ) {
-
-        throw new Error(
-          result.error ||
-          'Image Base64 tidak tersedia.'
-        );
-
-      }
-
-      const binary =
-        atob(result.base64);
-
-      const bytes =
-        new Uint8Array(
-          binary.length
-        );
-
-      for (
-        let i = 0;
-        i < binary.length;
-        i++
-      ) {
-
-        bytes[i] =
-          binary.charCodeAt(i);
-
-      }
-
-      const mime =
-        result.mimeType ||
-        'image/png';
-
-      const blob =
-        new Blob(
-          [bytes],
-          {
-            type: mime
-          }
-        );
-
-      imageFile =
-        new File(
-          [blob],
-          result.fileName ||
-          `${product.ProductCode}.png`,
-          {
-            type: mime
-          }
-        );
-
-      currentProductImageFile =
-        imageFile;
-
-      console.log(
-        '[RAIDALL] Image File:',
-        imageFile.name,
-        imageFile.type,
-        imageFile.size
-      );
-
-    } catch (error) {
-
-      console.error(
-        '[RAIDALL] Image Base64 Error:',
-        error
-      );
-
-      imageFile = null;
-      currentProductImageFile = null;
-
-    }
-
-
-    /* ===================================================
-       SHARE TEXT + IMAGE
-       =================================================== */
-
-    if (
-      imageFile &&
-      navigator.share &&
-      navigator.canShare &&
-      navigator.canShare({
-        files: [
-          imageFile
-        ]
-      })
-    ) {
-
-      try {
-
-        console.log(
-          '[RAIDALL] Attempting Web Share with image...'
-        );
-
-        await navigator.share({
-
-          title:
-            product.ProductName ||
-            'RAID ALL Product',
-
-          text:
-            text,
-
-          files: [
-            imageFile
-          ]
-
-        });
-
-        console.log(
-          '[RAIDALL] WhatsApp share berhasil.'
-        );
-
-        return;
-
-      } catch (error) {
-
-        console.warn(
-          '[RAIDALL] Share dibatalkan/gagal:',
-          error
-        );
-
-      }
-
-    } else {
-
-      console.warn(
-        '[RAIDALL] Web Share API / file sharing tidak tersedia.'
-      );
-
-    }
-
-
-    /* ===================================================
-       FALLBACK TEXT ONLY
-       =================================================== */
+    console.warn(
+      '[RAIDALL] Clipboard API failed:',
+      error
+    );
 
     try {
-
-      await navigator.clipboard.writeText(
-        text
-      );
-
-      alert(
-        'Informasi produk berhasil dicopy.\n\n' +
-        'Browser/perangkat ini tidak mendukung ' +
-        'attachment image otomatis melalui Web Share.'
-      );
-
-    } catch (error) {
-
-      console.error(
-        '[RAIDALL] Clipboard error:',
-        error
-      );
 
       const textarea =
-        document.createElement(
-          'textarea'
-        );
+        document.createElement('textarea');
 
-      textarea.value =
-        text;
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
 
-      document.body.appendChild(
-        textarea
-      );
+      document.body.appendChild(textarea);
 
+      textarea.focus();
       textarea.select();
 
-      document.execCommand(
-        'copy'
-      );
+      textCopied =
+        document.execCommand('copy');
 
       textarea.remove();
 
-      alert(
-        'Informasi produk berhasil dicopy.'
+    } catch (fallbackError) {
+
+      console.error(
+        '[RAIDALL] Clipboard fallback failed:',
+        fallbackError
       );
 
     }
 
-}
+  }
 
-/* ===================================================== GO HOME
-===================================================== */
+  /* ===================================================
+     2. GET IMAGE FROM APPS SCRIPT
+     =================================================== */
+
+  let imageFile = null;
+
+  try {
+
+    const url =
+      API_URL +
+      '?api=1&action=imageBase64&code=' +
+      encodeURIComponent(product.ProductCode);
+
+    const response =
+      await fetch(
+        url,
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+      );
+
+    if (!response.ok) {
+      throw new Error(
+        'HTTP ' + response.status
+      );
+    }
+
+    const result =
+      await response.json();
+
+    console.log(
+      '[RAIDALL] Image Base64 Result:',
+      {
+        success: result.success,
+        productCode: result.productCode,
+        fileName: result.fileName,
+        mimeType: result.mimeType,
+        base64Length:
+          result.base64
+            ? result.base64.length
+            : 0
+      }
+    );
+
+    if (
+      !result.success ||
+      !result.base64
+    ) {
+      throw new Error(
+        result.error ||
+        'Image Base64 tidak tersedia.'
+      );
+    }
+
+    const binary =
+      atob(result.base64);
+
+    const bytes =
+      new Uint8Array(
+        binary.length
+      );
+
+    for (
+      let i = 0;
+      i < binary.length;
+      i++
+    ) {
+      bytes[i] =
+        binary.charCodeAt(i);
+    }
+
+    const mime =
+      result.mimeType ||
+      'image/png';
+
+    const blob =
+      new Blob(
+        [bytes],
+        {
+          type: mime
+        }
+      );
+
+    imageFile =
+      new File(
+        [blob],
+        result.fileName ||
+        `${product.ProductCode}.png`,
+        {
+          type: mime
+        }
+      );
+
+    currentProductImageFile =
+      imageFile;
+
+    console.log(
+      '[RAIDALL] IMAGE FILE READY:',
+      imageFile.name,
+      imageFile.type,
+      imageFile.size
+    );
+
+  } catch (error) {
+
+    console.error(
+      '[RAIDALL] Image preparation failed:',
+      error
+    );
+
+    imageFile = null;
+    currentProductImageFile = null;
+
+  }
+
+  /* ===================================================
+     3. DOWNLOAD IMAGE
+     =================================================== */
+
+  if (imageFile) {
+
+    try {
+
+      const imageURL =
+        URL.createObjectURL(
+          imageFile
+        );
+
+      const downloadLink =
+        document.createElement('a');
+
+      downloadLink.href =
+        imageURL;
+
+      downloadLink.download =
+        imageFile.name;
+
+      document.body.appendChild(
+        downloadLink
+      );
+
+      downloadLink.click();
+
+      downloadLink.remove();
+
+      setTimeout(
+        () => {
+          URL.revokeObjectURL(
+            imageURL
+          );
+        },
+        1000
+      );
+
+      console.log(
+        '[RAIDALL] Product image downloaded:',
+        imageFile.name
+      );
+
+    } catch (error) {
+
+      console.error(
+        '[RAIDALL] Image download failed:',
+        error
+      );
+
+    }
+
+  }
+
+  /* ===================================================
+     4. OPEN WHATSAPP WEB
+     =================================================== */
+
+  try {
+
+    window.open(
+      'https://web.whatsapp.com/',
+      '_blank'
+    );
+
+  } catch (error) {
+
+    console.warn(
+      '[RAIDALL] WhatsApp Web open failed:',
+      error
+    );
+
+  }
+
+  /* ===================================================
+     5. USER INSTRUCTION
+     =================================================== */
+
+  if (
+    textCopied &&
+    imageFile
+  ) {
+
+    alert(
+      'SIAP.\n\n' +
+      '① Text produk sudah dicopy.\n' +
+      '② Image produk sudah didownload.\n' +
+      '③ WhatsApp Web sudah dibuka.\n\n' +
+      'Di WhatsApp:\n' +
+      '• Buka chat tujuan.\n' +
+      '• Paste text dengan Ctrl+V.\n' +
+      '• Attach image produk yang baru didownload.'
+    );
+
+  } else if (textCopied) {
+
+    alert(
+      'Text produk sudah dicopy.\n\n' +
+      'Image produk gagal didownload.'
+    );
+
+  } else {
+
+    alert(
+      'Proses Copy WhatsApp gagal.\n\n' +
+      'Silakan coba lagi.'
+    );
+
+  }
+
+}
 
 window.goHome = function () {
 
