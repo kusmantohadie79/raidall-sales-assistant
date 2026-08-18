@@ -826,86 +826,290 @@
      PRODUCT DETAIL
      ===================================================== */
 
-  window.showProductDetail =
-    async function (productCode) {
+  /* =====================================================
+   PRODUCT DETAIL
+   ===================================================== */
+
+window.showProductDetail =
+  async function (productCode) {
+
+    console.log(
+      '[RAIDALL] Product Detail:',
+      productCode
+    );
+
+
+    try {
+
+      const url =
+        API_URL +
+        '?api=1' +
+        '&action=product' +
+        '&code=' +
+        encodeURIComponent(
+          productCode
+        );
+
+
+      const response =
+        await fetch(
+          url,
+          {
+            method: 'GET',
+            cache: 'no-store'
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          'HTTP ' +
+          response.status
+        );
+
+      }
+
+
+      const result =
+        await response.json();
+
+
+      if (!result.success) {
+
+        throw new Error(
+          result.error ||
+          'Product tidak ditemukan.'
+        );
+
+      }
+
+
+      const product =
+        result.data;
+
 
       console.log(
-        '[RAIDALL] Product Detail:',
-        productCode
+        '[RAIDALL] Product:',
+        product
       );
 
 
-      try {
+      /* =================================================
+         DETAIL MODAL
+         ================================================= */
 
-        const url =
-          API_URL +
-          '?api=1' +
-          '&action=product' +
-          '&code=' +
-          encodeURIComponent(
-            productCode
-          );
-
-
-        const response =
-          await fetch(
-            url,
-            {
-              method: 'GET',
-              cache: 'no-store'
-            }
-          );
-
-
-        const result =
-          await response.json();
-
-
-        if (!result.success) {
-
-          throw new Error(
-            result.error ||
-            'Product tidak ditemukan.'
-          );
-
-        }
-
-
-        console.log(
-          '[RAIDALL] Product:',
-          result.data
+      let oldModal =
+        document.getElementById(
+          'productDetailModal'
         );
 
 
-        /*
-         * DETAIL PRODUCT
-         *
-         * Untuk tahap ini kita tampilkan
-         * data dasar dahulu.
-         */
+      if (oldModal) {
 
-        const product =
-          result.data;
+        oldModal.remove();
+
+      }
 
 
-        alert(
-          [
-            product.ProductName,
-            '',
-            'Product Code : ' +
-              product.ProductCode,
-            'Category : ' +
-              product.Category,
-            'Species : ' +
-              product.Species,
-            'Variant : ' +
-              product.Variant,
-            'Price : ' +
-              product.Price,
-            'Composition : ' +
-              product.Composition
-          ].join('\n')
+      const modal =
+        document.createElement(
+          'div'
         );
+
+
+      modal.id =
+        'productDetailModal';
+
+
+      modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.65);
+        z-index:99999;
+        overflow:auto;
+        padding:20px;
+        box-sizing:border-box;
+      `;
+
+
+      modal.innerHTML = `
+
+        <div
+          style="
+            max-width:600px;
+            margin:20px auto;
+            background:#fff;
+            border-radius:18px;
+            padding:22px;
+            box-sizing:border-box;
+          ">
+
+          <button
+            onclick="
+              document
+                .getElementById('productDetailModal')
+                .remove()
+            "
+            style="
+              float:right;
+              border:none;
+              background:none;
+              font-size:24px;
+              cursor:pointer;
+            ">
+
+            ✕
+
+          </button>
+
+
+          <h2>
+            ${escapeHTML(
+              product.ProductName
+            )}
+          </h2>
+
+
+          <p>
+            <b>Product Code:</b>
+            ${escapeHTML(
+              product.ProductCode || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Category:</b>
+            ${escapeHTML(
+              product.Category || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Species:</b>
+            ${escapeHTML(
+              product.Species || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Variant:</b>
+            ${escapeHTML(
+              product.Variant || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Price:</b>
+            ${escapeHTML(
+              String(
+                product.Price || '-'
+              )
+            )}
+          </p>
+
+
+          <p>
+            <b>Composition:</b><br>
+            ${escapeHTML(
+              product.Composition || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Function:</b><br>
+            ${escapeHTML(
+              product.Function || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Description:</b><br>
+            ${escapeHTML(
+              product.Description || '-'
+            )}
+          </p>
+
+
+          <p>
+            <b>Cara Penggunaan:</b><br>
+            ${escapeHTML(
+              product.Usage || '-'
+            )}
+          </p>
+
+
+          <button
+            id="copyWAButton"
+            style="
+              width:100%;
+              padding:14px;
+              margin-top:20px;
+              border:none;
+              border-radius:10px;
+              background:#0B7A3E;
+              color:#fff;
+              font-size:16px;
+              font-weight:bold;
+              cursor:pointer;
+            ">
+
+            📲 Copy WhatsApp + Image
+
+          </button>
+
+
+        </div>
+
+      `;
+
+
+      document.body.appendChild(
+        modal
+      );
+
+
+      /* =================================================
+         COPY BUTTON
+         ================================================= */
+
+      document
+        .getElementById(
+          'copyWAButton'
+        )
+        .addEventListener(
+          'click',
+          function () {
+
+            copyWA(product);
+
+          }
+        );
+
+
+    }
+    catch (error) {
+
+      console.error(
+        '[RAIDALL] Detail Error:',
+        error
+      );
+
+
+      alert(
+        'Data produk tidak dapat dimuat.\n\n' +
+        error.message
+      );
+
+    }
+
+  };
 
 
       } catch (error) {
@@ -924,6 +1128,285 @@
 
     };
 
+  /* =====================================================
+   COPY WHATSAPP + IMAGE ATTACHMENT
+   ===================================================== */
+
+async function copyWA(product) {
+
+  if (!product) {
+
+    alert('Produk tidak ditemukan.');
+
+    return;
+
+  }
+
+
+  console.log(
+    '[RAIDALL] Copy WhatsApp:',
+    product.ProductCode
+  );
+
+
+  /* ===================================================
+     BUILD WHATSAPP TEXT
+     =================================================== */
+
+  const text =
+
+`*${product.ProductName || ''}*
+
+📦 Variant
+${product.Variant || '-'}
+
+💰 Harga
+${product.Price || '-'}
+
+🐔 Species
+${product.Species || '-'}
+
+🧪 Composition
+${product.Composition || '-'}
+
+⚙ Function
+${product.Function || '-'}
+
+📝 Description
+${product.Description || '-'}
+
+📖 Cara Penggunaan
+${product.Usage || '-'}
+
+PT. Rizki Piara Sejahtera`;
+
+
+  /* ===================================================
+     GET IMAGE BASE64 FROM APPS SCRIPT
+     =================================================== */
+
+  let imageFile = null;
+
+
+  try {
+
+    const url =
+      API_URL +
+      '?api=1' +
+      '&action=imageBase64' +
+      '&code=' +
+      encodeURIComponent(
+        product.ProductCode
+      );
+
+
+    console.log(
+      '[RAIDALL] Image Base64 URL:',
+      url
+    );
+
+
+    const response =
+      await fetch(
+        url,
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        'HTTP ' + response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    console.log(
+      '[RAIDALL] Image Base64 Result:',
+      result
+    );
+
+
+    if (
+      !result.success ||
+      !result.base64
+    ) {
+
+      throw new Error(
+        result.error ||
+        'Image Base64 tidak tersedia.'
+      );
+
+    }
+
+
+    /* =================================================
+       BASE64 → BLOB
+       ================================================= */
+
+    const binary =
+      atob(result.base64);
+
+
+    const bytes =
+      new Uint8Array(
+        binary.length
+      );
+
+
+    for (
+      let i = 0;
+      i < binary.length;
+      i++
+    ) {
+
+      bytes[i] =
+        binary.charCodeAt(i);
+
+    }
+
+
+    const mime =
+      result.mimeType ||
+      'image/png';
+
+
+    const blob =
+      new Blob(
+        [bytes],
+        {
+          type: mime
+        }
+      );
+
+
+    /* =================================================
+       BLOB → FILE
+       ================================================= */
+
+    imageFile =
+      new File(
+        [
+          blob
+        ],
+        result.fileName ||
+        `${product.ProductCode}.png`,
+        {
+          type: mime
+        }
+      );
+
+
+    console.log(
+      '[RAIDALL] Image File:',
+      imageFile.name,
+      imageFile.type,
+      imageFile.size
+    );
+
+
+  }
+  catch (error) {
+
+    console.error(
+      '[RAIDALL] Image Base64 Error:',
+      error
+    );
+
+    imageFile = null;
+
+  }
+
+
+  /* ===================================================
+     SHARE TEXT + IMAGE
+     =================================================== */
+
+  if (
+    imageFile &&
+    navigator.share &&
+    navigator.canShare &&
+    navigator.canShare({
+      files: [
+        imageFile
+      ]
+    })
+  ) {
+
+    try {
+
+      await navigator.share({
+
+        title:
+          product.ProductName ||
+          'RAID ALL Product',
+
+        text:
+          text,
+
+        files: [
+          imageFile
+        ]
+
+      });
+
+
+      console.log(
+        '[RAIDALL] WhatsApp share berhasil.'
+      );
+
+
+      return;
+
+    }
+    catch (error) {
+
+      console.warn(
+        '[RAIDALL] Share dibatalkan/gagal:',
+        error
+      );
+
+    }
+
+  }
+
+
+  /* ===================================================
+     FALLBACK TEXT ONLY
+     =================================================== */
+
+  try {
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+
+    alert(
+      'Informasi produk berhasil dicopy.\n\n' +
+      'Browser/perangkat tidak mendukung ' +
+      'attachment image otomatis.'
+    );
+
+  }
+  catch (error) {
+
+    console.error(
+      '[RAIDALL] Clipboard error:',
+      error
+    );
+
+  }
+
+}
 
   /* =====================================================
      GO HOME
