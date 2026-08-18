@@ -3,174 +3,398 @@
 const API_URL =
 ‘https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec’;
 
-const loading = document.getElementById(‘loading’); const homePage =
-document.getElementById(‘homePage’); const divisionPage =
-document.getElementById(‘divisionPage’); const livestockPage =
-document.getElementById(‘livestockPage’); const divisionContent =
-document.getElementById(‘divisionContent’);
+const loading = document.getElementById(‘loading’);
+
+const homePage = document.getElementById(‘homePage’);
+
+const divisionPage = document.getElementById(‘divisionPage’);
+
+const livestockPage = document.getElementById(‘livestockPage’);
+
+const divisionContent = document.getElementById(‘divisionContent’);
 
 let currentProductImageFile = null;
 
-function hideLoading() { if (!loading) return; loading.style.opacity =
-‘0’; setTimeout(() => { loading.style.display = ‘none’; }, 300); }
+/* ===================================================== LOADING
+===================================================== */
 
-function showHome() { if (homePage) homePage.classList.add(‘active’); if
-(divisionPage) divisionPage.classList.remove(‘active’); if
-(livestockPage) livestockPage.classList.remove(‘active’); }
+function hideLoading() {
 
-async function fetchProducts(division) { const url = API_URL +
-‘?api=1&action=products&division=’ + encodeURIComponent(division);
+    if (!loading) return;
 
-    const response = await fetch(url, {
-      method: 'GET',
-      cache: 'no-store'
-    });
+    loading.style.opacity = '0';
 
-    if (!response.ok) {
-      throw new Error('API HTTP Error: ' + response.status);
+    setTimeout(() => {
+      loading.style.display = 'none';
+    }, 300);
+
+}
+
+/* ===================================================== SHOW HOME
+===================================================== */
+
+function showHome() {
+
+    if (homePage) {
+      homePage.classList.add('active');
     }
 
-    const result = await response.json();
+    if (divisionPage) {
+      divisionPage.classList.remove('active');
+    }
+
+    if (livestockPage) {
+      livestockPage.classList.remove('active');
+    }
+
+}
+
+/* ===================================================== API REQUEST
+===================================================== */
+
+async function fetchProducts(division) {
+
+    const url =
+      API_URL +
+      '?api=1&action=products&division=' +
+      encodeURIComponent(division);
+
+    console.log(
+      '[RAIDALL] Fetch Products:',
+      division
+    );
+
+    const response =
+      await fetch(url, {
+        method: 'GET',
+        cache: 'no-store'
+      });
+
+    if (!response.ok) {
+      throw new Error(
+        'API HTTP Error: ' + response.status
+      );
+    }
+
+    const result =
+      await response.json();
+
+    console.log(
+      '[RAIDALL] API Result:',
+      result
+    );
 
     if (!result.success) {
-      throw new Error(result.error || 'API gagal mengambil data.');
+      throw new Error(
+        result.error ||
+        'API gagal mengambil data.'
+      );
     }
 
     return result.data || [];
 
 }
 
-window.openDivision = async function(division) {
+/* ===================================================== OPEN DIVISION
+===================================================== */
 
-    const divisionMap = {
-      livestock: {
-        code: 'LIVESTOCK',
-        title: 'LIVESTOCK',
-        description: 'Produk kesehatan dan nutrisi hewan ternak',
-        theme: 'livestock',
-        icon: '🐔'
-      },
-      petcare: {
-        code: 'PETCARE',
-        title: 'PET CARE',
-        description: 'Produk kesehatan dan perawatan hewan kesayangan',
-        theme: 'petcare',
-        icon: '🐾'
-      },
-      aquaculture: {
-        code: 'AQUACULTURE',
-        title: 'AQUA CULTURE',
-        description: 'Produk kesehatan dan perawatan ikan',
-        theme: 'aquaculture',
-        icon: '🐟'
+window.openDivision = async function (division) {
+
+      console.log(
+        '[RAIDALL] Open Division:',
+        division
+      );
+
+      const divisionMap = {
+
+        livestock: {
+          code: 'LIVESTOCK',
+          title: 'LIVESTOCK',
+          description:
+            'Produk kesehatan dan nutrisi hewan ternak',
+          theme: 'livestock',
+          icon: '🐔'
+        },
+
+        petcare: {
+          code: 'PETCARE',
+          title: 'PET CARE',
+          description:
+            'Produk kesehatan dan perawatan hewan kesayangan',
+          theme: 'petcare',
+          icon: '🐾'
+        },
+
+        aquaculture: {
+          code: 'AQUACULTURE',
+          title: 'AQUA CULTURE',
+          description:
+            'Produk kesehatan dan perawatan ikan',
+          theme: 'aquaculture',
+          icon: '🐟'
+        }
+
+      };
+
+      const config =
+        divisionMap[division];
+
+      if (!config) {
+
+        console.error(
+          '[RAIDALL] Unknown division:',
+          division
+        );
+
+        return;
+
       }
-    };
 
-    const config = divisionMap[division];
+      if (homePage) {
+        homePage.classList.remove('active');
+      }
 
-    if (!config) {
-      console.error('[RAIDALL] Unknown division:', division);
-      return;
-    }
+      if (livestockPage) {
+        livestockPage.classList.remove('active');
+      }
 
-    if (homePage) homePage.classList.remove('active');
-    if (livestockPage) livestockPage.classList.remove('active');
-    if (divisionPage) divisionPage.classList.add('active');
-
-    divisionContent.innerHTML = `
-      <header class="division-header ${config.theme}">
-        <button class="home-button" onclick="goHome()">← Home</button>
-        <div class="division-header-title">
-          <div class="division-header-icon">${config.icon}</div>
-          <div>
-            <h1>${config.title}</h1>
-            <p>${config.description}</p>
-          </div>
-        </div>
-      </header>
-      <div class="product-loading">
-        <div class="spinner"></div>
-        <div>Memuat produk ${config.title}...</div>
-      </div>
-    `;
-
-    history.pushState(
-      { page: 'division', division: division },
-      '',
-      '#' + division
-    );
-
-    try {
-      const products = await fetchProducts(config.code);
-      console.log('[RAIDALL] Products loaded:', products.length);
-      renderDivisionProducts(config, products);
-    } catch (error) {
-      console.error('[RAIDALL] Product API Error:', error);
+      if (divisionPage) {
+        divisionPage.classList.add('active');
+      }
 
       divisionContent.innerHTML = `
+
         <header class="division-header ${config.theme}">
-          <button class="home-button" onclick="goHome()">← Home</button>
+
+          <button
+            class="home-button"
+            onclick="goHome()">
+
+            ← Home
+
+          </button>
+
           <div class="division-header-title">
-            <div class="division-header-icon">${config.icon}</div>
-            <div>
-              <h1>${config.title}</h1>
-              <p>${config.description}</p>
+
+            <div class="division-header-icon">
+              ${config.icon}
             </div>
+
+            <div>
+
+              <h1>
+                ${config.title}
+              </h1>
+
+              <p>
+                ${config.description}
+              </p>
+
+            </div>
+
           </div>
+
         </header>
 
-        <div class="api-error-card">
-          <div class="api-error-icon">⚠️</div>
-          <h2>Data produk belum dapat dimuat</h2>
-          <p>Terjadi masalah saat menghubungkan Sales Assistant dengan database.</p>
-          <button class="retry-button" onclick="openDivision('${escapeHTML(division)}')">
-            Coba Lagi
-          </button>
+        <div class="product-loading">
+
+          <div class="spinner"></div>
+
+          <div>
+            Memuat produk ${config.title}...
+          </div>
+
         </div>
+
       `;
-    }
 
-};
+      history.pushState(
+        {
+          page: 'division',
+          division: division
+        },
+        '',
+        '#' + division
+      );
 
-function renderDivisionProducts(config, products) {
+      try {
+
+        const products =
+          await fetchProducts(
+            config.code
+          );
+
+        console.log(
+          '[RAIDALL] Products loaded:',
+          products.length
+        );
+
+        renderDivisionProducts(
+          config,
+          products
+        );
+
+      } catch (error) {
+
+        console.error(
+          '[RAIDALL] Product API Error:',
+          error
+        );
+
+        divisionContent.innerHTML = `
+
+          <header class="division-header ${config.theme}">
+
+            <button
+              class="home-button"
+              onclick="goHome()">
+
+              ← Home
+
+            </button>
+
+            <div class="division-header-title">
+
+              <div class="division-header-icon">
+                ${config.icon}
+              </div>
+
+              <div>
+
+                <h1>
+                  ${config.title}
+                </h1>
+
+                <p>
+                  ${config.description}
+                </p>
+
+              </div>
+
+            </div>
+
+          </header>
+
+          <div class="api-error-card">
+
+            <div class="api-error-icon">
+              ⚠️
+            </div>
+
+            <h2>
+              Data produk belum dapat dimuat
+            </h2>
+
+            <p>
+              Terjadi masalah saat menghubungkan
+              Sales Assistant dengan database.
+            </p>
+
+            <button
+              class="retry-button"
+              onclick="openDivision('${escapeHTML(division)}')">
+
+              Coba Lagi
+
+            </button>
+
+          </div>
+
+        `;
+
+      }
+
+    };
+
+/* ===================================================== RENDER PRODUCTS
+===================================================== */
+
+function renderDivisionProducts( config, products ) {
 
     const grouped = {};
 
     products.forEach(product => {
-      const code = String(product.ProductCode || '').trim();
-      const name = String(product.ProductName || '').trim();
-      const key = code + '|' + name;
+
+      const code =
+        String(
+          product.ProductCode || ''
+        ).trim();
+
+      const name =
+        String(
+          product.ProductName || ''
+        ).trim();
+
+      const key =
+        code + '|' + name;
 
       if (!grouped[key]) {
+
         grouped[key] = {
+
           ProductCode: code,
+
           ProductName: name,
-          Category: product.Category || '',
-          Species: product.Species || '',
+
+          Category:
+            product.Category || '',
+
+          Species:
+            product.Species || '',
+
           variants: []
+
         };
+
       }
 
-      grouped[key].variants.push(product);
+      grouped[key].variants.push(
+        product
+      );
+
     });
 
-    const productFamilies = Object.values(grouped);
+    const productFamilies =
+      Object.values(grouped);
 
     let html = `
+
       <header class="division-header ${config.theme}">
-        <button class="home-button" onclick="goHome()">← Home</button>
+
+        <button
+          class="home-button"
+          onclick="goHome()">
+
+          ← Home
+
+        </button>
 
         <div class="division-header-title">
-          <div class="division-header-icon">${config.icon}</div>
-          <div>
-            <h1>${config.title}</h1>
-            <p>${config.description}</p>
+
+          <div class="division-header-icon">
+            ${config.icon}
           </div>
+
+          <div>
+
+            <h1>
+              ${config.title}
+            </h1>
+
+            <p>
+              ${config.description}
+            </p>
+
+          </div>
+
         </div>
+
       </header>
 
       <section class="product-section">
+
         <div class="product-toolbar">
+
           <input
             type="search"
             id="productSearch"
@@ -179,73 +403,140 @@ function renderDivisionProducts(config, products) {
             autocomplete="off">
 
           <div class="product-count">
+
             Total Product :
-            <strong id="productCount">${products.length}</strong>
+            <strong id="productCount">
+              ${products.length}
+            </strong>
+
           </div>
+
         </div>
 
-        <div id="productList" class="product-list">
+        <div
+          id="productList"
+          class="product-list">
+
     `;
 
-    productFamilies.forEach((family, index) => {
-      html += renderProductCard(family, config, index);
-    });
+    productFamilies.forEach(
+      (family, index) => {
+
+        html +=
+          renderProductCard(
+            family,
+            config,
+            index
+          );
+
+      }
+    );
 
     html += `
+
         </div>
+
       </section>
+
     `;
 
-    divisionContent.innerHTML = html;
+    divisionContent.innerHTML =
+      html;
 
     const searchInput =
-      document.getElementById('productSearch');
+      document.getElementById(
+        'productSearch'
+      );
 
     if (searchInput) {
-      searchInput.addEventListener('input', function() {
-        filterProducts(this.value);
-      });
+
+      searchInput.addEventListener(
+        'input',
+        function () {
+
+          filterProducts(
+            this.value
+          );
+
+        }
+      );
+
     }
 
 }
 
-function renderProductCard(family, config, index) {
+/* ===================================================== PRODUCT CARD
+===================================================== */
 
-    const variants = family.variants || [];
-    const first = variants[0] || {};
-    const variantCount = variants.length;
-    const image = first.Image || '';
+function renderProductCard( family, config, index ) {
+
+    const variants =
+      family.variants || [];
+
+    const first =
+      variants[0] || {};
+
+    const variantCount =
+      variants.length;
+
+    const image =
+      first.Image || '';
 
     let imageHTML = '';
 
     if (image) {
+
       imageHTML = `
+
         <div class="product-image">
+
           <img
             src="${escapeHTML(image)}"
-            alt="${escapeHTML(family.ProductName)}"
+            alt="${escapeHTML(
+              family.ProductName
+            )}"
             loading="lazy">
+
         </div>
+
       `;
+
     }
 
     let variantHTML = '';
 
     if (variantCount > 1) {
+
       variantHTML = `
+
         <div class="product-variant-count">
+
           ${variantCount} Variant
+
         </div>
+
       `;
+
     } else {
+
       variantHTML = `
+
         <div class="product-variant">
-          ${escapeHTML(String(first.Variant || '-'))}
+
+          ${escapeHTML(
+            String(
+              first.Variant || '-'
+            )
+          )}
+
         </div>
+
       `;
+
     }
 
     return `
+
       <article
         class="product-card ${config.theme}"
         data-product-index="${index}">
@@ -255,105 +546,221 @@ function renderProductCard(family, config, index) {
         <div class="product-card-content">
 
           <div class="product-category">
-            ${escapeHTML(String(family.Category || ''))}
+
+            ${escapeHTML(
+              String(
+                family.Category || ''
+              )
+            )}
+
           </div>
 
           <h2 class="product-name">
-            ${escapeHTML(family.ProductName)}
+
+            ${escapeHTML(
+              family.ProductName
+            )}
+
           </h2>
 
           <div class="product-species">
-            ${escapeHTML(String(family.Species || ''))}
+
+            ${escapeHTML(
+              String(
+                family.Species || ''
+              )
+            )}
+
           </div>
 
           ${variantHTML}
 
           <button
             class="product-detail-button"
-            onclick="showProductDetail('${escapeHTML(family.ProductCode)}')">
+            onclick="showProductDetail('${escapeHTML(
+              family.ProductCode
+            )}')">
+
             Detail Produk →
+
           </button>
 
         </div>
+
       </article>
+
     `;
 
 }
 
+/* ===================================================== SEARCH FILTER
+===================================================== */
+
 function filterProducts(keyword) {
 
     const search =
-      String(keyword || '').trim().toLowerCase();
+      String(
+        keyword || ''
+      )
+      .trim()
+      .toLowerCase();
 
     const cards =
-      document.querySelectorAll('.product-card');
+      document.querySelectorAll(
+        '.product-card'
+      );
 
-    let visible = 0;
+    let visible =
+      0;
 
     cards.forEach(card => {
-      const text = card.innerText.toLowerCase();
-      const match = !search || text.includes(search);
 
-      card.style.display = match ? '' : 'none';
+      const text =
+        card.innerText.toLowerCase();
 
-      if (match) visible++;
+      const match =
+        !search ||
+        text.includes(search);
+
+      card.style.display =
+        match
+          ? ''
+          : 'none';
+
+      if (match) {
+        visible++;
+      }
+
     });
 
     const count =
-      document.getElementById('productCount');
+      document.getElementById(
+        'productCount'
+      );
 
-    if (count) count.textContent = visible;
+    if (count) {
+
+      count.textContent =
+        visible;
+
+    }
 
 }
 
-async function loadProductImageFile(productCode) {
+/* ===================================================== LOAD PRODUCT
+IMAGE → FILE ===================================================== */
+
+async function loadProductImageFile( productCode ) {
 
     currentProductImageFile = null;
 
-    if (!productCode) return;
+    if (!productCode) {
+      return;
+    }
 
     try {
 
+      console.log(
+        '[RAIDALL] Loading image:',
+        productCode
+      );
+
       const url =
         API_URL +
-        '?api=1&action=imageBase64&code=' +
-        encodeURIComponent(productCode);
+        '?api=1' +
+        '&action=imageBase64' +
+        '&code=' +
+        encodeURIComponent(
+          productCode
+        );
 
-      const response = await fetch(url, {
-        method: 'GET',
-        cache: 'no-store'
-      });
+      const response =
+        await fetch(
+          url,
+          {
+            method: 'GET',
+            cache: 'no-store'
+          }
+        );
 
       if (!response.ok) {
-        throw new Error('Image API HTTP ' + response.status);
-      }
 
-      const result = await response.json();
-
-      if (!result.success || !result.base64) {
         throw new Error(
-          result.error || 'Base64 image tidak tersedia.'
+          'Image API HTTP ' +
+          response.status
         );
+
       }
 
-      const binary = atob(result.base64);
-      const bytes = new Uint8Array(binary.length);
+      const result =
+        await response.json();
 
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
-      }
-
-      const mime = result.mimeType || 'image/png';
-
-      const blob = new Blob([bytes], {
-        type: mime
-      });
-
-      currentProductImageFile = new File(
-        [blob],
-        result.fileName || `${productCode}.png`,
-        { type: mime }
+      console.log(
+        '[RAIDALL] Image API:',
+        {
+          success: result.success,
+          productCode: result.productCode,
+          fileName: result.fileName,
+          mimeType: result.mimeType,
+          base64Length:
+            result.base64
+              ? result.base64.length
+              : 0
+        }
       );
+
+      if (
+        !result.success ||
+        !result.base64
+      ) {
+
+        throw new Error(
+          result.error ||
+          'Base64 image tidak tersedia.'
+        );
+
+      }
+
+      const binary =
+        atob(result.base64);
+
+      const bytes =
+        new Uint8Array(
+          binary.length
+        );
+
+      for (
+        let i = 0;
+        i < binary.length;
+        i++
+      ) {
+
+        bytes[i] =
+          binary.charCodeAt(i);
+
+      }
+
+      const mime =
+        result.mimeType ||
+        'image/png';
+
+      const blob =
+        new Blob(
+          [bytes],
+          {
+            type: mime
+          }
+        );
+
+      currentProductImageFile =
+        new File(
+          [blob],
+          result.fileName ||
+          `${productCode}.png`,
+          {
+            type: mime
+          }
+        );
 
       console.log(
         '[RAIDALL] IMAGE FILE READY:',
@@ -370,184 +777,270 @@ async function loadProductImageFile(productCode) {
       );
 
       currentProductImageFile = null;
+
     }
 
 }
 
-window.showProductDetail = async function(productCode) {
+/* ===================================================== PRODUCT DETAIL
+===================================================== */
 
-    try {
+window.showProductDetail = async function (productCode) {
 
-      const url =
-        API_URL +
-        '?api=1&action=product&code=' +
-        encodeURIComponent(productCode);
+      console.log(
+        '[RAIDALL] Product Detail:',
+        productCode
+      );
 
-      const response = await fetch(url, {
-        method: 'GET',
-        cache: 'no-store'
-      });
+      try {
 
-      if (!response.ok) {
-        throw new Error('HTTP ' + response.status);
-      }
+        const url =
+          API_URL +
+          '?api=1' +
+          '&action=product' +
+          '&code=' +
+          encodeURIComponent(
+            productCode
+          );
 
-      const result = await response.json();
+        const response =
+          await fetch(
+            url,
+            {
+              method: 'GET',
+              cache: 'no-store'
+            }
+          );
 
-      if (!result.success) {
-        throw new Error(
-          result.error || 'Product tidak ditemukan.'
+        if (!response.ok) {
+
+          throw new Error(
+            'HTTP ' +
+            response.status
+          );
+
+        }
+
+        const result =
+          await response.json();
+
+        if (!result.success) {
+
+          throw new Error(
+            result.error ||
+            'Product tidak ditemukan.'
+          );
+
+        }
+
+        const product =
+          result.data;
+
+        console.log(
+          '[RAIDALL] Product:',
+          product
         );
+
+        currentProductImageFile = null;
+
+        const oldModal =
+          document.getElementById(
+            'productDetailModal'
+          );
+
+        if (oldModal) {
+          oldModal.remove();
+        }
+
+        const modal =
+          document.createElement(
+            'div'
+          );
+
+        modal.id =
+          'productDetailModal';
+
+        modal.style.cssText = `
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,.65);
+          z-index: 99999;
+          overflow: auto;
+          padding: 20px;
+          box-sizing: border-box;
+        `;
+
+        modal.innerHTML = `
+
+          <div
+            style="
+              max-width:600px;
+              margin:20px auto;
+              background:#fff;
+              border-radius:18px;
+              padding:22px;
+              box-sizing:border-box;
+            ">
+
+            <button
+              onclick="
+                document
+                  .getElementById('productDetailModal')
+                  .remove()
+              "
+              style="
+                float:right;
+                border:none;
+                background:none;
+                font-size:24px;
+                cursor:pointer;
+              ">
+
+              ✕
+
+            </button>
+
+            <h2>
+              ${escapeHTML(
+                product.ProductName
+              )}
+            </h2>
+
+            <p>
+              <b>Product Code:</b>
+              ${escapeHTML(
+                product.ProductCode || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Category:</b>
+              ${escapeHTML(
+                product.Category || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Species:</b>
+              ${escapeHTML(
+                product.Species || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Variant:</b>
+              ${escapeHTML(
+                product.Variant || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Price:</b>
+              ${escapeHTML(
+                String(
+                  product.Price || '-'
+                )
+              )}
+            </p>
+
+            <p>
+              <b>Composition:</b><br>
+              ${escapeHTML(
+                product.Composition || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Function:</b><br>
+              ${escapeHTML(
+                product.Function || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Description:</b><br>
+              ${escapeHTML(
+                product.Description || '-'
+              )}
+            </p>
+
+            <p>
+              <b>Cara Penggunaan:</b><br>
+              ${escapeHTML(
+                product.Usage || '-'
+              )}
+            </p>
+
+            <button
+              id="copyWAButton"
+              style="
+                width:100%;
+                padding:14px;
+                margin-top:20px;
+                border:none;
+                border-radius:10px;
+                background:#0B7A3E;
+                color:#fff;
+                font-size:16px;
+                font-weight:bold;
+                cursor:pointer;
+              ">
+
+              📲 Copy WhatsApp + Image
+
+            </button>
+
+          </div>
+
+        `;
+
+        document.body.appendChild(
+          modal
+        );
+
+        document
+          .getElementById(
+            'copyWAButton'
+          )
+          .addEventListener(
+            'click',
+            function () {
+
+              copyWA(product);
+
+            }
+          );
+
+      } catch (error) {
+
+        console.error(
+          '[RAIDALL] Detail Error:',
+          error
+        );
+
+        alert(
+          'Data produk tidak dapat dimuat.\n\n' +
+          error.message
+        );
+
       }
 
-      const product = result.data;
+    };
 
-      console.log('[RAIDALL] Product:', product);
-
-      currentProductImageFile = null;
-
-      const oldModal =
-        document.getElementById('productDetailModal');
-
-      if (oldModal) oldModal.remove();
-
-      const modal =
-        document.createElement('div');
-
-      modal.id = 'productDetailModal';
-
-      modal.style.cssText = `
-        position:fixed;
-        inset:0;
-        background:rgba(0,0,0,.65);
-        z-index:99999;
-        overflow:auto;
-        padding:20px;
-        box-sizing:border-box;
-      `;
-
-      modal.innerHTML = `
-        <div
-          style="
-            max-width:600px;
-            margin:20px auto;
-            background:#fff;
-            border-radius:18px;
-            padding:22px;
-            box-sizing:border-box;
-          ">
-
-          <button
-            onclick="
-              document
-                .getElementById('productDetailModal')
-                .remove()
-            "
-            style="
-              float:right;
-              border:none;
-              background:none;
-              font-size:24px;
-              cursor:pointer;
-            ">
-            ✕
-          </button>
-
-          <h2>${escapeHTML(product.ProductName)}</h2>
-
-          <p>
-            <b>Product Code:</b>
-            ${escapeHTML(product.ProductCode || '-')}
-          </p>
-
-          <p>
-            <b>Category:</b>
-            ${escapeHTML(product.Category || '-')}
-          </p>
-
-          <p>
-            <b>Species:</b>
-            ${escapeHTML(product.Species || '-')}
-          </p>
-
-          <p>
-            <b>Variant:</b>
-            ${escapeHTML(product.Variant || '-')}
-          </p>
-
-          <p>
-            <b>Price:</b>
-            ${escapeHTML(String(product.Price || '-'))}
-          </p>
-
-          <p>
-            <b>Composition:</b><br>
-            ${escapeHTML(product.Composition || '-')}
-          </p>
-
-          <p>
-            <b>Function:</b><br>
-            ${escapeHTML(product.Function || '-')}
-          </p>
-
-          <p>
-            <b>Description:</b><br>
-            ${escapeHTML(product.Description || '-')}
-          </p>
-
-          <p>
-            <b>Cara Penggunaan:</b><br>
-            ${escapeHTML(product.Usage || '-')}
-          </p>
-
-          <button
-            id="copyWAButton"
-            style="
-              width:100%;
-              padding:14px;
-              margin-top:20px;
-              border:none;
-              border-radius:10px;
-              background:#0B7A3E;
-              color:#fff;
-              font-size:16px;
-              font-weight:bold;
-              cursor:pointer;
-            ">
-            📲 Copy WhatsApp + Image
-          </button>
-
-        </div>
-      `;
-
-      document.body.appendChild(modal);
-
-      document
-        .getElementById('copyWAButton')
-        .addEventListener('click', function() {
-          copyWA(product);
-        });
-
-    } catch (error) {
-
-      console.error(
-        '[RAIDALL] Detail Error:',
-        error
-      );
-
-      alert(
-        'Data produk tidak dapat dimuat.\n\n' +
-        error.message
-      );
-    }
-
-};
+/* ===================================================== COPY WHATSAPP +
+IMAGE ATTACHMENT =====================================================
+*/
 
 async function copyWA(product) {
 
     if (!product) {
-      alert('Produk tidak ditemukan.');
+
+      alert(
+        'Produk tidak ditemukan.'
+      );
+
       return;
+
     }
 
     console.log(
@@ -555,9 +1048,12 @@ async function copyWA(product) {
       product.ProductCode
     );
 
-    const text =
 
-`${product.ProductName || ’’}
+    /* ===================================================
+       BUILD WHATSAPP TEXT
+       =================================================== */
+
+    const text = `*${product.ProductName || ''}*
 
 📦 Variant ${product.Variant || ‘-’}
 
@@ -575,30 +1071,48 @@ async function copyWA(product) {
 
 PT. Rizki Piara Sejahtera`;
 
+    /* ===================================================
+       GET IMAGE BASE64 FROM APPS SCRIPT
+       =================================================== */
+
     let imageFile = null;
 
     try {
 
       const url =
         API_URL +
-        '?api=1&action=imageBase64&code=' +
-        encodeURIComponent(product.ProductCode);
+        '?api=1' +
+        '&action=imageBase64' +
+        '&code=' +
+        encodeURIComponent(
+          product.ProductCode
+        );
 
       console.log(
         '[RAIDALL] Image Base64 URL:',
         url
       );
 
-      const response = await fetch(url, {
-        method: 'GET',
-        cache: 'no-store'
-      });
+      const response =
+        await fetch(
+          url,
+          {
+            method: 'GET',
+            cache: 'no-store'
+          }
+        );
 
       if (!response.ok) {
-        throw new Error('HTTP ' + response.status);
+
+        throw new Error(
+          'HTTP ' +
+          response.status
+        );
+
       }
 
-      const result = await response.json();
+      const result =
+        await response.json();
 
       console.log(
         '[RAIDALL] Image Base64 Result:',
@@ -608,36 +1122,67 @@ PT. Rizki Piara Sejahtera`;
           fileName: result.fileName,
           mimeType: result.mimeType,
           base64Length:
-            result.base64 ? result.base64.length : 0
+            result.base64
+              ? result.base64.length
+              : 0
         }
       );
 
-      if (!result.success || !result.base64) {
+      if (
+        !result.success ||
+        !result.base64
+      ) {
+
         throw new Error(
-          result.error || 'Image Base64 tidak tersedia.'
+          result.error ||
+          'Image Base64 tidak tersedia.'
         );
+
       }
 
-      const binary = atob(result.base64);
-      const bytes = new Uint8Array(binary.length);
+      const binary =
+        atob(result.base64);
 
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
+      const bytes =
+        new Uint8Array(
+          binary.length
+        );
+
+      for (
+        let i = 0;
+        i < binary.length;
+        i++
+      ) {
+
+        bytes[i] =
+          binary.charCodeAt(i);
+
       }
 
-      const mime = result.mimeType || 'image/png';
+      const mime =
+        result.mimeType ||
+        'image/png';
 
-      const blob = new Blob([bytes], {
-        type: mime
-      });
+      const blob =
+        new Blob(
+          [bytes],
+          {
+            type: mime
+          }
+        );
 
-      imageFile = new File(
-        [blob],
-        result.fileName || `${product.ProductCode}.png`,
-        { type: mime }
-      );
+      imageFile =
+        new File(
+          [blob],
+          result.fileName ||
+          `${product.ProductCode}.png`,
+          {
+            type: mime
+          }
+        );
 
-      currentProductImageFile = imageFile;
+      currentProductImageFile =
+        imageFile;
 
       console.log(
         '[RAIDALL] Image File:',
@@ -655,14 +1200,22 @@ PT. Rizki Piara Sejahtera`;
 
       imageFile = null;
       currentProductImageFile = null;
+
     }
+
+
+    /* ===================================================
+       SHARE TEXT + IMAGE
+       =================================================== */
 
     if (
       imageFile &&
       navigator.share &&
       navigator.canShare &&
       navigator.canShare({
-        files: [imageFile]
+        files: [
+          imageFile
+        ]
       })
     ) {
 
@@ -673,11 +1226,18 @@ PT. Rizki Piara Sejahtera`;
         );
 
         await navigator.share({
+
           title:
             product.ProductName ||
             'RAID ALL Product',
-          text: text,
-          files: [imageFile]
+
+          text:
+            text,
+
+          files: [
+            imageFile
+          ]
+
         });
 
         console.log(
@@ -692,6 +1252,7 @@ PT. Rizki Piara Sejahtera`;
           '[RAIDALL] Share dibatalkan/gagal:',
           error
         );
+
       }
 
     } else {
@@ -699,11 +1260,19 @@ PT. Rizki Piara Sejahtera`;
       console.warn(
         '[RAIDALL] Web Share API / file sharing tidak tersedia.'
       );
+
     }
+
+
+    /* ===================================================
+       FALLBACK TEXT ONLY
+       =================================================== */
 
     try {
 
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(
+        text
+      );
 
       alert(
         'Informasi produk berhasil dicopy.\n\n' +
@@ -719,40 +1288,57 @@ PT. Rizki Piara Sejahtera`;
       );
 
       const textarea =
-        document.createElement('textarea');
+        document.createElement(
+          'textarea'
+        );
 
-      textarea.value = text;
+      textarea.value =
+        text;
 
-      document.body.appendChild(textarea);
+      document.body.appendChild(
+        textarea
+      );
 
       textarea.select();
 
-      document.execCommand('copy');
+      document.execCommand(
+        'copy'
+      );
 
       textarea.remove();
 
       alert(
         'Informasi produk berhasil dicopy.'
       );
+
     }
 
 }
 
-window.goHome = function() {
+/* ===================================================== GO HOME
+===================================================== */
 
-    showHome();
+window.goHome = function () {
 
-    history.pushState(
-      { page: 'home' },
-      '',
-      window.location.pathname
-    );
+      showHome();
 
-};
+      history.pushState(
+        {
+          page: 'home'
+        },
+        '',
+        window.location.pathname
+      );
 
-window.addEventListener( ‘popstate’, function(event) {
+    };
 
-      const state = event.state;
+/* ===================================================== BROWSER BACK
+===================================================== */
+
+window.addEventListener( ‘popstate’, function (event) {
+
+      const state =
+        event.state;
 
       if (
         state &&
@@ -760,16 +1346,27 @@ window.addEventListener( ‘popstate’, function(event) {
         state.division
       ) {
 
-        openDivision(state.division);
+        openDivision(
+          state.division
+        );
+
         return;
+
       }
 
       showHome();
+
     }
 
 );
 
+/* ===================================================== INITIAL STATE
+===================================================== */
+
 history.replaceState( { page: ‘home’ }, ’’, window.location.pathname );
+
+/* ===================================================== SERVICE WORKER
+===================================================== */
 
 if ( ‘serviceWorker’ in navigator && location.protocol === ‘https:’ ) {
 
@@ -780,8 +1377,11 @@ if ( ‘serviceWorker’ in navigator && location.protocol === ‘https:’ ) {
         navigator.serviceWorker
           .register(
             './service-worker.js',
-            { scope: './' }
+            {
+              scope: './'
+            }
           )
+
           .then(reg => {
 
             console.log(
@@ -790,6 +1390,7 @@ if ( ‘serviceWorker’ in navigator && location.protocol === ‘https:’ ) {
             );
 
           })
+
           .catch(err => {
 
             console.error(
@@ -798,21 +1399,43 @@ if ( ‘serviceWorker’ in navigator && location.protocol === ‘https:’ ) {
             );
 
           });
+
       }
     );
 
 }
 
+/* ===================================================== HTML ESCAPE
+===================================================== */
+
 function escapeHTML(value) {
 
     return String(value || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+      .replace(
+        /</g,
+        '&lt;'
+      )
+      .replace(
+        />/g,
+        '&gt;'
+      )
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+      .replace(
+        /'/g,
+        '&#039;'
+      );
 
 }
+
+/* ===================================================== START
+===================================================== */
 
 hideLoading();
 
