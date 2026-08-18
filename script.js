@@ -1,5 +1,7 @@
 (() => {
 
+alert('RAID ALL TEST SCRIPT BARU 001');
+
 const API_URL =
 ‘https://script.google.com/macros/s/AKfycbyjekI9Vt7x4aqiyIekVPnvGMgRn9bJKJmifey0h0bBps-F3FqTAnKJfCqXOnD-Ak-cFw/exec’;
 
