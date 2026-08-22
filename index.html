@@ -36,10 +36,14 @@
 
 /* =========================================================
    RAIDALL SALES ASSISTANT - FINAL INDEX
-   FRONTEND ONLY
 
    Backend getProducts() sudah melakukan:
    Division Filter + ProductCode Grouping + Variants[]
+
+   FRONTEND:
+   - Search Highlight
+   - Usage Frequency Sorting
+   - Product Detail Highlight
    ========================================================= */
 
 * {
@@ -340,6 +344,36 @@ button {
 .search-highlight.aquaculture {
   background: #B3E5FC;
   color: #086A8C;
+}
+
+
+/* =========================================================
+   USAGE FREQUENCY
+   ========================================================= */
+
+.usage-frequency {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.usage-frequency.daily {
+  background: #E8F6EE;
+  color: #0B7A3E;
+}
+
+.usage-frequency.conditional {
+  background: #FFF3E0;
+  color: #B85C00;
+}
+
+.usage-frequency.other {
+  background: #F1F1F1;
+  color: #777;
 }
 
 
@@ -1277,9 +1311,9 @@ async function loadProducts(search = "") {
 /* =========================================================
    SEARCH HIGHLIGHT FUNCTION
 
-   Fungsi ini digunakan:
-   1. Di hasil pencarian.
-   2. Di halaman detail produk.
+   Digunakan:
+   1. Hasil pencarian
+   2. Halaman detail produk
 
    Warna mengikuti division aktif.
    ========================================================= */
@@ -1368,6 +1402,173 @@ function getCurrentSearchKeyword() {
 
 
 /* =========================================================
+   USAGE FREQUENCY GROUP
+   ========================================================= */
+
+function getUsageGroup(value) {
+
+  const text =
+    String(value ?? "")
+      .trim()
+      .toUpperCase()
+      .replace(/\s+/g, " ");
+
+
+  /*
+   * PRIORITAS 1
+   * HARIAN / POKOK
+   */
+
+  if (
+    text.includes("HARIAN") ||
+    text.includes("POKOK")
+  ) {
+
+    return 1;
+
+  }
+
+
+  /*
+   * PRIORITAS 2
+   * SESEKALI / KONDISIONAL
+   */
+
+  if (
+    text.includes("SESEKALI") ||
+    text.includes("KONDISIONAL")
+  ) {
+
+    return 2;
+
+  }
+
+
+  /*
+   * PRIORITAS 3
+   * Nilai kosong / lainnya
+   */
+
+  return 3;
+
+}
+
+
+/* =========================================================
+   SORT PRODUCTS BY USAGE FREQUENCY
+   =========================================================
+
+   Urutan:
+   1. HARIAN / POKOK
+   2. SESEKALI / KONDISIONAL
+   3. Kosong / lainnya
+
+   Sorting hanya dilakukan di FRONTEND.
+   Database tidak diubah.
+   ========================================================= */
+
+function sortProductsByUsage(products) {
+
+  return products
+    .map(function(product, index) {
+
+      return {
+        product: product,
+        originalIndex: index,
+        usageGroup:
+          getUsageGroup(
+            product.Usage_Frequency
+          )
+      };
+
+    })
+    .sort(function(a, b) {
+
+      if (
+        a.usageGroup !==
+        b.usageGroup
+      ) {
+
+        return (
+          a.usageGroup -
+          b.usageGroup
+        );
+
+      }
+
+
+      /*
+       * Jika Usage_Frequency sama,
+       * pertahankan urutan asli
+       * dari API/database.
+       */
+
+      return (
+        a.originalIndex -
+        b.originalIndex
+      );
+
+    })
+    .map(function(item) {
+
+      return item.product;
+
+    });
+
+}
+
+
+/* =========================================================
+   USAGE FREQUENCY BADGE
+   ========================================================= */
+
+function renderUsageFrequency(
+  value
+) {
+
+  const text =
+    String(value ?? "")
+      .trim();
+
+
+  if (!text) {
+    return "";
+  }
+
+
+  const group =
+    getUsageGroup(text);
+
+
+  let cssClass =
+    "other";
+
+
+  if (group === 1) {
+
+    cssClass =
+      "daily";
+
+  } else if (group === 2) {
+
+    cssClass =
+      "conditional";
+
+  }
+
+
+  return
+
+    `<div class="usage-frequency ${cssClass}">
+
+      ${escapeHtml(text)}
+
+    </div>`;
+
+}
+
+
+/* =========================================================
    RENDER PRODUCTS
    ========================================================= */
 
@@ -1411,6 +1612,21 @@ function renderProducts(products) {
   }
 
 
+  /*
+   * SORTING:
+   * HARIAN/POKOK
+   * ↓
+   * SESEKALI/KONDISIONAL
+   * ↓
+   * LAINNYA
+   */
+
+  const sortedProducts =
+    sortProductsByUsage(
+      products
+    );
+
+
   const searchKeyword =
     getCurrentSearchKeyword();
 
@@ -1424,13 +1640,13 @@ function renderProducts(products) {
 
       Total Product :
       <strong>
-        ${products.length}
+        ${sortedProducts.length}
       </strong>
 
     </div>`;
 
 
-  products.forEach(
+  sortedProducts.forEach(
     function(product) {
 
       const variants =
@@ -1470,6 +1686,12 @@ function renderProducts(products) {
       );
 
 
+      const usageHTML =
+        renderUsageFrequency(
+          product.Usage_Frequency
+        );
+
+
       html +=
 
         `<div
@@ -1505,6 +1727,9 @@ function renderProducts(products) {
             )}
 
           </div>
+
+
+          ${usageHTML}
 
 
           <div class="product-variants">
@@ -1615,13 +1840,10 @@ function openProductDetail(
 
 
   /*
-   * Search keyword sengaja TIDAK dihapus.
-   *
-   * Jadi keyword yang digunakan di halaman
-   * pencarian tetap tersedia ketika user
-   * membuka detail produk.
+   * Search keyword TIDAK dihapus.
+   * Keyword tetap aktif ketika user
+   * masuk ke detail produk.
    */
-
 
   document
     .getElementById(
@@ -1765,6 +1987,12 @@ function renderProductDetail() {
         `;
 
 
+  const usageHTML =
+    renderUsageFrequency(
+      product.Usage_Frequency
+    );
+
+
   const container =
     document.getElementById(
       "productDetailContainer"
@@ -1819,6 +2047,9 @@ function renderProductDetail() {
         )}
 
       </div>
+
+
+      ${usageHTML}
 
 
       ${imageHTML}
@@ -2457,7 +2688,7 @@ if ("serviceWorker" in navigator) {
       .then(function(registration) {
 
         console.log(
-          "RAIDALL Service Worker registered:",
+          "RAIDALL Sales Assistant Service Worker registered:",
           registration.scope
         );
 
@@ -2465,7 +2696,7 @@ if ("serviceWorker" in navigator) {
       .catch(function(error) {
 
         console.error(
-          "RAIDALL Service Worker registration failed:",
+          "RAIDALL Sales Assistant Service Worker registration failed:",
           error
         );
 
