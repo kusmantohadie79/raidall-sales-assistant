@@ -37,6 +37,7 @@
 /* =========================================================
    RAIDALL SALES ASSISTANT - FINAL INDEX
    FRONTEND ONLY
+
    Backend getProducts() sudah melakukan:
    Division Filter + ProductCode Grouping + Variants[]
    ========================================================= */
@@ -322,6 +323,8 @@ button {
   padding: 2px 4px;
   border-radius: 4px;
   font-weight: 800;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .search-highlight.petcare {
@@ -545,6 +548,7 @@ button {
 }
 
 @keyframes spin {
+
   from {
     transform: rotate(0deg);
   }
@@ -552,6 +556,7 @@ button {
   to {
     transform: rotate(360deg);
   }
+
 }
 
 
@@ -1138,6 +1143,7 @@ async function openDivision(division) {
 
 /* =========================================================
    LOAD PRODUCTS
+
    Backend sudah melakukan:
    Division Filter + ProductCode Grouping + Variants[]
    ========================================================= */
@@ -1270,6 +1276,12 @@ async function loadProducts(search = "") {
 
 /* =========================================================
    SEARCH HIGHLIGHT FUNCTION
+
+   Fungsi ini digunakan:
+   1. Di hasil pencarian.
+   2. Di halaman detail produk.
+
+   Warna mengikuti division aktif.
    ========================================================= */
 
 function highlightText(value, keyword) {
@@ -1334,6 +1346,28 @@ function highlightText(value, keyword) {
 
 
 /* =========================================================
+   GET CURRENT SEARCH KEYWORD
+   ========================================================= */
+
+function getCurrentSearchKeyword() {
+
+  const input =
+    document.getElementById(
+      "searchInput"
+    );
+
+
+  if (!input) {
+    return "";
+  }
+
+
+  return input.value.trim();
+
+}
+
+
+/* =========================================================
    RENDER PRODUCTS
    ========================================================= */
 
@@ -1378,12 +1412,7 @@ function renderProducts(products) {
 
 
   const searchKeyword =
-    document
-      .getElementById(
-        "searchInput"
-      )
-      .value
-      .trim();
+    getCurrentSearchKeyword();
 
 
   let html = "";
@@ -1585,13 +1614,25 @@ function openProductDetail(
   }
 
 
+  /*
+   * Search keyword sengaja TIDAK dihapus.
+   *
+   * Jadi keyword yang digunakan di halaman
+   * pencarian tetap tersedia ketika user
+   * membuka detail produk.
+   */
+
+
   document
     .getElementById(
       "productDetailTitle"
     )
-    .textContent =
-      product.ProductName ||
-      "Detail Produk";
+    .innerHTML =
+      highlightText(
+        product.ProductName ||
+        "Detail Produk",
+        getCurrentSearchKeyword()
+      );
 
 
   renderProductDetail();
@@ -1612,6 +1653,10 @@ function renderProductDetail() {
 
   const product =
     currentProduct;
+
+
+  const searchKeyword =
+    getCurrentSearchKeyword();
 
 
   const variants =
@@ -1669,8 +1714,9 @@ function renderProductDetail() {
             ${index}
           )">
 
-          ${escapeHtml(
-            item.Variant || "-"
+          ${highlightText(
+            item.Variant || "-",
+            searchKeyword
           )}
 
         </button>`;
@@ -1733,9 +1779,10 @@ function renderProductDetail() {
 
       <div class="product-name">
 
-        ${escapeHtml(
+        ${highlightText(
           product.ProductName ||
-          "-"
+          "-",
+          searchKeyword
         )}
 
       </div>
@@ -1745,9 +1792,10 @@ function renderProductDetail() {
 
         Product Code :
         <strong>
-          ${escapeHtml(
+          ${highlightText(
             product.ProductCode ||
-            "-"
+            "-",
+            searchKeyword
           )}
         </strong>
 
@@ -1756,16 +1804,18 @@ function renderProductDetail() {
 
       <div class="product-meta">
 
-        ${escapeHtml(
+        ${highlightText(
           product.Category ||
-          "-"
+          "-",
+          searchKeyword
         )}
 
         •&#x20;
 
-        ${escapeHtml(
+        ${highlightText(
           product.Species ||
-          "-"
+          "-",
+          searchKeyword
         )}
 
       </div>
@@ -1813,7 +1863,8 @@ function renderProductDetail() {
         </div>
 
         ${formatText(
-          product.Composition
+          product.Composition,
+          searchKeyword
         )}
 
       </div>
@@ -1826,7 +1877,8 @@ function renderProductDetail() {
         </div>
 
         ${formatText(
-          product.Function
+          product.Function,
+          searchKeyword
         )}
 
       </div>
@@ -1839,7 +1891,8 @@ function renderProductDetail() {
         </div>
 
         ${formatText(
-          product.Description
+          product.Description,
+          searchKeyword
         )}
 
       </div>
@@ -1852,7 +1905,8 @@ function renderProductDetail() {
         </div>
 
         ${formatText(
-          product.Usage
+          product.Usage,
+          searchKeyword
         )}
 
       </div>
@@ -1865,7 +1919,8 @@ function renderProductDetail() {
         </div>
 
         ${formatText(
-          product.Problem_Symptom
+          product.Problem_Symptom,
+          searchKeyword
         )}
 
       </div>
@@ -1900,6 +1955,12 @@ function selectVariant(index) {
   currentVariantIndex =
     Number(index) || 0;
 
+
+  /*
+   * Search keyword tetap dipertahankan.
+   * renderProductDetail() akan menggunakan
+   * keyword yang sama untuk highlight.
+   */
 
   renderProductDetail();
 
@@ -2285,7 +2346,10 @@ function money(value) {
    TEXT
    ========================================================= */
 
-function formatText(value) {
+function formatText(
+  value,
+  keyword = ""
+) {
 
   const text =
     String(
@@ -2298,12 +2362,24 @@ function formatText(value) {
   }
 
 
-  return escapeHtml(
-    text
-  ).replace(
-    /\n/g,
-    "<br>"
-  );
+  /*
+   * Highlight dilakukan per baris
+   * supaya tetap aman jika ada newline.
+   */
+
+  return text
+    .split("\n")
+    .map(
+      function(line) {
+
+        return highlightText(
+          line,
+          keyword
+        );
+
+      }
+    )
+    .join("<br>");
 
 }
 
