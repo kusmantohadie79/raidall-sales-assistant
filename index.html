@@ -43,6 +43,7 @@
    FRONTEND:
    - Search Highlight
    - Usage Frequency Sorting
+   - Usage Frequency Display
    - Product Detail Highlight
    ========================================================= */
 
@@ -352,13 +353,14 @@ button {
    ========================================================= */
 
 .usage-frequency {
-  display: inline-block;
+  display: block;
+  width: fit-content;
   margin-top: 10px;
-  padding: 6px 10px;
+  padding: 7px 11px;
   border-radius: 14px;
   font-size: 12px;
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .usage-frequency.daily {
@@ -1310,12 +1312,6 @@ async function loadProducts(search = "") {
 
 /* =========================================================
    SEARCH HIGHLIGHT FUNCTION
-
-   Digunakan:
-   1. Hasil pencarian
-   2. Halaman detail produk
-
-   Warna mengikuti division aktif.
    ========================================================= */
 
 function highlightText(value, keyword) {
@@ -1456,15 +1452,6 @@ function getUsageGroup(value) {
 
 /* =========================================================
    SORT PRODUCTS BY USAGE FREQUENCY
-   =========================================================
-
-   Urutan:
-   1. HARIAN / POKOK
-   2. SESEKALI / KONDISIONAL
-   3. Kosong / lainnya
-
-   Sorting hanya dilakukan di FRONTEND.
-   Database tidak diubah.
    ========================================================= */
 
 function sortProductsByUsage(products) {
@@ -1519,20 +1506,42 @@ function sortProductsByUsage(products) {
 
 
 /* =========================================================
-   USAGE FREQUENCY BADGE
+   RENDER USAGE FREQUENCY
+   =========================================================
+
+   FIELD YANG DIBACA:
+
+   product.Usage_Frequency
+
+   Nilai akan ditampilkan langsung
+   pada CARD PRODUK.
+
+   Berlaku untuk:
+   - All Product
+   - Hasil Search
    ========================================================= */
 
-function renderUsageFrequency(
-  value
-) {
+function renderUsageFrequency(value) {
 
   const text =
     String(value ?? "")
       .trim();
 
 
+  /*
+   * Jika field kosong,
+   * tetap tampilkan status agar
+   * user tahu datanya kosong.
+   */
+
   if (!text) {
-    return "";
+
+    return `
+      <div class="usage-frequency other">
+        Usage Frequency: -
+      </div>
+    `;
+
   }
 
 
@@ -1549,7 +1558,9 @@ function renderUsageFrequency(
     cssClass =
       "daily";
 
-  } else if (group === 2) {
+  }
+
+  else if (group === 2) {
 
     cssClass =
       "conditional";
@@ -1557,13 +1568,16 @@ function renderUsageFrequency(
   }
 
 
-  return
+  return `
 
-    `<div class="usage-frequency ${cssClass}">
+    <div class="usage-frequency ${cssClass}">
 
+      Usage Frequency:
       ${escapeHtml(text)}
 
-    </div>`;
+    </div>
+
+  `;
 
 }
 
@@ -1614,11 +1628,10 @@ function renderProducts(products) {
 
   /*
    * SORTING:
-   * HARIAN/POKOK
-   * ↓
-   * SESEKALI/KONDISIONAL
-   * ↓
-   * LAINNYA
+
+   * 1. HARIAN / POKOK
+   * 2. SESEKALI / KONDISIONAL
+   * 3. LAINNYA
    */
 
   const sortedProducts =
@@ -1685,6 +1698,20 @@ function renderProducts(products) {
         }
       );
 
+
+      /*
+       * Usage_Frequency DITAMPILKAN
+       * SETELAH Category / Species.
+       *
+       * Karena renderProducts()
+       * dipanggil baik saat:
+       *
+       * - loadProducts()
+       * - search keyword
+       *
+       * maka informasi ini otomatis
+       * tampil di kedua kondisi.
+       */
 
       const usageHTML =
         renderUsageFrequency(
@@ -1841,8 +1868,6 @@ function openProductDetail(
 
   /*
    * Search keyword TIDAK dihapus.
-   * Keyword tetap aktif ketika user
-   * masuk ke detail produk.
    */
 
   document
@@ -2020,11 +2045,13 @@ function renderProductDetail() {
 
         Product Code :
         <strong>
+
           ${highlightText(
             product.ProductCode ||
             "-",
             searchKeyword
           )}
+
         </strong>
 
       </div>
@@ -2187,12 +2214,6 @@ function selectVariant(index) {
     Number(index) || 0;
 
 
-  /*
-   * Search keyword tetap dipertahankan.
-   * renderProductDetail() akan menggunakan
-   * keyword yang sama untuk highlight.
-   */
-
   renderProductDetail();
 
 }
@@ -2316,15 +2337,6 @@ document
 
 /* =========================================================
    REFRESH APP
-   =========================================================
-
-   Tombol ini:
-   1. Membersihkan state frontend.
-   2. Reload halaman dengan cache-buster.
-   3. Tidak bergantung pada service worker.
-
-   Cocok untuk Android/PWA.
-
    ========================================================= */
 
 function refreshApp() {
@@ -2394,8 +2406,7 @@ function refreshApp() {
   /*
    * Kalau di Home / Detail:
    * reload halaman penuh dengan
-   * timestamp agar browser Android
-   * tidak memakai HTML lama.
+   * timestamp.
    */
 
   const base =
