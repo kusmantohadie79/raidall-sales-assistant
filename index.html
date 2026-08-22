@@ -5,31 +5,32 @@
 
 <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="theme-color"
-    content="#0B7A3E">
+<meta
+  name="theme-color"
+  content="#0B7A3E">
 
-  <meta
-    name="mobile-web-app-capable"
-    content="yes">
+<meta
+  name="mobile-web-app-capable"
+  content="yes">
 
-  <meta
-    name="apple-mobile-web-app-capable"
-    content="yes">
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes">
 
-  <meta
-    name="apple-mobile-web-app-status-bar-style"
-    content="default">
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="default">
 
-  <link
-    rel="manifest"
-    href="./manifest.json">
+<link
+  rel="manifest"
+  href="./manifest.json">
 
 <title>RAIDALL Sales Assistant</title>
+
 
 <style>
 
@@ -73,6 +74,7 @@ button {
   margin: 0 auto;
   padding-bottom: 40px;
 }
+
 
 /* =========================================================
    HOME
@@ -123,6 +125,7 @@ button {
   font-weight: 700;
   margin-bottom: 18px;
 }
+
 
 /* =========================================================
    DIVISION CARD
@@ -194,7 +197,9 @@ button {
   padding-left: 10px;
 }
 
+
 /* PET CARE */
+
 .petcare {
   border-left-color: #F28C28;
 }
@@ -203,7 +208,9 @@ button {
   color: #F28C28;
 }
 
+
 /* LIVESTOCK */
+
 .livestock {
   border-left-color: #0B7A3E;
 }
@@ -212,7 +219,9 @@ button {
   color: #0B7A3E;
 }
 
+
 /* AQUACULTURE */
+
 .aquaculture {
   border-left-color: #087EA4;
 }
@@ -220,6 +229,7 @@ button {
 .aquaculture .division-name {
   color: #087EA4;
 }
+
 
 /* =========================================================
    DIVISION HEADER
@@ -279,6 +289,7 @@ button {
   color: #087EA4;
 }
 
+
 /* =========================================================
    SEARCH
    ========================================================= */
@@ -301,6 +312,33 @@ button {
 .search-input:focus {
   border-color: #0B7A3E;
 }
+
+
+/* =========================================================
+   SEARCH HIGHLIGHT
+   ========================================================= */
+
+.search-highlight {
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.search-highlight.petcare {
+  background: #FFE0B2;
+  color: #B85C00;
+}
+
+.search-highlight.livestock {
+  background: #C8E6C9;
+  color: #176B32;
+}
+
+.search-highlight.aquaculture {
+  background: #B3E5FC;
+  color: #086A8C;
+}
+
 
 /* =========================================================
    PRODUCTS
@@ -366,6 +404,7 @@ button {
   color: #999;
   font-size: 14px;
 }
+
 
 /* =========================================================
    DETAIL
@@ -441,6 +480,7 @@ button {
   cursor: pointer;
 }
 
+
 /* =========================================================
    STATUS
    ========================================================= */
@@ -467,6 +507,7 @@ button {
   background: #FFF0F0;
   color: #B00020;
 }
+
 
 /* =========================================================
    REFRESH BUTTON
@@ -504,9 +545,15 @@ button {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
+
 
 /* =========================================================
    IMAGE VIEWER
@@ -541,6 +588,7 @@ button {
   font-size: 32px;
   cursor: pointer;
 }
+
 
 /* =========================================================
    MOBILE
@@ -599,6 +647,7 @@ button {
     right: 18px;
     bottom: 18px;
   }
+
 }
 
 </style>
@@ -618,12 +667,6 @@ button {
 <section id="homePage" class="page active">
 
   <header class="app-header">
-
-    <!--
-      RPS.png berada di ROOT repository berdasarkan struktur
-      GitHub terakhir yang dikirim.
-      Fallback kedua mencoba IMAGE/RPS.png.
-    -->
 
     <img
       id="rpsLogo"
@@ -884,9 +927,9 @@ button {
 </div>
 
 
+
 <!-- =========================================================
      REFRESH BUTTON
-     Android / PWA
      ========================================================= -->
 
 <button
@@ -900,6 +943,7 @@ button {
   ↻
 
 </button>
+
 
 
 <!-- =========================================================
@@ -923,6 +967,7 @@ button {
 </div>
 
 
+
 <script>
 
 /* =========================================================
@@ -939,6 +984,7 @@ const API_URL =
 
 const IMAGE_BASE =
   "https://raw.githubusercontent.com/kusmantohadie79/raidall-sales-assistant/main/IMAGE/";
+
 
 const DIVISION_CONFIG = {
 
@@ -983,11 +1029,6 @@ let searchTimer = null;
    ========================================================= */
 
 window.addEventListener("load", function() {
-
-  /*
-   * Home tidak perlu memanggil API.
-   * Data hanya dipanggil saat user memilih division.
-   */
 
   console.log(
     "RAIDALL Sales Assistant loaded."
@@ -1047,21 +1088,14 @@ async function openDivision(division) {
   allProducts = [];
 
 
-  /*
-   * PAGE SWITCH
-   */
-
   showPage("divisionPage");
 
-
-  /*
-   * HEADER
-   */
 
   const header =
     document.getElementById(
       "divisionHeader"
     );
+
 
   header.className =
     "division-header header-" +
@@ -1079,22 +1113,15 @@ async function openDivision(division) {
       "divisionHeaderLogo"
     );
 
+
   headerLogo.src =
     config.logo;
 
-
-  /*
-   * SEARCH RESET
-   */
 
   document
     .getElementById("searchInput")
     .value = "";
 
-
-  /*
-   * LOADING
-   */
 
   document
     .getElementById("productContainer")
@@ -1111,14 +1138,8 @@ async function openDivision(division) {
 
 /* =========================================================
    LOAD PRODUCTS
-   IMPORTANT:
-   Backend sudah mengembalikan:
-   ProductCode
-   ProductName
-   ...
-   Variants[]
-
-   FRONTEND TIDAK MELAKUKAN GROUPING LAGI.
+   Backend sudah melakukan:
+   Division Filter + ProductCode Grouping + Variants[]
    ========================================================= */
 
 async function loadProducts(search = "") {
@@ -1200,11 +1221,6 @@ async function loadProducts(search = "") {
     }
 
 
-    /*
-     * IMPORTANT:
-     * Tidak ada grouped[] di sini.
-     */
-
     allProducts =
       Array.isArray(
         result.data
@@ -1253,6 +1269,71 @@ async function loadProducts(search = "") {
 
 
 /* =========================================================
+   SEARCH HIGHLIGHT FUNCTION
+   ========================================================= */
+
+function highlightText(value, keyword) {
+
+  const text =
+    String(value ?? "");
+
+
+  const search =
+    String(keyword ?? "").trim();
+
+
+  if (!search) {
+
+    return escapeHtml(text);
+
+  }
+
+
+  const escapedKeyword =
+    search.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+
+  const regex =
+    new RegExp(
+      "(" +
+      escapedKeyword +
+      ")",
+      "gi"
+    );
+
+
+  const divisionClass = {
+
+    PETCARE:
+      "petcare",
+
+    LIVESTOCK:
+      "livestock",
+
+    AQUACULTURE:
+      "aquaculture"
+
+  }[currentDivision] || "";
+
+
+  const safeText =
+    escapeHtml(text);
+
+
+  return safeText.replace(
+    regex,
+    '<mark class="search-highlight ' +
+    divisionClass +
+    '">$1</mark>'
+  );
+
+}
+
+
+/* =========================================================
    RENDER PRODUCTS
    ========================================================= */
 
@@ -1296,10 +1377,14 @@ function renderProducts(products) {
   }
 
 
-  /*
-   * Backend sudah grouping.
-   * Satu element = satu ProductCode.
-   */
+  const searchKeyword =
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .value
+      .trim();
+
 
   let html = "";
 
@@ -1337,8 +1422,9 @@ function renderProducts(products) {
 
             `<span class="product-variant">
 
-              ${escapeHtml(
-                variant.Variant || "-"
+              ${highlightText(
+                variant.Variant || "-",
+                searchKeyword
               )}
 
               &nbsp;
@@ -1367,9 +1453,9 @@ function renderProducts(products) {
 
           <div class="product-name">
 
-            ${escapeHtml(
-              product.ProductName ||
-              "-"
+            ${highlightText(
+              product.ProductName || "-",
+              searchKeyword
             )}
 
           </div>
@@ -1377,16 +1463,16 @@ function renderProducts(products) {
 
           <div class="product-meta">
 
-            ${escapeHtml(
-              product.Category ||
-              "-"
+            ${highlightText(
+              product.Category || "-",
+              searchKeyword
             )}
 
             •&#x20;
 
-            ${escapeHtml(
-              product.Species ||
-              "-"
+            ${highlightText(
+              product.Species || "-",
+              searchKeyword
             )}
 
           </div>
@@ -1472,14 +1558,11 @@ function openProductDetail(
   );
 
 
-  /*
-   * HEADER
-   */
-
   const detailLogo =
     document.getElementById(
       "detailHeaderLogo"
     );
+
 
   detailLogo.src =
     config
@@ -1942,12 +2025,14 @@ document
 /* =========================================================
    REFRESH APP
    =========================================================
+
    Tombol ini:
    1. Membersihkan state frontend.
    2. Reload halaman dengan cache-buster.
    3. Tidak bergantung pada service worker.
 
    Cocok untuk Android/PWA.
+
    ========================================================= */
 
 function refreshApp() {
@@ -1970,7 +2055,6 @@ function refreshApp() {
   /*
    * Kalau sedang berada di division,
    * cukup ambil data terbaru dari API.
-   * Tidak perlu reload seluruh aplikasi.
    */
 
   if (
@@ -2144,15 +2228,18 @@ PT. Rizki Piara Sejahtera`;
       text
     );
 
+
     alert(
       "Informasi berhasil dicopy."
     );
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     alert(
       "Tidak dapat menyalin otomatis. Silakan copy manual."
@@ -2273,12 +2360,15 @@ function escapeAttribute(value) {
 </script>
 
 
+
 <noscript>
 
   JavaScript harus diaktifkan untuk menjalankan
   RAIDALL Sales Assistant.
 
 </noscript>
+
+
 
 <script>
 
@@ -2310,6 +2400,7 @@ if ("serviceWorker" in navigator) {
 }
 
 </script>
+
 
 </body>
 
